@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skiztech - Services</title>
+    <!-- Import des logos officiels FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f4f9; color: #333; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Bannière Hero ajustée et responsive */
+        .hero-banner { 
+            width: 100%; 
+            height: 300px; 
+            overflow: hidden; 
+            background-color: #000; 
+            box-shadow: inset 0 -20px 30px rgba(0,0,0,0.5); 
+        }
+        .hero-banner img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center; 
+        }
+
+        /* Adaptations pour ordinateurs portables et petits écrans */
+        @media (max-width: 1200px) {
+            .hero-banner { height: 220px; }
+        }
+        @media (max-width: 768px) {
+            .hero-banner { height: 160px; }
+        }
+        
+        /* Navigation uniformisée */
+        nav { background-color: #1a1a1a; padding: 18px 0; text-align: center; border-bottom: 3px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        nav a { 
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 1em; 
+            margin: 0 15px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            vertical-align: middle;
+            line-height: 1;
+        }
+        nav a:hover, nav a.active { color: #00bcd4; }
+        nav a i { color: #00bcd4; }
+
+        /* Conteneur et styles pour le menu déroulant "Mon Compte" */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-nav-pic {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1.5px solid #00bcd4;
+            object-fit: cover;
+            vertical-align: middle;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #1a1a1a;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
+            border-radius: 6px;
+            border: 1px solid #333;
+            border-top: 3px solid #00bcd4;
+            z-index: 1000;
+            padding: 8px 0;
+            text-align: left;
+        }
+
+        .dropdown-menu a {
+            color: #eee !important;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85em;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            margin: 0;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #2a2a2a;
+            color: #00bcd4 !important;
+        }
+
+        .dropdown-menu hr {
+            border: 0;
+            border-top: 1px solid #333;
+            margin: 6px 0;
+        }
+
+        .dropdown-menu a.logout-link:hover {
+            color: #ff4d4d !important;
+            background-color: rgba(255, 77, 77, 0.1);
+        }
+
+        .user-dropdown:hover .dropdown-menu.active-dropdown {
+            display: block;
+        }
+
+        /* Bannière Promo */
+        .promo-banner { background-color: #00bcd4; color: white; text-align: center; padding: 25px; font-size: 20px; font-weight: bold; letter-spacing: 0.5px; }
+        .promo-banner a { color: #fff; text-decoration: underline; }
+
+        /* Grille des Services */
+        .services { padding: 60px 0; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .service-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 30px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease, box-shadow 0.3s ease; border-top: 4px solid #00bcd4; }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,188,212,0.15); }
+        
+        /* Titres centrés des cartes */
+        .service-card h3 { margin-top: 0; font-size: 24px; text-align: center; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .service-subtitle { text-align: center; font-weight: 600; font-size: 16px; color: #444; margin-top: 0; margin-bottom: 18px; }
+        
+        /* Couleurs par offre */
+        .title-bronze { color: #cd7f32; }
+        .title-argent { color: #7f8c8d; }
+        .title-or { color: #d4af37; }
+        .title-platine { color: #2980b9; }
+        .title-opti { color: #27ae60; }
+        .title-assistance { color: #8e44ad; }
+
+        .service-card p { color: #555; font-size: 15px; margin-bottom: 20px; line-height: 1.5; }
+        
+        /* Mise en valeur du texte */
+        .card-highlight {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        /* Prix centré */
+        .price-tag { display: block; background-color: #f4f4f9; color: #00bcd4; padding: 10px 20px; border-radius: 8px; font-weight: bold; font-size: 22px; margin: 10px 0 15px 0; text-align: center; border: 2px dashed #00bcd4; }
+        
+        /* Quantité pour assistance */
+        .quantity-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; background: #f8f9fa; padding: 8px 12px; border-radius: 6px; border: 1px solid #ddd; }
+        .quantity-box label { font-size: 14px; font-weight: bold; color: #444; }
+        .quantity-box input { width: 60px; padding: 5px; text-align: center; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+
+        .btn-service { display: block; width: 100%; background-color: #00bcd4; color: white; padding: 14px; text-align: center; text-decoration: none; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; transition: background-color 0.2s; box-sizing: border-box; text-transform: uppercase; letter-spacing: 0.5px; }
+        .btn-service:hover { background-color: #0097a7; }
+        
+        /* Footer stylisé */
+        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
+        .btn-social { display: inline-block; padding: 10px 18px; margin: 6px; background-color: #2a2a2a; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; border: 2px solid #00bcd4; transition: 0.3s; }
+        .btn-social:hover { background-color: #00bcd4; transform: translateY(-2px); }
+        .btn-social i { margin-right: 8px; }
+        
+        .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; letter-spacing: 1px; }
+        .footer-bottom span { color: #00bcd4; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- Bannière Hero -->
+    <section class="hero-banner">
+        <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
+    </section>
+
+    <!-- Navigation uniformisée avec le menu déroulant du compte -->
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+        <a href="services.html" class="active"><i class="fas fa-tools"></i> Services</a>
+        <a href="panier.html"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
+        <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+        
+        <div class="user-dropdown">
+            <a href="index.html#auth-box" id="account-link">
+                <i class="fas fa-sign-in-alt"></i> Se connecter
+            </a>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
+                <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
+                <hr>
+                <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="promo-banner">
+        🎁 -10% sur les packs pour les abonnés Twitch ! 
+        <br><a href="https://twitch.tv/angryskiz" target="_blank">Abonnez-vous à twitch.tv/angryskiz</a>
+    </div>
+
+    <section class="services">
+        <div class="container">
+            <div class="services-grid">
+                <!-- Pack Bronze -->
+                <div class="service-card">
+                    <div>
+                        <h3 class="title-bronze">Pack BRONZE</h3>
+                        <div class="service-subtitle">Mise à niveau</div>
+                        <p>Optimisez votre machine grâce au remplacement professionnel de vos composants pour booster vos performances.
+                        <span class="card-highlight">Livraison et assurance transport comprises.</span></p>
+                    </div>
+                    <div>
+                        <div class="price-tag">60 €</div>
+                        <button class="btn-service" onclick="addToCart('Pack BRONZE', 'Mise à niveau', 60, 1)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Pack Argent -->
+                <div class="service-card">
+                    <div>
+                        <h3 class="title-argent">Pack ARGENT</h3>
+                        <div class="service-subtitle">Montage PC</div>
+                        <p>Après vérification d'éligibilité de votre configuration, prise en charge complète : assemblage minutieux, câble management aux petits oignons, installation de Windows et tests de stabilité OCCT.
+                        <span class="card-highlight">Livraison et assurance transport comprises.</span></p>
+                    </div>
+                    <div>
+                        <div class="price-tag">100 €</div>
+                        <button class="btn-service" onclick="addToCart('Pack ARGENT', 'Montage PC', 100, 1)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Pack Or -->
+                <div class="service-card">
+                    <div>
+                        <h3 class="title-or">Pack OR</h3>
+                        <div class="service-subtitle">Conseil + Montage</div>
+                        <p>Un accompagnement sur-mesure : je vous guide dans le choix des composants selon votre budget et vos envies, puis je procède à l'assemblage complet (vérification, montage, câble management, installation Windows et tests OCCT).
+                        <span class="card-highlight">Livraison et assurance transport comprises.</span></p>
+                    </div>
+                    <div>
+                        <div class="price-tag">120 €</div>
+                        <button class="btn-service" onclick="addToCart('Pack OR', 'Conseil + Montage', 120, 1)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Pack Platine -->
+                <div class="service-card">
+                    <div>
+                        <h3 class="title-platine">Pack PLATINE</h3>
+                        <div class="service-subtitle">Setup Streaming</div>
+                        <p>Assemblage + config OBS + optimisation stream.
+                        <span class="card-highlight">Livraison et assurance transport comprises.</span></p>
+                    </div>
+                    <div>
+                        <div class="price-tag">145 €</div>
+                        <button class="btn-service" onclick="addToCart('Pack PLATINE', 'Setup Streaming', 145, 1)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Optimisation -->
+                <div class="service-card">
+                    <div>
+                        <h3 class="title-opti">OPTIMISATION</h3>
+                        <div class="service-subtitle">Nettoyage & Boost Système</div>
+                        <p>Nettoyage, pilotes, désinfection et boost de performances.
+                        <span class="card-highlight">Livraison et assurance transport comprises.</span></p>
+                    </div>
+                    <div>
+                        <div class="price-tag">70 €</div>
+                        <button class="btn-service" onclick="addToCart('OPTIMISATION', 'Nettoyage & Boost Système', 70, 1)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Assistance -->
+                <div class="service-card">
+                    <div>
+                        <h3 class="title-assistance">ASSISTANCE</h3>
+                        <div class="service-subtitle">Support Technique à Distance</div>
+                        <p>Diagnostic et réparation de vos problèmes logiciels à distance.
+                        <span class="card-highlight">Payant uniquement si le problème est résolu !</span></p>
+                    </div>
+                    <div>
+                        <div class="price-tag">20 € / h</div>
+                        <div class="quantity-box">
+                            <label for="qty-assistance">Nombre d'heures :</label>
+                            <input type="number" id="qty-assistance" value="1" min="1">
+                        </div>
+                        <button class="btn-service" onclick="addAssistanceToCart()">Ajouter au panier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <p>Besoin d'un devis ? Contactez-moi : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
+            
+            <div class="social-links" style="margin-top: 20px;">
+                <p style="color: #ccc; margin-bottom: 10px;">Mes réseaux :</p>
+                <a href="https://twitch.tv/angryskiz" target="_blank" class="btn-social"><i class="fab fa-twitch"></i> Twitch</a>
+                <a href="https://youtube.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-youtube"></i> YouTube</a>
+                <a href="https://tiktok.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="https://instagram.com/angryskiz" target="_blank" class="btn-social"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+
+            <div class="footer-bottom">
+                Skiztech by <span>Skizcorp</span> &copy; 2026 — Tous droits réservés
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script Panier, Connexion Twitch et Menu Déroulant -->
+    <script>
+        const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
+
+        /* Gestion du Panier */
+        function addToCart(name, subtitle, price, qty) {
+            let cart = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
+            
+            let existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                if (name === 'ASSISTANCE') {
+                    existingItem.quantity = qty;
+                } else {
+                    existingItem.quantity += qty;
+                }
+            } else {
+                cart.push({ name: name, subtitle: subtitle, price: price, quantity: qty });
+            }
+
+            localStorage.setItem('skiztech_cart', JSON.stringify(cart));
+            window.location.href = 'panier.html';
+        }
+
+        function addAssistanceToCart() {
+            let qtyInput = document.getElementById('qty-assistance');
+            let qty = parseInt(qtyInput.value) || 1;
+            if (qty < 1) qty = 1;
+            addToCart('ASSISTANCE', 'Support Technique à Distance', 20, qty);
+        }
+
+        /* Gestion de l'Authentification Identique à l'Index */
+        function checkLoginState() {
+            const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
+            const accountLink = document.getElementById('account-link');
+            const dropdownMenu = document.getElementById('dropdown-menu');
+
+            if (accountLink && dropdownMenu) {
+                if (user) {
+                    const userAvatar = user.profile_image_url || user.avatar || user.picture;
+                    const userName = user.display_name || user.name || "Mon Compte";
+                    
+                    const iconHtml = userAvatar 
+                        ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
+                        : `<i class="fas fa-user-circle"></i>`;
+                    
+                    accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
+                    accountLink.href = "#"; 
+                    
+                    dropdownMenu.classList.add('active-dropdown');
+                } else {
+                    accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
+                    accountLink.href = "index.html#auth-box";
+                    
+                    dropdownMenu.classList.remove('active-dropdown');
+                }
+            }
+        }
+
+        function handleTwitchCallback() {
+            const hash = window.location.hash;
+            if (hash.includes('access_token=')) {
+                const token = new URLSearchParams(hash.substring(1)).get('access_token');
+                
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                fetch('https://api.twitch.tv/helix/users', {
+                    headers: {
+                        'Client-ID': clientId,
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        const userData = data.data[0];
+                        localStorage.setItem('twitch_user', JSON.stringify(userData));
+                        checkLoginState();
+                    }
+                })
+                .catch(err => console.error('Erreur Twitch:', err));
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.closest('#btn-logout')) {
+                e.preventDefault();
+                localStorage.removeItem('twitch_user');
+                localStorage.removeItem('user_account');
+                window.location.reload();
+            }
+        });
+
+        window.onload = () => {
+            handleTwitchCallback();
+            checkLoginState();
+        };
+    </script>
+</body>
+</html>

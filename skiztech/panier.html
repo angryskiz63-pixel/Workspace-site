@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Panier - Skiztech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f4f9; color: #333; line-height: 1.6; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        
+        .hero-banner { 
+            width: 100%; 
+            height: 300px; 
+            overflow: hidden; 
+            background-color: #000; 
+            box-shadow: inset 0 -20px 30px rgba(0,0,0,0.5); 
+        }
+        .hero-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+        @media (max-width: 1200px) { .hero-banner { height: 220px; } }
+        @media (max-width: 768px) { .hero-banner { height: 160px; } }
+        
+        nav { background-color: #1a1a1a; padding: 18px 0; text-align: center; border-bottom: 3px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        nav a { 
+            color: #fff; text-decoration: none; font-weight: 600; font-size: 1em; margin: 0 15px; 
+            text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.3s ease;
+            display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; line-height: 1;
+        }
+        nav a:hover, nav a.active { color: #00bcd4; }
+        nav a i { color: #00bcd4; }
+
+        .user-dropdown { position: relative; display: inline-block; }
+        .user-nav-pic { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #00bcd4; object-fit: cover; vertical-align: middle; }
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 100%; background-color: #1a1a1a;
+            min-width: 200px; box-shadow: 0px 8px 16px rgba(0,0,0,0.4); border-radius: 6px;
+            border: 1px solid #333; border-top: 3px solid #00bcd4; z-index: 1000; padding: 8px 0; text-align: left;
+        }
+        .dropdown-menu a {
+            color: #eee !important; padding: 10px 16px; text-decoration: none; display: flex;
+            align-items: center; gap: 10px; font-size: 0.85em; text-transform: none; letter-spacing: 0.5px; margin: 0; transition: background-color 0.2s, color 0.2s;
+        }
+        .dropdown-menu a:hover { background-color: #2a2a2a; color: #00bcd4 !important; }
+        .dropdown-menu hr { border: 0; border-top: 1px solid #333; margin: 6px 0; }
+        .dropdown-menu a.logout-link:hover { color: #ff4d4d !important; background-color: rgba(255, 77, 77, 0.1); }
+        .user-dropdown:hover .dropdown-menu.active-dropdown { display: block; }
+
+        /* Styles Panier */
+        .cart-wrapper { margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .cart-title { border-bottom: 2px solid #00bcd4; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.8em; }
+        
+        .sub-badge { 
+            display: none; 
+            background-color: #9146FF; 
+            color: #fff; 
+            padding: 12px 18px; 
+            border-radius: 6px; 
+            font-weight: bold; 
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(145, 70, 255, 0.3);
+        }
+        .sub-badge i { margin-right: 8px; font-size: 1.2em; }
+
+        .summary-box { background: #f9f9f9; padding: 20px; border-radius: 6px; margin-top: 20px; border: 1px solid #eee; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em; }
+        .summary-row.total { font-weight: bold; font-size: 1.3em; color: #00bcd4; border-top: 1px solid #ddd; padding-top: 10px; }
+
+        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
+        .btn-social { display: inline-block; padding: 10px 18px; margin: 6px; background-color: #2a2a2a; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; border: 2px solid #00bcd4; transition: 0.3s; }
+        .btn-social:hover { background-color: #00bcd4; transform: translateY(-2px); }
+        .btn-social i { margin-right: 8px; }
+        .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; letter-spacing: 1px; }
+        .footer-bottom span { color: #00bcd4; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <section class="hero-banner">
+        <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
+    </section>
+
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+        <a href="services.html"><i class="fas fa-tools"></i> Services</a>
+        <a href="panier.html" class="active"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
+        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
+
+        <div class="user-dropdown">
+            <a href="#" id="account-link">
+                <i class="fas fa-sign-in-alt"></i> Se connecter
+            </a>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
+                <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
+                <hr>
+                <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="cart-wrapper">
+            <h1 class="cart-title"><i class="fas fa-shopping-basket"></i> Votre Panier</h1>
+            
+            <div id="badge-promo-sub" class="sub-badge">
+                <i class="fab fa-twitch"></i> Avantage Abonné Twitch : -10% appliqués sur votre commande !
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-row">
+                    <span>Sous-total :</span>
+                    <span id="total-brut">0.00 €</span>
+                </div>
+                <div class="summary-row" id="row-reduction" style="color: #9146FF; display: none;">
+                    <span>Réduction Sub Twitch (-10%) :</span>
+                    <span id="reduction-sub">- 0.00 €</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total final :</span>
+                    <span id="total-final">0.00 €</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>Besoin d'un devis ? Contactez-moi : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
+            <div class="social-links" style="margin-top: 20px;">
+                <a href="https://twitch.tv/angryskiz" target="_blank" class="btn-social"><i class="fab fa-twitch"></i> Twitch</a>
+                <a href="https://youtube.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-youtube"></i> YouTube</a>
+                <a href="https://tiktok.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="https://instagram.com/angryskiz" target="_blank" class="btn-social"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+            <div class="footer-bottom">
+                Skiztech by <span>Skizcorp</span> &copy; 2026 — Tous droits réservés
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
+        const broadcasterId = '239189219'; // Ton ID Twitch numérique officiel pour Angryskiz
+
+        // URL de connexion OAuth Twitch avec Scope pour vérifier les abonnements
+        const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname)}&response_type=token&scope=user:read:subscriptions`;
+
+        function checkLoginState() {
+            const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
+            const accountLink = document.getElementById('account-link');
+            const dropdownMenu = document.getElementById('dropdown-menu');
+
+            if (accountLink && dropdownMenu) {
+                if (user) {
+                    const userAvatar = user.profile_image_url || user.avatar || user.picture;
+                    const userName = user.display_name || user.name || "Mon Compte";
+                    const iconHtml = userAvatar 
+                        ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
+                        : `<i class="fas fa-user-circle"></i>`;
+                    
+                    accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
+                    accountLink.href = "#"; 
+                    dropdownMenu.classList.add('active-dropdown');
+                } else {
+                    accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter avec Twitch`;
+                    accountLink.href = twitchAuthUrl;
+                    dropdownMenu.classList.remove('active-dropdown');
+                }
+            }
+            calculerPanier();
+        }
+
+        function checkTwitchSubscription(token, userId) {
+            fetch(`https://api.twitch.tv/helix/subscriptions/user?broadcaster_id=${broadcasterId}&user_id=${userId}`, {
+                headers: {
+                    'Client-ID': clientId,
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(res => {
+                if (res.ok) return res.json();
+                throw new Error('Non abonné');
+            })
+            .then(data => {
+                if (data.data && data.data.length > 0) {
+                    localStorage.setItem('is_twitch_sub', 'true');
+                } else {
+                    localStorage.setItem('is_twitch_sub', 'false');
+                }
+                checkLoginState();
+            })
+            .catch(() => {
+                localStorage.setItem('is_twitch_sub', 'false');
+                checkLoginState();
+            });
+        }
+
+        function handleTwitchCallback() {
+            const hash = window.location.hash;
+            if (hash.includes('access_token=')) {
+                const token = new URLSearchParams(hash.substring(1)).get('access_token');
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                fetch('https://api.twitch.tv/helix/users', {
+                    headers: {
+                        'Client-ID': clientId,
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        const userData = data.data[0];
+                        localStorage.setItem('twitch_user', JSON.stringify(userData));
+                        checkTwitchSubscription(token, userData.id);
+                    }
+                })
+                .catch(err => console.error('Erreur Twitch:', err));
+            }
+        }
+
+        function calculerPanier() {
+            let totalBrut = 100.00; // Ajuste selon le montant réel du panier
+
+            const isSub = localStorage.getItem('is_twitch_sub') === 'true';
+            let tauxReduction = isSub ? 0.10 : 0;
+
+            let montantReduction = totalBrut * tauxReduction;
+            let totalFinal = totalBrut - montantReduction;
+
+            document.getElementById('total-brut').innerText = totalBrut.toFixed(2) + ' €';
+            document.getElementById('reduction-sub').innerText = '- ' + montantReduction.toFixed(2) + ' €';
+            document.getElementById('total-final').innerText = totalFinal.toFixed(2) + ' €';
+
+            const subBadge = document.getElementById('badge-promo-sub');
+            const rowReduction = document.getElementById('row-reduction');
+
+            if (subBadge) subBadge.style.display = isSub ? 'block' : 'none';
+            if (rowReduction) rowReduction.style.display = isSub ? 'flex' : 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.closest('#btn-logout')) {
+                e.preventDefault();
+                localStorage.removeItem('twitch_user');
+                localStorage.removeItem('user_account');
+                localStorage.removeItem('is_twitch_sub');
+                window.location.reload();
+            }
+        });
+
+        window.onload = () => {
+            handleTwitchCallback();
+            checkLoginState();
+        };
+    </script>
+</body>
+</html>

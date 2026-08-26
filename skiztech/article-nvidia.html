@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTX 6090 : Ce que prépare Nvidia - Skiztech</title>
+    <!-- Import des logos officiels FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f4f9; color: #333; line-height: 1.6; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Bannière Hero ajustée et responsive */
+        .hero-banner { 
+            width: 100%; 
+            height: 300px; 
+            overflow: hidden; 
+            background-color: #000; 
+            box-shadow: inset 0 -20px 30px rgba(0,0,0,0.5); 
+        }
+        .hero-banner img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            object-position: center; 
+        }
+
+        /* Adaptations pour ordinateurs portables et petits écrans */
+        @media (max-width: 1200px) {
+            .hero-banner { height: 220px; }
+        }
+        @media (max-width: 768px) {
+            .hero-banner { height: 160px; }
+        }
+        
+        /* Navigation uniformisée */
+        nav { background-color: #1a1a1a; padding: 18px 0; text-align: center; border-bottom: 3px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        nav a { 
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 1em; 
+            margin: 0 15px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            vertical-align: middle;
+            line-height: 1;
+        }
+        nav a:hover, nav a.active { color: #00bcd4; }
+        nav a i { color: #00bcd4; }
+
+        /* Conteneur et styles pour le menu déroulant "Mon Compte" */
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-nav-pic {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1.5px solid #00bcd4;
+            object-fit: cover;
+            vertical-align: middle;
+        }
+
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #1a1a1a;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
+            border-radius: 6px;
+            border: 1px solid #333;
+            border-top: 3px solid #00bcd4;
+            z-index: 1000;
+            padding: 8px 0;
+            text-align: left;
+        }
+
+        .dropdown-menu a {
+            color: #eee !important;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85em;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            margin: 0;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #2a2a2a;
+            color: #00bcd4 !important;
+        }
+
+        .dropdown-menu hr {
+            border: 0;
+            border-top: 1px solid #333;
+            margin: 6px 0;
+        }
+
+        .dropdown-menu a.logout-link:hover {
+            color: #ff4d4d !important;
+            background-color: rgba(255, 77, 77, 0.1);
+        }
+
+        .user-dropdown:hover .dropdown-menu.active-dropdown {
+            display: block;
+        }
+        
+        /* Contenu Article */
+        .article-wrapper { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .article-content { background: #fff; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 6px solid #76b900; }
+        .article-content img { width: 100%; max-height: 450px; object-fit: cover; border-radius: 6px; margin-bottom: 25px; }
+        .article-content h1 { font-size: 32px; color: #111; margin-bottom: 20px; }
+        .article-content h3 { color: #76b900; margin-top: 30px; font-size: 22px; }
+        .article-content p { color: #444; font-size: 16px; margin-bottom: 20px; }
+        
+        .back-btn { display: inline-block; margin-bottom: 20px; background-color: #333; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: 0.3s; }
+        .back-btn:hover { background-color: #76b900; }
+        
+        /* Footer stylisé */
+        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
+        .btn-social { display: inline-block; padding: 10px 18px; margin: 6px; background-color: #2a2a2a; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; border: 2px solid #00bcd4; transition: 0.3s; }
+        .btn-social:hover { background-color: #00bcd4; transform: translateY(-2px); }
+        .btn-social i { margin-right: 8px; }
+        
+        .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; letter-spacing: 1px; }
+        .footer-bottom span { color: #00bcd4; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- Bannière Hero -->
+    <section class="hero-banner">
+        <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
+    </section>
+
+    <!-- Navigation unique avec système de connexion / profil -->
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+        <a href="services.html"><i class="fas fa-tools"></i> Services</a>
+        <a href="panier.html"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
+        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
+
+        <div class="user-dropdown">
+            <a href="index.html#auth-box" id="account-link">
+                <i class="fas fa-sign-in-alt"></i> Se connecter
+            </a>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
+                <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
+                <hr>
+                <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="article-wrapper">
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Retour à l'accueil</a>
+
+        <article class="article-content">
+            <img src="../images/rtx6090.png" alt="Nvidia GeForce RTX 6090">
+            <h1>RTX 6090 : Ce que nous prépare Nvidia pour la suite</h1>
+            
+            <p>On le sait, Nvidia a décidé de lever le pied sur son calendrier habituel et aucune nouvelle carte graphique grand public ne pointe le bout de son nez cette année. Pour autant, les labos de Santa Clara ne chôment pas, et les premières indiscrétions concernant la future série RTX 60 commencent sérieusement à faire parler d'elles.</p>
+            
+            <p>Derrière ces premiers échos se cache l'architecture <strong>Ruby</strong>, une petite révolution qui n’arrive pas de nulle part puisqu'elle anime déjà les monstres de calcul dédiés aux centres de données et à l’intelligence artificielle.</p>
+            
+            <h3>La fin du goulot d’étranglement mémoire ?</h3>
+            <p>C'est sans doute le point le plus excitant de cette fuite : la future RTX 6090 embarquerait pas moins de <strong>32 Go de RAM sur un bus de 512 bits</strong>, avec des fréquences d'horloge de la mémoire visées jusqu'à 3 GHz.</p>
+            
+            <p>D’après les infos relayées, les efforts des ingénieurs se concentrent particulièrement sur les cœurs RT pour doubler la vitesse de calcul dédiée à la lumière, offrant ainsi des gains de performances globaux estimés autour de <strong>30 à 35 %</strong>.</p>
+
+            <h3>Une question de patience</h3>
+            <p>Le vrai hic dans tout ça, c’est le timing. Les rumeurs s'accordent pour dire qu'aucune sortie n'est envisagée avant <strong>2027, voire 2028</strong>. Bref, on entre dans une logique de transition au long cours.</p>
+        </article>
+    </div>
+
+    <footer id="contact">
+        <div class="container">
+            <p>Besoin d'un devis ? Contactez-moi : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
+            
+            <div class="social-links" style="margin-top: 20px;">
+                <p style="color: #ccc; margin-bottom: 10px;">Mes réseaux :</p>
+                <a href="https://twitch.tv/angryskiz" target="_blank" class="btn-social"><i class="fab fa-twitch"></i> Twitch</a>
+                <a href="https://youtube.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-youtube"></i> YouTube</a>
+                <a href="https://tiktok.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="https://instagram.com/angryskiz" target="_blank" class="btn-social"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+
+            <div class="footer-bottom">
+                Skiztech by <span>Skizcorp</span> &copy; 2026 — Tous droits réservés
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de gestion d'état de connexion -->
+    <script>
+        const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
+
+        function checkLoginState() {
+            const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
+            const accountLink = document.getElementById('account-link');
+            const dropdownMenu = document.getElementById('dropdown-menu');
+
+            if (accountLink && dropdownMenu) {
+                if (user) {
+                    const userAvatar = user.profile_image_url || user.avatar || user.picture;
+                    const userName = user.display_name || user.name || "Mon Compte";
+                    
+                    const iconHtml = userAvatar 
+                        ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
+                        : `<i class="fas fa-user-circle"></i>`;
+                    
+                    accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
+                    accountLink.href = "#"; 
+                    
+                    dropdownMenu.classList.add('active-dropdown');
+                } else {
+                    accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
+                    accountLink.href = "index.html#auth-box";
+                    
+                    dropdownMenu.classList.remove('active-dropdown');
+                }
+            }
+        }
+
+        function handleTwitchCallback() {
+            const hash = window.location.hash;
+            if (hash.includes('access_token=')) {
+                const token = new URLSearchParams(hash.substring(1)).get('access_token');
+                
+                window.history.replaceState({}, document.title, window.location.pathname);
+
+                fetch('https://api.twitch.tv/helix/users', {
+                    headers: {
+                        'Client-ID': clientId,
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        const userData = data.data[0];
+                        localStorage.setItem('twitch_user', JSON.stringify(userData));
+                        checkLoginState();
+                    }
+                })
+                .catch(err => console.error('Erreur Twitch:', err));
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.closest('#btn-logout')) {
+                e.preventDefault();
+                localStorage.removeItem('twitch_user');
+                localStorage.removeItem('user_account');
+                window.location.reload();
+            }
+        });
+
+        window.onload = () => {
+            handleTwitchCallback();
+            checkLoginState();
+        };
+    </script>
+</body>
+</html>
