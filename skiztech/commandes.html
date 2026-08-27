@@ -3,14 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skiztech - Suivi de Commandes</title>
+    <title>Mon Profil - Skiztech</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f4f9; color: #333; line-height: 1.6; }
-        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
         
+        .hero-banner { 
+            width: 100%; height: 200px; overflow: hidden; background-color: #000; 
+            box-shadow: inset 0 -20px 30px rgba(0,0,0,0.5); 
+        }
+        .hero-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+        /* Navigation Style */
         nav { background-color: #1a1a1a; padding: 18px 0; text-align: center; border-bottom: 3px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         nav a { 
             color: #fff; 
@@ -66,61 +73,47 @@
         .dropdown-menu a.logout-link:hover { color: #ff4d4d !important; background-color: rgba(255, 77, 77, 0.1); }
         .user-dropdown:hover .dropdown-menu.active-dropdown { display: block; }
 
-        /* Cartes d'état */
-        .card-box {
-            background: #fff;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            text-align: center;
-        }
+        /* Card Profil */
+        .profile-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden; margin: 40px 0; }
+        .profile-header { background: #1a1a1a; padding: 40px 20px; text-align: center; color: #fff; position: relative; }
+        .profile-avatar { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #00bcd4; object-fit: cover; margin-bottom: 15px; }
+        .profile-name { font-size: 1.8em; margin: 0; font-weight: 700; }
+        .profile-badge-provider { color: #00bcd4; font-size: 0.9em; font-weight: 600; margin-top: 5px; display: inline-flex; align-items: center; gap: 6px; }
 
-        .btn-action {
-            background-color: #00bcd4;
-            color: white;
-            padding: 12px 24px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 6px;
-            display: inline-block;
-            margin-top: 15px;
-            text-transform: uppercase;
-            transition: background 0.2s;
-        }
-        .btn-action:hover { background-color: #0097a7; }
+        .profile-body { padding: 30px; }
+        .section-title { font-size: 1.2em; border-bottom: 2px solid #00bcd4; padding-bottom: 8px; margin-bottom: 20px; color: #1a1a1a; display: flex; align-items: center; gap: 10px; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #eee; }
+        .info-label { font-weight: 600; color: #555; display: flex; align-items: center; gap: 10px; }
+        .info-label i { color: #00bcd4; width: 20px; text-align: center; }
+        .info-value { font-weight: 500; }
 
-        /* Style des commandes */
-        .order-card {
-            background: #fff;
-            border-left: 4px solid #00bcd4;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: left;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-        }
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
-        }
-        .badge-status {
-            background: #e0f7fa;
-            color: #00838f;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: bold;
-        }
+        /* Badges de statut */
+        .badge-discount { background-color: #e0f7fa; color: #00838f; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85em; border: 1px solid #b2ebf2; }
+        .badge-nodiscount { background-color: #f5f5f5; color: #777; padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.85em; border: 1px solid #ddd; }
 
-        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 30px 20px; margin-top: 60px; }
+        /* Formulaire d'adresse */
+        .address-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: span 2; }
+        .form-group label { font-size: 0.9em; font-weight: 600; margin-bottom: 5px; color: #444; }
+        .form-group input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95em; }
+        .form-group input:focus { border-color: #00bcd4; outline: none; }
+        
+        .btn-save { background-color: #00bcd4; color: #fff; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; margin-top: 15px; grid-column: span 2; }
+        .btn-save:hover { background-color: #0097a7; }
+
+        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
+        .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; }
+        .footer-bottom span { color: #00bcd4; font-weight: bold; }
     </style>
 </head>
 <body>
 
+    <section class="hero-banner">
+        <img src="../images/banner-montage.png" alt="Bannière Skiztech">
+    </section>
+
+    <!-- Navigation unifiée -->
     <nav>
         <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
         <a href="services.html"><i class="fas fa-tools"></i> Services</a>
@@ -141,109 +134,186 @@
     </nav>
 
     <div class="container">
-        <!-- BLOC SI NON CONNECTÉ -->
-        <div id="auth-restricted" class="card-box">
-            <div style="font-size: 3em; color: #00bcd4; margin-bottom: 15px;">
-                <i class="fas fa-lock"></i>
+        <div class="profile-card">
+            <div class="profile-header">
+                <img src="https://via.placeholder.com/110" id="user-avatar" class="profile-avatar" alt="Avatar Utilisateur">
+                <h1 id="user-name" class="profile-name">Chargement...</h1>
+                <div id="provider-badge" class="profile-badge-provider"><i class="fas fa-user"></i> Compte Membre</div>
             </div>
-            <h2 style="margin: 0 0 10px 0;">Accès restreint</h2>
-            <p style="color: #666;">Connecte-toi à ton compte pour consulter l'avancement de tes montages et commandes.</p>
-            <a href="index.html#auth-box" class="btn-action">Se connecter maintenant</a>
-        </div>
 
-        <!-- BLOC SI CONNECTÉ -->
-        <div id="orders-content" style="display: none;">
-            <h2 style="margin-bottom: 25px;"><i class="fas fa-box" style="color: #00bcd4;"></i> Mes Commandes & Montages</h2>
-            
-            <div id="orders-list">
-                <!-- Les commandes s'afficheront ici -->
+            <div class="profile-body">
+                <div class="section-title"><i class="fas fa-user-circle"></i> Informations du compte</div>
+                
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-envelope"></i> Adresse Email</span>
+                    <span id="user-email" class="info-value">Non renseignée</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-tags"></i> Remise fidélité</span>
+                    <span id="user-discount" class="info-value">
+                        <span class="badge-nodiscount">Pas de réduction</span>
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-id-badge"></i> Identifiant Unique</span>
+                    <span id="user-id" class="info-value">#---</span>
+                </div>
+
+                <!-- Formulaire d'Adresse Cloisonné -->
+                <div class="section-title" style="margin-top: 30px;"><i class="fas fa-map-marker-alt"></i> Adresse de Livraison</div>
+                
+                <form id="address-form" class="address-form" onsubmit="sauvegarderAdresse(event)">
+                    <div class="form-group">
+                        <label for="address-nom">Nom complet</label>
+                        <input type="text" id="address-nom" placeholder="Jean Dupont" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address-phone">Téléphone</label>
+                        <input type="tel" id="address-phone" placeholder="06 00 00 00 00" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="address-street">Adresse</label>
+                        <input type="text" id="address-street" placeholder="123 Rue de la République" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address-zip">Code Postal</label>
+                        <input type="text" id="address-zip" placeholder="75000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address-city">Ville</label>
+                        <input type="text" id="address-city" placeholder="Paris" required>
+                    </div>
+
+                    <button type="submit" class="btn-save"><i class="fas fa-save"></i> Enregistrer mes coordonnées</button>
+                </form>
             </div>
         </div>
     </div>
 
-    <footer>
-        <p>Une question sur ton projet ? Contacte-moi directement : <a href="mailto:contact@angryskiz.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@angryskiz.fr</a></p>
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-bottom">
+                Skiztech by <span>Skizcorp</span> &copy; 2026 — Tous droits réservés
+            </div>
+        </div>
     </footer>
 
     <script>
-        function initPage() {
-            // Lecture unifiée du localStorage (auth_user ou anciennes clés par sécurité)
-            const rawUser = localStorage.getItem('auth_user') || localStorage.getItem('twitch_user') || localStorage.getItem('user_account');
-            let user = null;
+        let currentAccountKey = null;
 
-            if (rawUser) {
-                try { user = JSON.parse(rawUser); } catch(e) { user = null; }
+        function chargerProfil() {
+            // Read main unified user key 'auth_user', with fallbacks for legacy keys
+            const authUser = JSON.parse(localStorage.getItem('auth_user'));
+            const twitchUser = JSON.parse(localStorage.getItem('twitch_user'));
+            const googleUser = JSON.parse(localStorage.getItem('google_user'));
+            const discordUser = JSON.parse(localStorage.getItem('discord_user'));
+            const genericUser = JSON.parse(localStorage.getItem('user_account'));
+
+            let user = authUser || twitchUser || googleUser || discordUser || genericUser;
+            let provider = "";
+            let providerIcon = "";
+
+            if (!user) {
+                window.location.href = "index.html#auth-box";
+                return;
             }
 
+            provider = user.provider || (twitchUser ? 'twitch' : googleUser ? 'google' : discordUser ? 'discord' : 'standard');
+
+            if (provider === 'twitch') {
+                providerIcon = `<i class="fab fa-twitch" style="color:#9146FF;"></i> Membre Twitch`;
+            } else if (provider === 'google') {
+                providerIcon = `<i class="fab fa-google" style="color:#EA4335;"></i> Membre Google`;
+            } else if (provider === 'discord') {
+                providerIcon = `<i class="fab fa-discord" style="color:#5865F2;"></i> Membre Discord`;
+            } else {
+                providerIcon = `<i class="fas fa-user-circle"></i> Compte Skiztech`;
+            }
+
+            // Mise à jour du menu de navigation
             const accountLink = document.getElementById('account-link');
             const dropdownMenu = document.getElementById('dropdown-menu');
-            const restrictedBox = document.getElementById('auth-restricted');
-            const ordersContent = document.getElementById('orders-content');
-            const ordersList = document.getElementById('orders-list');
+            const userAvatarNav = user.avatar || user.profile_image_url || user.picture;
+            const userNameNav = user.name || user.display_name || user.username || "Mon Compte";
+            
+            const iconHtml = userAvatarNav 
+                ? `<img src="${userAvatarNav}" class="user-nav-pic" alt="Avatar">`
+                : `<i class="fas fa-user-circle"></i>`;
+            
+            accountLink.innerHTML = `${iconHtml} ${userNameNav} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
+            accountLink.href = "#";
+            dropdownMenu.classList.add('active-dropdown');
 
-            if (user) {
-                // 1. Mise à jour de la barre de navigation
-                const userAvatar = user.avatar;
-                const userName = user.name || "Mon Compte";
-                const iconHtml = userAvatar 
-                    ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
-                    : `<i class="fas fa-user-circle"></i>`;
-                
-                accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
-                accountLink.href = "#";
-                dropdownMenu.classList.add('active-dropdown');
+            // Identifiant universel unique
+            const rawId = user.id || user.sub || user.email || "0000";
+            currentAccountKey = `${provider}_${rawId}`;
 
-                // 2. Affichage de la section commandes
-                restrictedBox.style.display = 'none';
-                ordersContent.style.display = 'block';
+            // Remplissage de la carte de profil
+            document.getElementById('user-name').innerText = userNameNav;
+            document.getElementById('user-avatar').src = userAvatarNav || "https://via.placeholder.com/110";
+            document.getElementById('user-email').innerText = user.email || "Non communiquée";
+            document.getElementById('user-id').innerText = "#" + rawId;
+            document.getElementById('provider-badge').innerHTML = providerIcon;
 
-                // 3. Exemple de rendu des commandes (à relier à ton backend ou localStorage)
-                const savedOrders = JSON.parse(localStorage.getItem('user_orders') || '[]');
-                
-                if (savedOrders.length === 0) {
-                    ordersList.innerHTML = `
-                        <div class="card-box">
-                            <i class="fas fa-box-open" style="font-size: 2.5em; color: #ccc; margin-bottom: 10px;"></i>
-                            <p style="color: #666; margin: 0;">Aucune commande en cours pour le moment.</p>
-                            <a href="services.html" class="btn-action" style="margin-top: 15px;">Découvrir les prestations</a>
-                        </div>
-                    `;
-                } else {
-                    ordersList.innerHTML = savedOrders.map(order => `
-                        <div class="order-card">
-                            <div class="order-header">
-                                <strong>Commande #${order.id || 'N/A'}</strong>
-                                <span class="badge-status">${order.status || 'En cours de traitement'}</span>
-                            </div>
-                            <p style="margin: 5px 0;"><strong>Prestation :</strong> ${order.service || 'Montage sur-mesure'}</p>
-                            <p style="margin: 5px 0; color: #666; font-size: 0.9em;"><strong>Date :</strong> ${order.date || 'Récente'}</p>
-                        </div>
-                    `).join('');
-                }
-
+            // Réduction Twitch Sub
+            const isSub = (provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
+            const discountContainer = document.getElementById('user-discount');
+            if (isSub) {
+                discountContainer.innerHTML = `<span class="badge-discount">-10% appliqué au panier</span>`;
             } else {
-                // Mode non connecté
-                accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
-                accountLink.href = "index.html#auth-box";
-                dropdownMenu.classList.remove('active-dropdown');
+                discountContainer.innerHTML = `<span class="badge-nodiscount">Pas de réduction active</span>`;
+            }
 
-                restrictedBox.style.display = 'block';
-                ordersContent.style.display = 'none';
+            chargerAdresseCompte();
+        }
+
+        function chargerAdresseCompte() {
+            if (!currentAccountKey) return;
+            const savedAddress = JSON.parse(localStorage.getItem('user_address_' + currentAccountKey));
+
+            if (savedAddress) {
+                document.getElementById('address-nom').value = savedAddress.nom || '';
+                document.getElementById('address-phone').value = savedAddress.phone || '';
+                document.getElementById('address-street').value = savedAddress.street || '';
+                document.getElementById('address-zip').value = savedAddress.zip || '';
+                document.getElementById('address-city').value = savedAddress.city || '';
+            } else {
+                document.getElementById('address-form').reset();
             }
         }
 
-        // Gestion de la déconnexion
+        function sauvegarderAdresse(event) {
+            event.preventDefault();
+            if (!currentAccountKey) return;
+
+            const adresseData = {
+                nom: document.getElementById('address-nom').value,
+                phone: document.getElementById('address-phone').value,
+                street: document.getElementById('address-street').value,
+                zip: document.getElementById('address-zip').value,
+                city: document.getElementById('address-city').value
+            };
+
+            localStorage.setItem('user_address_' + currentAccountKey, JSON.stringify(adresseData));
+            alert('Coordonnées enregistrées en toute sécurité !');
+        }
+
+        // Action de déconnexion
         document.addEventListener('click', function(e) {
             if (e.target && e.target.closest('#btn-logout')) {
                 e.preventDefault();
                 localStorage.removeItem('auth_user');
                 localStorage.removeItem('twitch_user');
+                localStorage.removeItem('google_user');
+                localStorage.removeItem('discord_user');
                 localStorage.removeItem('user_account');
                 window.location.href = "index.html";
             }
         });
 
-        window.addEventListener('DOMContentLoaded', initPage);
+        window.addEventListener('DOMContentLoaded', chargerProfil);
     </script>
 </body>
 </html>
