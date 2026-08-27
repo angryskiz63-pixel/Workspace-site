@@ -129,8 +129,6 @@
     <script src="navbar.js"></script>
 
     <script>
-        let currentAccountKey = null;
-
         // Fonction pour générer le composant de suivi à 4 étapes
         function renderTrackingSteps(currentStep = 1) {
             const steps = [
@@ -179,10 +177,21 @@
 
             const provider = user.provider || (twitchUser ? 'twitch' : googleUser ? 'google' : discordUser ? 'discord' : 'standard');
             const rawId = user.id || user.sub || user.email || "0000";
-            currentAccountKey = `${provider}_${rawId}`;
+            const currentAccountKey = `${provider}_${rawId}`;
+            const userEmail = (user.email || user.mail || (user.details && user.details.email) || '').toLowerCase();
 
-            // Récupération des commandes associées au compte
-            const orders = JSON.parse(localStorage.getItem('user_orders_' + currentAccountKey)) || [];
+            // 1. Récupération prioritaire depuis la clé utilisateur
+            let orders = JSON.parse(localStorage.getItem('user_orders_' + currentAccountKey)) || [];
+
+            // 2. Recherche de secours dans la liste globale si aucune commande trouvée localement
+            if (orders.length === 0) {
+                const allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
+                orders = allOrders.filter(o => 
+                    o.userKey === currentAccountKey || 
+                    (userEmail && o.userEmail === userEmail)
+                );
+            }
+
             const listContainer = document.getElementById('orders-list');
 
             if (orders.length === 0) {
@@ -197,6 +206,9 @@
 
             listContainer.innerHTML = orders.map(order => {
                 const currentStep = order.step || 1;
+                
+                // Formate l'affichage des articles, qu'il s'agisse d'un tableau ou d'un texte
+                const itemsDisplay = Array.isArray(order.items) ? order.items.join(', ') : order.items;
 
                 return `
                     <div class="order-item">
@@ -206,7 +218,7 @@
                         </div>
                         <div class="order-details">
                             <p><strong>Total :</strong> ${order.total} €</p>
-                            <p><strong>Articles :</strong> ${order.items.join(', ')}</p>
+                            <p><strong>Articles :</strong> ${itemsDisplay}</p>
                             ${order.instructions ? `<p><strong>Instructions :</strong> <em>${order.instructions}</em></p>` : ''}
                         </div>
                         
