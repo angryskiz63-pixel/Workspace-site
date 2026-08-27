@@ -84,6 +84,39 @@
         .shipping-option-label { font-size: 0.95em; font-weight: 600; color: #333; flex-grow: 1; }
         .shipping-option-desc { display: block; font-size: 0.8em; color: #666; font-weight: normal; }
 
+        /* Champ Dynamique Adresse Point Relais */
+        .relay-details-box {
+            display: none;
+            background: #eefbfe;
+            border: 1px solid #b2ebf2;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0 15px 0;
+            animation: fadeInRelay 0.3s ease-in-out;
+        }
+        @keyframes fadeInRelay {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .relay-details-box label {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: #00838f;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .relay-details-box input {
+            width: 97%;
+            border: 1px solid #80deea;
+            border-radius: 6px;
+            padding: 10px;
+            font-family: inherit;
+        }
+        .relay-details-box input:focus {
+            border-color: #00bcd4;
+            outline: none;
+        }
+
         /* Notes et Suivis */
         .notes-box { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 15px; margin: 20px 0; }
         .notes-box label { font-weight: 600; font-size: 0.9em; display: flex; align-items: center; gap: 6px; margin-top: 10px; }
@@ -230,7 +263,7 @@
                 <h4><i class="fas fa-truck" style="color: #00bcd4;"></i> Mode de retour de votre PC assemblé :</h4>
                 
                 <label class="shipping-option">
-                    <input type="radio" name="shipping_method" value="Domicile avec Signature" checked>
+                    <input type="radio" name="shipping_method" value="Domicile avec Signature" checked onclick="toggleRelayInput()">
                     <span class="shipping-option-label">
                         Livraison à Domicile (Recommandé avec Signature)
                         <span class="shipping-option-desc">Remise directe en main propre à votre adresse personnelle</span>
@@ -238,15 +271,23 @@
                 </label>
 
                 <label class="shipping-option">
-                    <input type="radio" name="shipping_method" value="Point Relais (Chrono/Mondial Relay)">
+                    <input type="radio" name="shipping_method" value="Point Relais (Chrono/Mondial Relay)" id="radio-relay" onclick="toggleRelayInput()">
                     <span class="shipping-option-label">
                         Point Relais (Mondial Relay / Shop2Shop)
-                        <span class="shipping-option-desc">Livraison dans le commerce partenaire le plus proche de chez vous</span>
+                        <span class="shipping-option-desc">Livraison dans le commerce partenaire de votre choix</span>
                     </span>
                 </label>
 
+                <!-- Champ dynamiquement affiché pour l'adresse du Point Relais -->
+                <div id="relay-address-box" class="relay-details-box">
+                    <label for="relay-address-input">
+                        <i class="fas fa-map-marker-alt"></i> Nom et Adresse du Point Relais souhaité :
+                    </label>
+                    <input type="text" id="relay-address-input" placeholder="Ex: Tabac Presse - 12 Rue de la Paix, 75001 Paris (Mondial Relay)">
+                </div>
+
                 <label class="shipping-option">
-                    <input type="radio" name="shipping_method" value="Remise en Main Propre">
+                    <input type="radio" name="shipping_method" value="Remise en Main Propre" onclick="toggleRelayInput()">
                     <span class="shipping-option-label">
                         Remise en Main Propre
                         <span class="shipping-option-desc">Récupération directement sur place à Randan (63310)</span>
@@ -337,6 +378,15 @@
 
     <!-- Script de gestion du Panier -->
     <script>
+        // Fonction pour afficher/masquer le champ adresse Point Relais
+        function toggleRelayInput() {
+            const isRelaySelected = document.getElementById('radio-relay').checked;
+            const relayBox = document.getElementById('relay-address-box');
+            if (relayBox) {
+                relayBox.style.display = isRelaySelected ? 'block' : 'none';
+            }
+        }
+
         function chargerPanier() {
             const rawUser = localStorage.getItem('auth_user') || localStorage.getItem('twitch_user') || localStorage.getItem('google_user') || localStorage.getItem('discord_user') || localStorage.getItem('user_account');
             let user = null;
@@ -394,6 +444,9 @@
             }
 
             document.getElementById('total-val').innerText = total.toFixed(2) + ' €';
+
+            // Initialiser la visibilité au chargement
+            toggleRelayInput();
         }
 
         function supprimerItem(index) {
@@ -449,16 +502,29 @@
                 if (profileAlert) profileAlert.style.display = 'none';
             }
 
-            // Récupération mode de livraison sélectionné
-            const selectedShipping = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Livraison à Domicile';
+            // 4. Récupération mode de livraison sélectionné & Adresse du Relais le cas échéant
+            const isRelaySelected = document.getElementById('radio-relay').checked;
+            const relayAddressVal = document.getElementById('relay-address-input')?.value.trim() || '';
+
+            if (isRelaySelected && !relayAddressVal) {
+                alert('Veuillez indiquer le Nom et l\'Adresse du Point Relais souhaité.');
+                document.getElementById('relay-address-input').focus();
+                return;
+            }
+
+            let selectedShipping = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Livraison à Domicile';
+            if (isRelaySelected && relayAddressVal) {
+                selectedShipping += ` (${relayAddressVal})`;
+            }
+
             const trackingNums = document.getElementById('tracking-numbers')?.value || '';
 
-            // 4. Calcul du montant
+            // 5. Calcul du montant
             const subtotal = cart.reduce((acc, item) => acc + Number(item.price), 0);
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             const total = isSub ? (subtotal * 0.90) : subtotal;
 
-            // 5. Objet Commande enrichi
+            // 6. Objet Commande enrichi
             const fullName = savedAddress.nom || `${savedAddress.firstname || ''} ${savedAddress.lastname || ''}`.trim();
 
             const newOrder = {
@@ -477,17 +543,17 @@
                 shippingAddress: savedAddress
             };
 
-            // 6. Enregistrement Utilisateur
+            // 7. Enregistrement Utilisateur
             let userOrders = JSON.parse(localStorage.getItem('user_orders_' + accountKey)) || [];
             userOrders.unshift(newOrder);
             localStorage.setItem('user_orders_' + accountKey, JSON.stringify(userOrders));
 
-            // 7. Enregistrement Globale Admin
+            // 8. Enregistrement Globale Admin
             let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
             allOrders.unshift(newOrder);
             localStorage.setItem('skiztech_all_orders', JSON.stringify(allOrders));
 
-            // 8. Nettoyage et Redirection
+            // 9. Nettoyage et Redirection
             localStorage.removeItem('skiztech_cart');
             window.location.href = "commandes.html";
         }
