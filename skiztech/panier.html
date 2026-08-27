@@ -219,9 +219,9 @@
             <div class="reception-info-box">
                 <h4><i class="fas fa-store"></i> Adresse d'expédition pour vos composants</h4>
                 <p style="margin: 0; line-height: 1.5;">
-                    Pour l'envoi de vos pièces (achats direct marchandise ou Mondial Relay), veuillez faire livrer à :<br>
+                    Pour l'envoi de vos pièces (achats marchands ou Mondial Relay), veuillez faire livrer à :<br>
                     <strong>Point Relais : TABAC PRESSE</strong> — 71 rue du Commerce, 63310 Randan.<br>
-                    <small style="color: #555;"><i>* Pensez bien à inclure votre N° de commande Skiztech lors du suivi ou dans le nom du destinataire !</i></small>
+                    <small style="color: #555;"><i>💡 Indiquez bien vos <strong>Nom & Prénom</strong> pour le retrait, et mentionnez votre <strong>N° de commande Skiztech</strong> (ex: dans l'adresse 2 ou remarques) pour qu'on associe facilement vos colis !</i></small>
                 </p>
             </div>
 
@@ -257,9 +257,9 @@
             <!-- Champs Suivi de Colis & Précisions -->
             <div class="notes-box">
                 <label for="tracking-numbers">
-                    <i class="fas fa-barcode" style="color: #00bcd4;"></i> Numéros de suivi de vos composants (Optionnel) :
+                    <i class="fas fa-boxes" style="color: #00bcd4;"></i> Nombre de colis & N° de suivi de vos composants :
                 </label>
-                <input type="text" id="tracking-numbers" placeholder="Ex: Amazon 111-222, Mondial Relay 8847291...">
+                <input type="text" id="tracking-numbers" placeholder="Ex: 3 colis au total (1 Amazon, 1 TopAchat, 1 LDLC) - Suivi : 8847291...">
 
                 <label for="order-instructions">
                     <i class="fas fa-comment-dots" style="color: #00bcd4;"></i> Instructions ou précisions pour votre montage :
@@ -439,7 +439,7 @@
             const savedAddress = JSON.parse(localStorage.getItem('user_address_' + accountKey));
             const profileAlert = document.getElementById('profile-alert');
 
-            const hasValidName = savedAddress && (savedAddress.nom || (savedAddress.lastname && savedAddress.firstname));
+            const hasValidName = savedAddress && (savedAddress.nom || (savedAddress.firstname && savedAddress.lastname));
 
             if (!savedAddress || !hasValidName || !savedAddress.phone || !savedAddress.street || !savedAddress.zip || !savedAddress.city) {
                 if (profileAlert) profileAlert.style.display = 'block';
