@@ -120,12 +120,24 @@
             display: block;
         }
 
-        /* Bannière Promo */
-        .promo-banner { background-color: #00bcd4; color: white; text-align: center; padding: 25px; font-size: 20px; font-weight: bold; letter-spacing: 0.5px; }
+        /* Bannière Promo ajustée en largeur et hauteur */
+        .promo-banner { 
+            background-color: #00bcd4; 
+            color: white; 
+            text-align: center; 
+            padding: 15px 20px; 
+            font-size: 18px; 
+            font-weight: bold; 
+            letter-spacing: 0.5px; 
+            max-width: 1200px;
+            margin: 30px auto 0;
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
         .promo-banner a { color: #fff; text-decoration: underline; }
 
         /* Grille des Services */
-        .services { padding: 60px 0; }
+        .services { padding: 40px 0 60px; }
         .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .service-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 30px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.3s ease, box-shadow 0.3s ease; border-top: 4px solid #00bcd4; }
         .service-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,188,212,0.15); }
@@ -180,7 +192,7 @@
         <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
     </section>
 
-    <!-- Navigation unifiée (Infectée par navbar.js) -->
+    <!-- Navigation unifiée -->
     <header></header>
 
     <div class="promo-banner">
@@ -303,7 +315,7 @@
     <!-- Script unique de navigation et d'authentification -->
     <script src="navbar.js"></script>
 
-    <!-- Script Panier Uniquement -->
+    <!-- Script Panier -->
     <script>
         function addToCart(title, price) {
             let cart = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
