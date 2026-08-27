@@ -65,10 +65,6 @@
         .sub-badge i { margin-right: 8px; font-size: 1.2em; }
 
         .cart-items { margin-bottom: 20px; }
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
-        .cart-item-title { font-weight: 600; }
-        .cart-item-price { font-weight: bold; color: #333; }
-        .btn-remove { background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1.1em; margin-left: 15px; }
 
         .summary-box { background: #f9f9f9; padding: 20px; border-radius: 6px; margin-top: 20px; border: 1px solid #eee; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em; }
@@ -101,7 +97,7 @@
                 <i class="fab fa-twitch"></i> Avantage Abonné Twitch : -10% appliqués sur votre commande !
             </div>
 
-            <!-- Liste dynamique des services ajoutés -->
+            <!-- Liste dynamique des cartes de services ajoutés -->
             <div id="cart-items-container" class="cart-items"></div>
 
             <div class="summary-box">
@@ -121,7 +117,8 @@
         </div>
     </div>
 
-    <footer>
+    <!-- Ajout de id="contact" pour l'ancre du menu -->
+    <footer id="contact">
         <div class="container">
             <p>Besoin d'un devis ? Contactez-moi : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
             <div class="social-links" style="margin-top: 20px;">
@@ -141,8 +138,6 @@
 
     <script>
         const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
-        const broadcasterId = '239189219';
-        const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname)}&response_type=token&scope=user:read:subscriptions`;
 
         function checkLoginState() {
             const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
@@ -162,7 +157,7 @@
                     dropdownMenu.classList.add('active-dropdown');
                 } else {
                     accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
-                    accountLink.href = twitchAuthUrl;
+                    accountLink.href = "index.html#auth-box";
                     dropdownMenu.classList.remove('active-dropdown');
                 }
             }
@@ -190,16 +185,24 @@
                     let prixNum = parseFloat(item.price) || 0;
                     totalBrut += prixNum;
 
-                    let div = document.createElement('div');
-                    div.className = 'cart-item';
-                    div.innerHTML = `
-                        <span class="cart-item-title">${item.title}</span>
+                    let nomArticle = item.title || item.name || 'Service Skiztech';
+
+                    let card = document.createElement('div');
+                    card.style.cssText = 'background: #fff; border: 1px solid #e0e0e0; border-left: 4px solid #00bcd4; border-radius: 6px; padding: 15px 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);';
+                    
+                    card.innerHTML = `
                         <div>
-                            <span class="cart-item-price">${prixNum.toFixed(2)} &euro;</span>
-                            <button class="btn-remove" onclick="supprimerDuPanier(${index})" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                            <h3 style="margin: 0 0 5px 0; font-size: 1.1em; color: #1a1a1a;">${nomArticle}</h3>
+                            <span style="font-size: 0.85em; color: #666;">Prestation technique</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <span style="font-size: 1.2em; font-weight: bold; color: #00bcd4;">${prixNum.toFixed(2)} &euro;</span>
+                            <button onclick="supprimerDuPanier(${index})" title="Supprimer" style="background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1.2em;">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </div>
                     `;
-                    itemsContainer.appendChild(div);
+                    itemsContainer.appendChild(card);
                 });
             }
 
