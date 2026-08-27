@@ -82,24 +82,8 @@
         <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
     </section>
 
-    <nav>
-        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
-        <a href="services.html"><i class="fas fa-tools"></i> Services</a>
-        <a href="panier.html" class="active"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
-        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
-
-        <div class="user-dropdown">
-            <a href="#" id="account-link">
-                <i class="fas fa-sign-in-alt"></i> Se connecter
-            </a>
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
-                <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
-                <hr>
-                <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
-            </div>
-        </div>
-    </nav>
+    <!-- Header dynamique chargé via navbar.js -->
+    <header></header>
 
     <div class="container">
         <div class="cart-wrapper">
@@ -141,11 +125,13 @@
         </div>
     </footer>
 
+    <!-- Script de navigation unifiée -->
+    <script src="navbar.js"></script>
+
     <script>
         const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
-        const broadcasterId = '239189219'; // Ton ID Twitch numérique officiel pour Angryskiz
+        const broadcasterId = '239189219';
 
-        // URL de connexion OAuth Twitch avec Scope pour vérifier les abonnements
         const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname)}&response_type=token&scope=user:read:subscriptions`;
 
         function checkLoginState() {
@@ -165,7 +151,7 @@
                     accountLink.href = "#"; 
                     dropdownMenu.classList.add('active-dropdown');
                 } else {
-                    accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter avec Twitch`;
+                    accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
                     accountLink.href = twitchAuthUrl;
                     dropdownMenu.classList.remove('active-dropdown');
                 }
@@ -223,7 +209,7 @@
         }
 
         function calculerPanier() {
-            let totalBrut = 100.00; // Ajuste selon le montant réel du panier
+            let totalBrut = 100.00;
 
             const isSub = localStorage.getItem('is_twitch_sub') === 'true';
             let tauxReduction = isSub ? 0.10 : 0;
