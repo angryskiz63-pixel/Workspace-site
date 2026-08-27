@@ -64,9 +64,17 @@
         }
         .sub-badge i { margin-right: 8px; font-size: 1.2em; }
 
+        .cart-items { margin-bottom: 20px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #eee; }
+        .cart-item-title { font-weight: 600; }
+        .cart-item-price { font-weight: bold; color: #333; }
+        .btn-remove { background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1.1em; margin-left: 15px; }
+
         .summary-box { background: #f9f9f9; padding: 20px; border-radius: 6px; margin-top: 20px; border: 1px solid #eee; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em; }
         .summary-row.total { font-weight: bold; font-size: 1.3em; color: #00bcd4; border-top: 1px solid #ddd; padding-top: 10px; }
+
+        .empty-cart-msg { text-align: center; color: #777; padding: 20px 0; font-style: italic; }
 
         footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
         .btn-social { display: inline-block; padding: 10px 18px; margin: 6px; background-color: #2a2a2a; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; border: 2px solid #00bcd4; transition: 0.3s; }
@@ -82,7 +90,7 @@
         <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
     </section>
 
-    <!-- Header dynamique chargé via navbar.js -->
+    <!-- Navigation dynamique via navbar.js -->
     <header></header>
 
     <div class="container">
@@ -93,18 +101,21 @@
                 <i class="fab fa-twitch"></i> Avantage Abonné Twitch : -10% appliqués sur votre commande !
             </div>
 
+            <!-- Liste dynamique des services ajoutés -->
+            <div id="cart-items-container" class="cart-items"></div>
+
             <div class="summary-box">
                 <div class="summary-row">
                     <span>Sous-total :</span>
-                    <span id="total-brut">0.00 €</span>
+                    <span id="total-brut">0.00 &euro;</span>
                 </div>
                 <div class="summary-row" id="row-reduction" style="color: #9146FF; display: none;">
                     <span>Réduction Sub Twitch (-10%) :</span>
-                    <span id="reduction-sub">- 0.00 €</span>
+                    <span id="reduction-sub">- 0.00 &euro;</span>
                 </div>
                 <div class="summary-row total">
                     <span>Total final :</span>
-                    <span id="total-final">0.00 €</span>
+                    <span id="total-final">0.00 &euro;</span>
                 </div>
             </div>
         </div>
@@ -120,18 +131,17 @@
                 <a href="https://instagram.com/angryskiz" target="_blank" class="btn-social"><i class="fab fa-instagram"></i> Instagram</a>
             </div>
             <div class="footer-bottom">
-                Skiztech by <span>Skizcorp</span> &copy; 2026 — Tous droits réservés
+                Skiztech by <span>Skizcorp</span> &copy; 2026 &mdash; Tous droits réservés
             </div>
         </div>
     </footer>
 
-    <!-- Script de navigation unifiée -->
+    <!-- Script de navigation -->
     <script src="navbar.js"></script>
 
     <script>
         const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
         const broadcasterId = '239189219';
-
         const twitchAuthUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(window.location.origin + window.location.pathname)}&response_type=token&scope=user:read:subscriptions`;
 
         function checkLoginState() {
@@ -159,57 +169,39 @@
             calculerPanier();
         }
 
-        function checkTwitchSubscription(token, userId) {
-            fetch(`https://api.twitch.tv/helix/subscriptions/user?broadcaster_id=${broadcasterId}&user_id=${userId}`, {
-                headers: {
-                    'Client-ID': clientId,
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(res => {
-                if (res.ok) return res.json();
-                throw new Error('Non abonné');
-            })
-            .then(data => {
-                if (data.data && data.data.length > 0) {
-                    localStorage.setItem('is_twitch_sub', 'true');
-                } else {
-                    localStorage.setItem('is_twitch_sub', 'false');
-                }
-                checkLoginState();
-            })
-            .catch(() => {
-                localStorage.setItem('is_twitch_sub', 'false');
-                checkLoginState();
-            });
-        }
-
-        function handleTwitchCallback() {
-            const hash = window.location.hash;
-            if (hash.includes('access_token=')) {
-                const token = new URLSearchParams(hash.substring(1)).get('access_token');
-                window.history.replaceState({}, document.title, window.location.pathname);
-
-                fetch('https://api.twitch.tv/helix/users', {
-                    headers: {
-                        'Client-ID': clientId,
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.data && data.data.length > 0) {
-                        const userData = data.data[0];
-                        localStorage.setItem('twitch_user', JSON.stringify(userData));
-                        checkTwitchSubscription(token, userData.id);
-                    }
-                })
-                .catch(err => console.error('Erreur Twitch:', err));
-            }
+        function supprimerDuPanier(index) {
+            let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
+            panier.splice(index, 1);
+            localStorage.setItem('skiztech_cart', JSON.stringify(panier));
+            calculerPanier();
         }
 
         function calculerPanier() {
-            let totalBrut = 100.00;
+            let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
+            let itemsContainer = document.getElementById('cart-items-container');
+            itemsContainer.innerHTML = '';
+
+            let totalBrut = 0;
+
+            if (panier.length === 0) {
+                itemsContainer.innerHTML = '<div class="empty-cart-msg">Votre panier est actuellement vide.</div>';
+            } else {
+                panier.forEach((item, index) => {
+                    let prixNum = parseFloat(item.price) || 0;
+                    totalBrut += prixNum;
+
+                    let div = document.createElement('div');
+                    div.className = 'cart-item';
+                    div.innerHTML = `
+                        <span class="cart-item-title">${item.title}</span>
+                        <div>
+                            <span class="cart-item-price">${prixNum.toFixed(2)} &euro;</span>
+                            <button class="btn-remove" onclick="supprimerDuPanier(${index})" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    `;
+                    itemsContainer.appendChild(div);
+                });
+            }
 
             const isSub = localStorage.getItem('is_twitch_sub') === 'true';
             let tauxReduction = isSub ? 0.10 : 0;
@@ -217,9 +209,9 @@
             let montantReduction = totalBrut * tauxReduction;
             let totalFinal = totalBrut - montantReduction;
 
-            document.getElementById('total-brut').innerText = totalBrut.toFixed(2) + ' €';
-            document.getElementById('reduction-sub').innerText = '- ' + montantReduction.toFixed(2) + ' €';
-            document.getElementById('total-final').innerText = totalFinal.toFixed(2) + ' €';
+            document.getElementById('total-brut').innerHTML = totalBrut.toFixed(2) + ' &euro;';
+            document.getElementById('reduction-sub').innerHTML = '- ' + montantReduction.toFixed(2) + ' &euro;';
+            document.getElementById('total-final').innerHTML = totalFinal.toFixed(2) + ' &euro;';
 
             const subBadge = document.getElementById('badge-promo-sub');
             const rowReduction = document.getElementById('row-reduction');
@@ -239,7 +231,6 @@
         });
 
         window.onload = () => {
-            handleTwitchCallback();
             checkLoginState();
         };
     </script>
