@@ -180,25 +180,8 @@
         <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
     </section>
 
-    <!-- Navigation uniformisée avec le menu déroulant du compte -->
-    <nav>
-        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
-        <a href="services.html" class="active"><i class="fas fa-tools"></i> Services</a>
-        <a href="panier.html"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
-        <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-        
-        <div class="user-dropdown">
-            <a href="index.html#auth-box" id="account-link">
-                <i class="fas fa-sign-in-alt"></i> Se connecter
-            </a>
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
-                <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
-                <hr>
-                <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
-            </div>
-        </div>
-    </nav>
+    <!-- Navigation unifiée -->
+    <header></header>
 
     <div class="promo-banner">
         🎁 -10% sur les packs pour les abonnés Twitch ! 
@@ -218,7 +201,7 @@
                     </div>
                     <div>
                         <div class="price-tag">60 €</div>
-                        <button class="btn-service" onclick="addToCart('Pack BRONZE', 'Mise à niveau', 60, 1)">Ajouter au panier</button>
+                        <button class="btn-service" onclick="addToCart('Pack BRONZE - Mise à niveau', 60)">Ajouter au panier</button>
                     </div>
                 </div>
 
@@ -232,7 +215,7 @@
                     </div>
                     <div>
                         <div class="price-tag">100 €</div>
-                        <button class="btn-service" onclick="addToCart('Pack ARGENT', 'Montage PC', 100, 1)">Ajouter au panier</button>
+                        <button class="btn-service" onclick="addToCart('Pack ARGENT - Montage PC', 100)">Ajouter au panier</button>
                     </div>
                 </div>
 
@@ -246,7 +229,7 @@
                     </div>
                     <div>
                         <div class="price-tag">120 €</div>
-                        <button class="btn-service" onclick="addToCart('Pack OR', 'Conseil + Montage', 120, 1)">Ajouter au panier</button>
+                        <button class="btn-service" onclick="addToCart('Pack OR - Conseil + Montage', 120)">Ajouter au panier</button>
                     </div>
                 </div>
 
@@ -260,7 +243,7 @@
                     </div>
                     <div>
                         <div class="price-tag">145 €</div>
-                        <button class="btn-service" onclick="addToCart('Pack PLATINE', 'Setup Streaming', 145, 1)">Ajouter au panier</button>
+                        <button class="btn-service" onclick="addToCart('Pack PLATINE - Setup Streaming', 145)">Ajouter au panier</button>
                     </div>
                 </div>
 
@@ -274,7 +257,7 @@
                     </div>
                     <div>
                         <div class="price-tag">70 €</div>
-                        <button class="btn-service" onclick="addToCart('OPTIMISATION', 'Nettoyage & Boost Système', 70, 1)">Ajouter au panier</button>
+                        <button class="btn-service" onclick="addToCart('OPTIMISATION - Nettoyage & Boost Système', 70)">Ajouter au panier</button>
                     </div>
                 </div>
 
@@ -317,24 +300,18 @@
         </div>
     </footer>
 
+    <!-- Script de navigation -->
+    <script src="navbar.js"></script>
+
     <!-- Script Panier, Connexion Twitch et Menu Déroulant -->
     <script>
         const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
 
-        /* Gestion du Panier */
-        function addToCart(name, subtitle, price, qty) {
+        /* Gestion du Panier (Format unifié avec title et price) */
+        function addToCart(title, price) {
             let cart = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
             
-            let existingItem = cart.find(item => item.name === name);
-            if (existingItem) {
-                if (name === 'ASSISTANCE') {
-                    existingItem.quantity = qty;
-                } else {
-                    existingItem.quantity += qty;
-                }
-            } else {
-                cart.push({ name: name, subtitle: subtitle, price: price, quantity: qty });
-            }
+            cart.push({ title: title, price: parseFloat(price) });
 
             localStorage.setItem('skiztech_cart', JSON.stringify(cart));
             window.location.href = 'panier.html';
@@ -344,10 +321,12 @@
             let qtyInput = document.getElementById('qty-assistance');
             let qty = parseInt(qtyInput.value) || 1;
             if (qty < 1) qty = 1;
-            addToCart('ASSISTANCE', 'Support Technique à Distance', 20, qty);
+            
+            let prixTotal = 20 * qty;
+            addToCart(`ASSISTANCE - Support Technique (${qty}h)`, prixTotal);
         }
 
-        /* Gestion de l'Authentification Identique à l'Index */
+        /* Gestion de l'Authentification */
         function checkLoginState() {
             const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
             const accountLink = document.getElementById('account-link');
