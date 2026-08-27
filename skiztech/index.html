@@ -61,8 +61,8 @@
         }
 
         .user-nav-pic {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
             border: 1.5px solid #00bcd4;
             object-fit: cover;
@@ -321,7 +321,7 @@
                         
                         <div class="auth-buttons-grid">
                             <!-- BOUTON TWITCH -->
-                            <a href="https://id.twitch.tv/oauth2/authorize?client_id=8p3ywkyx2k286l9wyc8y264zw0zq3j&redirect_uri=https://fanciful-manatee-d2bdd6.netlify.app/skiztech/index.html&response_type=token&scope=user:read:email" class="btn-auth-custom btn-auth-twitch-custom">
+                            <a id="btn-twitch-login" href="#" class="btn-auth-custom btn-auth-twitch-custom">
                                 <i class="fab fa-twitch"></i> Twitch <span style="font-size: 0.85em; opacity: 0.9;">(-10% Sub)</span>
                             </a>
                             
@@ -381,7 +381,7 @@
 
     <footer id="contact">
         <div class="container">
-            <p>Une question sur ton projet ? Contacte-moi directement : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
+            <p>Une question sur ton projet ? Contacte-moi directement : <a href="mailto:contact@angryskiz.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@angryskiz.fr</a></p>
             
             <div class="social-links" style="margin-top: 20px;">
                 <p style="color: #ccc; margin-bottom: 10px;">Retrouve-moi sur les réseaux :</p>
@@ -401,16 +401,18 @@
     <script>
         // CONFIGURATION DES IDS DE TES APPLICATIONS OAUTH2
         const TWITCH_CLIENT_ID = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
-        const GOOGLE_CLIENT_ID = 'TON_GOOGLE_CLIENT_ID.apps.googleusercontent.com'; // À remplacer avec ton Client ID Google
-        const DISCORD_CLIENT_ID = 'TON_DISCORD_CLIENT_ID'; // À remplacer avec ton Client ID Discord
+        const GOOGLE_CLIENT_ID = 'TON_GOOGLE_CLIENT_ID.apps.googleusercontent.com'; // À remplacer avec ton ID Google
+        const DISCORD_CLIENT_ID = 'TON_DISCORD_CLIENT_ID';                         // À remplacer avec ton ID Discord
         
+        // Détection dynamique du domaine (ex: https://angryskiz.fr/skiztech/index.html)
         const REDIRECT_URI = window.location.origin + window.location.pathname;
 
-        // Génération des URLs de redirection d'authentification
+        // Génération dynamique des URLs d'authentification
+        document.getElementById('btn-twitch-login').href = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
         document.getElementById('btn-google-login').href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=email%20profile`;
         document.getElementById('btn-discord-login').href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify%20email`;
 
-        // Vérifie si un utilisateur est déjà stocké en local
+        // Vérifie si un utilisateur est déjà connecté
         function checkLoginState() {
             const user = JSON.parse(localStorage.getItem('auth_user'));
             const accountLink = document.getElementById('account-link');
@@ -441,33 +443,34 @@
             }
         }
 
-        // Gère les retours d'authentification des 3 plateformes
+        // Récupère les données au retour de la connexion
         function handleOAuthCallback() {
             const hash = window.location.hash;
             if (!hash.includes('access_token=')) return;
 
             const params = new URLSearchParams(hash.substring(1));
             const token = params.get('access_token');
+            const state = params.get('state');
+
+            // Nettoyage de l'URL dans le navigateur
             window.history.replaceState({}, document.title, window.location.pathname);
 
-            // On identifie la plateforme selon la présence d'autres paramètres ou tente les appels API
-            if (hash.includes('scope=user') || hash.includes('twitch')) {
-                // RETOUR TWITCH
-                fetch('https://api.twitch.tv/helix/users', {
-                    headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` }
+            // 1. RETOUR GOOGLE (contient id_token ou scope googleapis)
+            if (hash.includes('googleapis.com') || hash.includes('authuser')) {
+                fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { 'Authorization': `Bearer ${token}` }
                 })
                 .then(res => res.json())
-                .then(data => {
-                    if (data.data && data.data.length > 0) {
-                        const u = data.data[0];
-                        const userData = { provider: 'twitch', name: u.display_name, avatar: u.profile_image_url, email: u.email };
+                .then(u => {
+                    if (u.sub) {
+                        const userData = { provider: 'google', name: u.name, avatar: u.picture, email: u.email };
                         localStorage.setItem('auth_user', JSON.stringify(userData));
                         checkLoginState();
                     }
-                }).catch(err => console.error('Erreur Twitch:', err));
+                }).catch(err => console.error('Erreur Google:', err));
 
-            } else if (hash.includes('discord') || hash.includes('identify')) {
-                // RETOUR DISCORD
+            // 2. RETOUR DISCORD (scope identify)
+            } else if (hash.includes('scope=identify') || hash.includes('token_type=Bearer')) {
                 fetch('https://discord.com/api/users/@me', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 })
@@ -481,23 +484,24 @@
                     }
                 }).catch(err => console.error('Erreur Discord:', err));
 
+            // 3. RETOUR TWITCH
             } else {
-                // RETOUR GOOGLE
-                fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                fetch('https://api.twitch.tv/helix/users', {
+                    headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` }
                 })
                 .then(res => res.json())
-                .then(u => {
-                    if (u.sub) {
-                        const userData = { provider: 'google', name: u.name, avatar: u.picture, email: u.email };
+                .then(data => {
+                    if (data.data && data.data.length > 0) {
+                        const u = data.data[0];
+                        const userData = { provider: 'twitch', name: u.display_name, avatar: u.profile_image_url, email: u.email };
                         localStorage.setItem('auth_user', JSON.stringify(userData));
                         checkLoginState();
                     }
-                }).catch(err => console.error('Erreur Google:', err));
+                }).catch(err => console.error('Erreur Twitch:', err));
             }
         }
 
-        // Action de déconnexion globale
+        // Action de déconnexion
         document.addEventListener('click', function(e) {
             if (e.target && e.target.closest('#btn-logout')) {
                 e.preventDefault();
