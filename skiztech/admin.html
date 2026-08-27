@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administration - Skiztech</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #121212; color: #fff; margin: 0; padding: 40px 20px; }
+        .admin-card { max-width: 1000px; margin: 0 auto; background: #1a1a1a; padding: 25px; border-radius: 12px; border: 1px solid #333; border-top: 4px solid #00bcd4; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        h1 { color: #fff; font-size: 1.8em; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        h1 i { color: #ffb74d; }
+        .filter-btn { padding: 10px 18px; border: 1px solid #333; background: #252525; color: #ccc; cursor: pointer; border-radius: 6px; font-weight: bold; margin-right: 10px; transition: all 0.2s; }
+        .filter-btn.active, .filter-btn:hover { background: #00bcd4; color: #111; border-color: #00bcd4; }
+        
+        .order-row { border: 1px solid #333; border-radius: 8px; padding: 15px; margin: 15px 0; background: #222; }
+        .order-row.closed { opacity: 0.5; background: #181818; }
+        .order-head { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 8px; color: #00bcd4; }
+        
+        .controls { display: flex; gap: 12px; align-items: center; margin-top: 15px; background: #1a1a1a; padding: 12px; border-radius: 6px; flex-wrap: wrap; }
+        select, button.action-btn { padding: 8px 14px; border-radius: 4px; border: 1px solid #444; background: #2a2a2a; color: #fff; cursor: pointer; font-weight: bold; }
+        button.action-btn { background: #00bcd4; color: #111; border: none; }
+        button.action-btn:hover { background: #00acc1; }
+        button.close-btn { background: #e53935; color: white; border: none; }
+        button.close-btn:hover { background: #c62828; }
+    </style>
+</head>
+<body>
+
+<header></header>
+
+<div class="admin-card">
+    <h1><i class="fas fa-user-shield"></i> Administration des commandes</h1>
+    
+    <div style="margin-bottom: 20px;">
+        <button class="filter-btn active" onclick="filtrer('en_cours', event)">Commandes en cours</button>
+        <button class="filter-btn" onclick="filtrer('cloturee', event)">Commandes clôturées</button>
+    </div>
+
+    <div id="admin-orders-list"></div>
+</div>
+
+<script src="navbar.js"></script>
+<script>
+    // Sécurité accès Admin
+    function verifierAccesAdmin() {
+        const rawUser = localStorage.getItem('auth_user') || 
+                        localStorage.getItem('twitch_user') || 
+                        localStorage.getItem('google_user') || 
+                        localStorage.getItem('discord_user') || 
+                        localStorage.getItem('user_account');
+        let user = null;
+        if (rawUser) {
+            try { user = JSON.parse(rawUser); } catch(e) {}
+        }
+
+        if (!user || user.email !== 'angryskiz63@gmail.com') {
+            alert("Accès refusé : espace réservé à l'administrateur.");
+            window.location.href = "index.html";
+            return false;
+        }
+        return true;
+    }
+
+    let currentFilter = 'en_cours';
+
+    function filtrer(type, evt) {
+        currentFilter = type;
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        if (evt) evt.target.classList.add('active');
+        afficherCommandes();
+    }
+
+    function afficherCommandes() {
+        const allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
+        const container = document.getElementById('admin-orders-list');
+        
+        const filtered = allOrders.filter(o => (o.status || 'en_cours') === currentFilter);
+
+        if (filtered.length === 0) {
+            container.innerHTML = "<p style='color: #888;'>Aucune commande dans cette section.</p>";
+            return;
+        }
+
+        container.innerHTML = filtered.map(order => `
+            <div class="order-row ${order.status === 'cloturee' ? 'closed' : ''}">
+                <div class="order-head">
+                    <span>#${order.id} — Client : ${order.userName}</span>
+                    <span>${order.date} | Total : ${order.total} €</span>
+                </div>
+                <p><strong>Articles :</strong> ${Array.isArray(order.items) ? order.items.join(', ') : order.items}</p>
+                ${order.instructions ? `<p style="color: #aaa;"><strong>Note client :</strong> <em>${order.instructions}</em></p>` : ''}
+                
+                <div class="controls">
+                    <label><strong>Étape du suivi :</strong></label>
+                    <select id="step-select-${order.id}">
+                        <option value="1" ${order.step == 1 ? 'selected' : ''}>1. Recept. Composants</option>
+                        <option value="2" ${order.step == 2 ? 'selected' : ''}>2. Montage & Tests</option>
+                        <option value="3" ${order.step == 3 ? 'selected' : ''}>3. Expédition</option>
+                        <option value="4" ${order.step == 4 ? 'selected' : ''}>4. Livré</option>
+                    </select>
+
+                    <button class="action-btn" onclick="updateStep(${order.id})">Mettre à jour</button>
+                    
+                    ${order.status !== 'cloturee' ? 
+                        `<button class="action-btn close-btn" onclick="toggleCloture(${order.id}, 'cloturee')">Clôturer</button>` : 
+                        `<button class="action-btn" onclick="toggleCloture(${order.id}, 'en_cours')">Rouvrir</button>`
+                    }
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function updateStep(orderId) {
+        const newStep = parseInt(document.getElementById(`step-select-${orderId}`).value);
+        let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
+        
+        const targetOrder = allOrders.find(o => o.id === orderId);
+        if (targetOrder) {
+            targetOrder.step = newStep;
+            localStorage.setItem('skiztech_all_orders', JSON.stringify(allOrders));
+
+            let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
+            let userTarget = userOrders.find(o => o.id === orderId);
+            if (userTarget) {
+                userTarget.step = newStep;
+                localStorage.setItem('user_orders_' + targetOrder.userKey, JSON.stringify(userOrders));
+            }
+            
+            alert(`Commande #${orderId} mise à jour (Étape ${newStep})`);
+            afficherCommandes();
+        }
+    }
+
+    function toggleCloture(orderId, newStatus) {
+        let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
+        const targetOrder = allOrders.find(o => o.id === orderId);
+        
+        if (targetOrder) {
+            targetOrder.status = newStatus;
+            localStorage.setItem('skiztech_all_orders', JSON.stringify(allOrders));
+
+            let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
+            let userTarget = userOrders.find(o => o.id === orderId);
+            if (userTarget) {
+                userTarget.status = newStatus;
+                localStorage.setItem('user_orders_' + targetOrder.userKey, JSON.stringify(userOrders));
+            }
+
+            afficherCommandes();
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (verifierAccesAdmin()) {
+            afficherCommandes();
+        }
+    });
+</script>
+</body>
+</html>
