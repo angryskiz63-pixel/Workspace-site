@@ -71,6 +71,12 @@
         }
         .btn-checkout:hover { background: #0097a7; }
 
+        .auth-warning {
+            display: none; background: #fff3cd; color: #856404; border: 1px solid #ffeeba;
+            padding: 15px; border-radius: 6px; text-align: center; margin-top: 20px; font-weight: 600;
+        }
+        .auth-warning a { color: #00bcd4; text-decoration: underline; }
+
         .empty-cart-msg { text-align: center; color: #777; padding: 20px 0; font-style: italic; }
 
         footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
@@ -122,7 +128,27 @@
                 <button class="btn-checkout" id="btn-pay" onclick="validerCommande()" style="display: none;">
                     <i class="fas fa-credit-card"></i> Valider et Payer la commande
                 </button>
+
+                <div class="auth-warning" id="auth-warning-msg">
+                    <i class="fas fa-exclamation-triangle"></i> Vous devez <a href="index.html#auth-box">vous connecter</a> pour valider votre commande.
+                </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmation Modernis&eacute; -->
+    <div id="order-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center;">
+        <div style="background: #fff; border-radius: 12px; max-width: 450px; width: 90%; padding: 30px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border-top: 5px solid #00bcd4;">
+            <div style="width: 60px; height: 60px; background: #e0f7fa; color: #00bcd4; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; font-size: 1.8em;">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 style="margin: 0 0 10px 0; color: #1a1a1a;">Commande Valid&eacute;e !</h2>
+            <p style="color: #666; font-size: 1em; margin-bottom: 25px;">
+                Votre commande <strong id="modal-order-id" style="color: #00bcd4;">#000000</strong> a bien &eacute;t&eacute; enregistr&eacute;e.
+            </p>
+            <button onclick="redirigerSuivi()" style="background: #00bcd4; color: #fff; border: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; font-size: 1em; cursor: pointer; transition: 0.3s; width: 100%; text-transform: uppercase;">
+                Suivre ma commande
+            </button>
         </div>
     </div>
 
@@ -146,12 +172,15 @@
     <script>
         let montantTotalFinal = 0;
 
-        function checkLoginState() {
-            const user = JSON.parse(localStorage.getItem('twitch_user')) || 
-                         JSON.parse(localStorage.getItem('google_user')) || 
-                         JSON.parse(localStorage.getItem('discord_user')) || 
-                         JSON.parse(localStorage.getItem('user_account'));
+        function getUser() {
+            return JSON.parse(localStorage.getItem('twitch_user')) || 
+                   JSON.parse(localStorage.getItem('google_user')) || 
+                   JSON.parse(localStorage.getItem('discord_user')) || 
+                   JSON.parse(localStorage.getItem('user_account'));
+        }
 
+        function checkLoginState() {
+            const user = getUser();
             const accountLink = document.getElementById('account-link');
             const dropdownMenu = document.getElementById('dropdown-menu');
 
@@ -188,6 +217,8 @@
             let itemsContainer = document.getElementById('cart-items-container');
             let commentSection = document.getElementById('comment-section');
             let btnPay = document.getElementById('btn-pay');
+            let authWarning = document.getElementById('auth-warning-msg');
+            const user = getUser();
 
             if (!itemsContainer) return;
 
@@ -198,9 +229,18 @@
                 itemsContainer.innerHTML = '<div class="empty-cart-msg">Votre panier est actuellement vide.</div>';
                 if (commentSection) commentSection.style.display = 'none';
                 if (btnPay) btnPay.style.display = 'none';
+                if (authWarning) authWarning.style.display = 'none';
             } else {
                 if (commentSection) commentSection.style.display = 'block';
-                if (btnPay) btnPay.style.display = 'block';
+                
+                // Gestion de la connexion obligatoire pour payer
+                if (user) {
+                    if (btnPay) btnPay.style.display = 'block';
+                    if (authWarning) authWarning.style.display = 'none';
+                } else {
+                    if (btnPay) btnPay.style.display = 'none';
+                    if (authWarning) authWarning.style.display = 'block';
+                }
 
                 panier.forEach((item, index) => {
                     let prixNum = parseFloat(item.price) || 0;
@@ -245,6 +285,13 @@
         }
 
         function validerCommande() {
+            const user = getUser();
+            if (!user) {
+                alert("Erreur : Vous devez être connecté pour valider la commande.");
+                window.location.href = "index.html#auth-box";
+                return;
+            }
+
             let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
             if (panier.length === 0) return;
 
@@ -263,16 +310,18 @@
                 progress: 0
             };
 
-            // Sauvegarde dans `user_orders` utilisé par ton fichier commande.html
             let userOrders = JSON.parse(localStorage.getItem('user_orders')) || [];
             userOrders.unshift(nouvelleCommande);
             localStorage.setItem('user_orders', JSON.stringify(userOrders));
 
-            // Vider le panier
             localStorage.removeItem('skiztech_cart');
 
-            alert(`Commande N° ${idCommande} valid\u00e9e avec succ\u00e8s !`);
-            window.location.href = "commande.html";
+            document.getElementById('modal-order-id').innerText = '#' + idCommande;
+            document.getElementById('order-modal').style.display = 'flex';
+        }
+
+        function redirigerSuivi() {
+            window.location.href = "commandes.html";
         }
 
         document.addEventListener('click', function(e) {
