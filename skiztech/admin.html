@@ -83,6 +83,41 @@
         afficherCommandes();
     }
 
+    // Récupération intelligente et globale de TOUTES les commandes présentes dans le LocalStorage
+    function getToutesLesCommandes() {
+        let ordersMap = new Map();
+
+        // 1. Charger la liste principale si elle existe
+        try {
+            const mainOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
+            mainOrders.forEach(o => { if(o && o.id) ordersMap.set(String(o.id), o); });
+        } catch(e) {}
+
+        // 2. Scanner le localStorage pour récupérer les commandes individuelles des utilisateurs
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key.startsWith('user_orders_') || key.includes('orders')) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key));
+                    if (Array.isArray(data)) {
+                        data.forEach(o => {
+                            if (o && o.id && !ordersMap.has(String(o.id))) {
+                                ordersMap.set(String(o.id), o);
+                            }
+                        });
+                    }
+                } catch(e) {}
+            }
+        }
+
+        const list = Array.from(ordersMap.values());
+        // Sauvegarder la liste consolidée dans skiztech_all_orders
+        if (list.length > 0) {
+            localStorage.setItem('skiztech_all_orders', JSON.stringify(list));
+        }
+        return list;
+    }
+
     function formatItems(items) {
         if (!items) return 'Aucun article';
         if (Array.isArray(items)) {
@@ -92,7 +127,7 @@
     }
 
     function afficherCommandes() {
-        const allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
+        const allOrders = getToutesLesCommandes();
         const container = document.getElementById('admin-orders-list');
         
         const filtered = allOrders.filter(o => {
@@ -117,7 +152,7 @@
             }
 
             const clientName = (addressInfo && addressInfo.nom) ? addressInfo.nom : (order.userName || 'Anonyme');
-            const totalFormatted = typeof order.total === 'number' ? order.total.toFixed(2) : order.total;
+            const totalFormatted = typeof order.total === 'number' ? order.total.toFixed(2) : (order.total || '0.00');
 
             let addressHTML = "<span style='color:#888;'>Coordonnées non renseignées</span>";
             if (addressInfo) {
@@ -131,7 +166,7 @@
                 <div class="order-row ${isClosed ? 'closed' : ''}">
                     <div class="order-head">
                         <span>#${order.id} — Client : ${clientName} (${order.userEmail || 'N/C'})</span>
-                        <span>${order.date || 'Date N/C'} | Total : ${totalFormatted} €</span>
+                        <span>${order.date || ''} | Total : ${totalFormatted} €</span>
                     </div>
 
                     <div class="client-info-box">
@@ -154,11 +189,11 @@
                             <option value="4" ${currentStep == 4 ? 'selected' : ''}>4. Livré</option>
                         </select>
 
-                        <button class="action-btn" onclick="updateStep(${order.id})">Mettre à jour</button>
+                        <button class="action-btn" onclick="updateStep('${order.id}')">Mettre à jour</button>
                         
                         ${!isClosed ? 
-                            `<button class="action-btn close-btn" onclick="toggleCloture(${order.id}, 'cloturee')">Clôturer</button>` : 
-                            `<button class="action-btn" onclick="toggleCloture(${order.id}, 'en_cours')">Rouvrir</button>`
+                            `<button class="action-btn close-btn" onclick="toggleCloture('${order.id}', 'cloturee')">Clôturer</button>` : 
+                            `<button class="action-btn" onclick="toggleCloture('${order.id}', 'en_cours')">Rouvrir</button>`
                         }
                     </div>
                 </div>
@@ -171,7 +206,7 @@
         if (!selectElem) return;
         
         const newStep = parseInt(selectElem.value);
-        let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
+        let allOrders = getToutesLesCommandes();
         
         const stepLabels = {
             1: "Réception des composants",
@@ -180,7 +215,7 @@
             4: "Livré"
         };
 
-        const targetOrder = allOrders.find(o => o.id == orderId);
+        const targetOrder = allOrders.find(o => String(o.id) === String(orderId));
         if (targetOrder) {
             targetOrder.step = newStep;
             if (targetOrder.statusCode !== 'cloturee') {
@@ -190,15 +225,17 @@
             localStorage.setItem('skiztech_all_orders', JSON.stringify(allOrders));
 
             if (targetOrder.userKey) {
-                let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
-                let userTarget = userOrders.find(o => o.id == orderId);
-                if (userTarget) {
-                    userTarget.step = newStep;
-                    if (userTarget.statusCode !== 'cloturee') {
-                        userTarget.status = stepLabels[newStep] || "En cours de traitement";
+                try {
+                    let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
+                    let userTarget = userOrders.find(o => String(o.id) === String(orderId));
+                    if (userTarget) {
+                        userTarget.step = newStep;
+                        if (userTarget.statusCode !== 'cloturee') {
+                            userTarget.status = stepLabels[newStep] || "En cours de traitement";
+                        }
+                        localStorage.setItem('user_orders_' + targetOrder.userKey, JSON.stringify(userOrders));
                     }
-                    localStorage.setItem('user_orders_' + targetOrder.userKey, JSON.stringify(userOrders));
-                }
+                } catch(e) {}
             }
             
             alert(`Commande #${orderId} mise à jour à l'étape ${newStep}.`);
@@ -207,8 +244,8 @@
     }
 
     function toggleCloture(orderId, newStatusCode) {
-        let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
-        const targetOrder = allOrders.find(o => o.id == orderId);
+        let allOrders = getToutesLesCommandes();
+        const targetOrder = allOrders.find(o => String(o.id) === String(orderId));
         
         if (targetOrder) {
             targetOrder.statusCode = newStatusCode;
@@ -218,14 +255,16 @@
             localStorage.setItem('skiztech_all_orders', JSON.stringify(allOrders));
 
             if (targetOrder.userKey) {
-                let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
-                let userTarget = userOrders.find(o => o.id == orderId);
-                if (userTarget) {
-                    userTarget.statusCode = newStatusCode;
-                    userTarget.statusClass = newStatusCode;
-                    userTarget.status = targetOrder.status;
-                    localStorage.setItem('user_orders_' + targetOrder.userKey, JSON.stringify(userOrders));
-                }
+                try {
+                    let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
+                    let userTarget = userOrders.find(o => String(o.id) === String(orderId));
+                    if (userTarget) {
+                        userTarget.statusCode = newStatusCode;
+                        userTarget.statusClass = newStatusCode;
+                        userTarget.status = targetOrder.status;
+                        localStorage.setItem('user_orders_' + targetOrder.userKey, JSON.stringify(userOrders));
+                    }
+                } catch(e) {}
             }
 
             afficherCommandes();
