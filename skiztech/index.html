@@ -320,18 +320,16 @@
                         <p>Connecte-toi pour valider ta commande (-10% appliqués aux abonnés Twitch Sub).</p>
                         
                         <div class="auth-buttons-grid">
-                            <!-- BOUTON TWITCH -->
-                            <a id="btn-twitch-login" href="#" class="btn-auth-custom btn-auth-twitch-custom">
+                            <!-- BOUTONS AVEC HREF DIRECTS POUR ÉVITER LE SAUT DE PAGE EN HAUT -->
+                            <a id="btn-twitch-login" href="https://id.twitch.tv/oauth2/authorize?client_id=8p3ywkyx2k286l9wyc8y264zw0zq3j&redirect_uri=https%3A%2F%2Fangryskiz.fr%2Fskiztech%2Findex.html&response_type=token&scope=user:read:email" class="btn-auth-custom btn-auth-twitch-custom">
                                 <i class="fab fa-twitch"></i> Twitch <span style="font-size: 0.85em; opacity: 0.9;">(-10% Sub)</span>
                             </a>
                             
-                            <!-- BOUTON GOOGLE -->
-                            <a id="btn-google-login" href="#" class="btn-auth-custom btn-auth-google-custom">
+                            <a id="btn-google-login" href="https://accounts.google.com/o/oauth2/v2/auth?client_id=181389383732-eq8mepcv2i408n9hf3snne7j7oa6bhet.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fangryskiz.fr%2Fskiztech%2Findex.html&response_type=token&scope=email%20profile" class="btn-auth-custom btn-auth-google-custom">
                                 <i class="fab fa-google" style="color: #4285F4;"></i> Google
                             </a>
 
-                            <!-- BOUTON DISCORD -->
-                            <a id="btn-discord-login" href="#" class="btn-auth-custom btn-auth-discord-custom">
+                            <a id="btn-discord-login" href="https://discord.com/api/oauth2/authorize?client_id=1542457684203413587&redirect_uri=https%3A%2F%2Fangryskiz.fr%2Fskiztech%2Findex.html&response_type=token&scope=identify%20email" class="btn-auth-custom btn-auth-discord-custom">
                                 <i class="fab fa-discord"></i> Discord
                             </a>
                         </div>
@@ -399,18 +397,7 @@
 
     <!-- Script de Connexion Multi-Plateformes (Twitch, Google, Discord) -->
     <script>
-        // CONFIGURATION DES IDS DE TES APPLICATIONS OAUTH2
         const TWITCH_CLIENT_ID = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
-        const GOOGLE_CLIENT_ID = '181389383732-eq8mepcv2i408n9hf3snne7j7oa6bhet.apps.googleusercontent.com';
-        const DISCORD_CLIENT_ID = '1542457684203413587';
-        
-        // URL fixe exacte pour la redirection (évite le mismatch 400 Google)
-        const REDIRECT_URI = 'https://angryskiz.fr/skiztech/index.html';
-
-        // Génération dynamique des URLs d'authentification
-        document.getElementById('btn-twitch-login').href = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
-        document.getElementById('btn-google-login').href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=email%20profile`;
-        document.getElementById('btn-discord-login').href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify%20email`;
 
         // Vérifie si un utilisateur est déjà connecté
         function checkLoginState() {
@@ -443,7 +430,7 @@
             }
         }
 
-        // Récupère les données au retour de la connexion
+        // Récupère les données au retour de la connexion OAuth
         function handleOAuthCallback() {
             const hash = window.location.hash;
             if (!hash.includes('access_token=')) return;
@@ -451,10 +438,10 @@
             const params = new URLSearchParams(hash.substring(1));
             const token = params.get('access_token');
 
-            // Nettoyage de l'URL dans le navigateur
+            // Nettoyage du hash dans l'URL du navigateur
             window.history.replaceState({}, document.title, window.location.pathname);
 
-            // 1. RETOUR GOOGLE (requête API de profil)
+            // 1. RETOUR GOOGLE
             if (hash.includes('scope=') && hash.includes('google')) {
                 fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -468,7 +455,7 @@
                     }
                 }).catch(err => console.error('Erreur Google:', err));
 
-            // 2. RETOUR DISCORD (scope identify)
+            // 2. RETOUR DISCORD
             } else if (hash.includes('scope=identify') || hash.includes('token_type=Bearer')) {
                 fetch('https://discord.com/api/users/@me', {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -486,7 +473,10 @@
             // 3. RETOUR TWITCH
             } else {
                 fetch('https://api.twitch.tv/helix/users', {
-                    headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` }
+                    headers: { 
+                        'Client-ID': TWITCH_CLIENT_ID, 
+                        'Authorization': `Bearer ${token}` 
+                    }
                 })
                 .then(res => res.json())
                 .then(data => {
@@ -511,10 +501,10 @@
             }
         });
 
-        window.onload = () => {
+        window.addEventListener('DOMContentLoaded', () => {
             handleOAuthCallback();
             checkLoginState();
-        };
+        });
     </script>
 </body>
 </html>
