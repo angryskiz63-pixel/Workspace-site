@@ -97,24 +97,7 @@
 </head>
 <body>
 
-    <nav>
-        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
-        <a href="services.html"><i class="fas fa-tools"></i> Services</a>
-        <a href="panier.html" class="active"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
-        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
-        
-        <div class="user-dropdown">
-            <a href="index.html#auth-box" id="account-link">
-                <i class="fas fa-sign-in-alt"></i> Se connecter
-            </a>
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
-                <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
-                <hr>
-                <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
-            </div>
-        </div>
-    </nav>
+    <header></header>
 
     <div class="container">
         <div class="cart-card">
@@ -126,23 +109,23 @@
 
             <div class="notes-box">
                 <label for="order-instructions" style="font-weight: 600; font-size: 0.9em; display: flex; align-items: center; gap: 6px;">
-                    <i class="fas fa-comment-dots"></i> Instructions ou précisions pour votre commande :
+                    <i class="fas fa-comment-dots"></i> Instructions ou pr&eacute;cisions pour votre commande :
                 </label>
-                <textarea id="order-instructions" placeholder="Précisez ici vos contraintes, composants spécifiques, disponibilités..."></textarea>
+                <textarea id="order-instructions" placeholder="Pr&eacute;cisez ici vos contraintes, composants sp&eacute;cifiques, disponibilit&eacute;s..."></textarea>
             </div>
 
             <div class="cart-totals">
                 <div class="total-row">
                     <span>Sous-total :</span>
-                    <span id="subtotal-val">0.00 €</span>
+                    <span id="subtotal-val">0.00 &euro;</span>
                 </div>
                 <div id="discount-row" class="total-row" style="display: none; color: #2e7d32;">
                     <span>Remise Twitch Sub (-10%) :</span>
-                    <span id="discount-val">-0.00 €</span>
+                    <span id="discount-val">-0.00 &euro;</span>
                 </div>
                 <div class="total-row final">
                     <span>Total final :</span>
-                    <span id="total-val">0.00 €</span>
+                    <span id="total-val">0.00 &euro;</span>
                 </div>
             </div>
 
@@ -161,14 +144,14 @@
         <p>Une question sur ton projet ? Contacte-moi directement : <a href="mailto:contact@angryskiz.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@angryskiz.fr</a></p>
     </footer>
 
+    <script src="navbar.js"></script>
+
     <script>
-        // Article par défaut si panier vide pour le test
         const defaultCart = [
-            { id: 1, title: 'Pack ARGENT - Montage PC', price: 100.00, category: 'Prestation technique' }
+            { title: 'Pack ARGENT - Montage PC', price: 100.00, category: 'Prestation technique' }
         ];
 
         function chargerPanier() {
-            // Read unified login state
             const rawUser = localStorage.getItem('auth_user') || localStorage.getItem('twitch_user') || localStorage.getItem('user_account');
             let user = null;
 
@@ -176,39 +159,22 @@
                 try { user = JSON.parse(rawUser); } catch(e) { user = null; }
             }
 
-            // Update Navigation Menu
-            const accountLink = document.getElementById('account-link');
-            const dropdownMenu = document.getElementById('dropdown-menu');
             const alertBox = document.getElementById('auth-alert');
             const btnSubmit = document.getElementById('btn-submit-order');
 
             if (user) {
-                const userAvatar = user.avatar;
-                const userName = user.name || "Mon Compte";
-                const iconHtml = userAvatar 
-                    ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
-                    : `<i class="fas fa-user-circle"></i>`;
-                
-                accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
-                accountLink.href = "#";
-                dropdownMenu.classList.add('active-dropdown');
-
-                alertBox.style.display = 'none';
-                btnSubmit.style.display = 'block';
+                if (alertBox) alertBox.style.display = 'none';
+                if (btnSubmit) btnSubmit.style.display = 'block';
             } else {
-                accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
-                accountLink.href = "index.html#auth-box";
-                dropdownMenu.classList.remove('active-dropdown');
-
-                alertBox.style.display = 'block';
-                btnSubmit.style.display = 'none';
+                if (alertBox) alertBox.style.display = 'block';
+                if (btnSubmit) btnSubmit.style.display = 'none';
             }
 
-            // Charge les items du panier depuis localStorage
-            let cart = JSON.parse(localStorage.getItem('cart_items'));
+            // Uniformisation de la clé LocalStorage avec services.html
+            let cart = JSON.parse(localStorage.getItem('skiztech_cart'));
             if (!cart || cart.length === 0) {
-                cart = defaultCart; // Fallback pour affichage
-                localStorage.setItem('cart_items', JSON.stringify(cart));
+                cart = defaultCart;
+                localStorage.setItem('skiztech_cart', JSON.stringify(cart));
             }
 
             const container = document.getElementById('cart-items-container');
@@ -216,38 +182,38 @@
                 <div class="cart-item">
                     <div class="cart-item-info">
                         <h4>${item.title}</h4>
-                        <p>${item.category || ''}</p>
+                        <p>${item.category || 'Prestation technique'}</p>
                     </div>
                     <div class="cart-item-price">
-                        <span>${item.price.toFixed(2)} €</span>
+                        <span>${Number(item.price).toFixed(2)} &euro;</span>
                         <button class="btn-remove" onclick="supprimerItem(${index})" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
                     </div>
                 </div>
             `).join('');
 
             // Calculs Financiers
-            const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+            const subtotal = cart.reduce((acc, item) => acc + Number(item.price), 0);
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             
-            document.getElementById('subtotal-val').innerText = subtotal.toFixed(2) + ' €';
+            document.getElementById('subtotal-val').innerHTML = subtotal.toFixed(2) + ' &euro;';
 
             let total = subtotal;
             if (isSub) {
                 const discount = subtotal * 0.10;
                 total = subtotal - discount;
-                document.getElementById('discount-val').innerText = '-' + discount.toFixed(2) + ' €';
+                document.getElementById('discount-val').innerHTML = '-' + discount.toFixed(2) + ' &euro;';
                 document.getElementById('discount-row').style.display = 'flex';
             } else {
                 document.getElementById('discount-row').style.display = 'none';
             }
 
-            document.getElementById('total-val').innerText = total.toFixed(2) + ' €';
+            document.getElementById('total-val').innerHTML = total.toFixed(2) + ' &euro;';
         }
 
         function supprimerItem(index) {
-            let cart = JSON.parse(localStorage.getItem('cart_items') || '[]');
+            let cart = JSON.parse(localStorage.getItem('skiztech_cart') || '[]');
             cart.splice(index, 1);
-            localStorage.setItem('cart_items', JSON.stringify(cart));
+            localStorage.setItem('skiztech_cart', JSON.stringify(cart));
             chargerPanier();
         }
 
@@ -255,17 +221,6 @@
             alert('Commande enregistrée avec succès !');
             window.location.href = "commandes.html";
         }
-
-        // Action de déconnexion
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.closest('#btn-logout')) {
-                e.preventDefault();
-                localStorage.removeItem('auth_user');
-                localStorage.removeItem('twitch_user');
-                localStorage.removeItem('user_account');
-                window.location.href = "index.html";
-            }
-        });
 
         window.addEventListener('DOMContentLoaded', chargerPanier);
     </script>
