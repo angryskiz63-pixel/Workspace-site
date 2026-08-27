@@ -2,49 +2,52 @@ document.addEventListener("DOMContentLoaded", function() {
     const header = document.querySelector("header");
     if (!header) return;
 
-    // Injection du CSS complet de la barre de navigation
+    // Masquer l'encadrement générique si existant
+    header.style.display = "contents";
+
+    // CSS injecté pour harmoniser la nav et le menu déroulant
     if (!document.getElementById("navbar-styles")) {
         const style = document.createElement("style");
         style.id = "navbar-styles";
         style.textContent = `
-            nav.skiz-nav {
-                background-color: #1a1a1a !important;
-                padding: 15px 0 !important;
-                text-align: center !important;
-                border-bottom: 3px solid #00bcd4 !important;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+            nav { 
+                background-color: #1a1a1a !important; 
+                padding: 18px 0 !important; 
+                text-align: center !important; 
+                border-bottom: 3px solid #00bcd4 !important; 
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; 
                 width: 100% !important;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
             }
-            nav.skiz-nav a {
-                color: #ffffff !important;
-                text-decoration: none !important;
-                font-weight: 600 !important;
-                font-size: 0.95em !important;
-                margin: 0 12px !important;
-                text-transform: uppercase !important;
-                letter-spacing: 1px !important;
+            nav a { 
+                color: #fff !important; 
+                text-decoration: none !important; 
+                font-weight: 600 !important; 
+                font-size: 1em !important; 
+                margin: 0 15px !important; 
+                text-transform: uppercase !important; 
+                letter-spacing: 1.5px !important; 
                 transition: color 0.3s ease !important;
                 display: inline-flex !important;
                 align-items: center !important;
                 gap: 8px !important;
+                vertical-align: middle !important;
+                line-height: 1 !important;
             }
-            nav.skiz-nav a:hover, nav.skiz-nav a.active {
-                color: #00bcd4 !important;
+            nav a:hover, nav a.active { color: #00bcd4 !important; }
+            nav a i { color: #00bcd4 !important; }
+
+            .user-dropdown {
+                position: relative;
+                display: inline-block;
             }
-            nav.skiz-nav a i {
-                color: #00bcd4 !important;
-            }
-            .user-dropdown { 
-                position: relative; 
-                display: inline-block; 
-            }
-            .user-nav-pic { 
-                width: 22px; 
-                height: 22px; 
-                border-radius: 50%; 
-                border: 1.5px solid #00bcd4; 
-                object-fit: cover; 
+            .user-nav-pic {
+                width: 22px;
+                height: 22px;
+                border-radius: 50%;
+                border: 1.5px solid #00bcd4;
+                object-fit: cover;
+                vertical-align: middle;
             }
             .dropdown-menu {
                 display: none;
@@ -70,23 +73,25 @@ document.addEventListener("DOMContentLoaded", function() {
                 gap: 10px !important;
                 font-size: 0.85em !important;
                 text-transform: none !important;
+                letter-spacing: 0.5px !important;
                 margin: 0 !important;
+                transition: background-color 0.2s, color 0.2s !important;
             }
-            .dropdown-menu a:hover { 
-                background-color: #2a2a2a !important; 
-                color: #00bcd4 !important; 
+            .dropdown-menu a:hover {
+                background-color: #2a2a2a !important;
+                color: #00bcd4 !important;
             }
-            .dropdown-menu hr { 
-                border: 0; 
-                border-top: 1px solid #333; 
-                margin: 6px 0; 
+            .dropdown-menu hr {
+                border: 0;
+                border-top: 1px solid #333;
+                margin: 6px 0;
             }
-            .dropdown-menu a.logout-link:hover { 
-                color: #ff4d4d !important; 
-                background-color: rgba(255, 77, 77, 0.1) !important; 
+            .dropdown-menu a.logout-link:hover {
+                color: #ff4d4d !important;
+                background-color: rgba(255, 77, 77, 0.1) !important;
             }
-            .user-dropdown:hover .dropdown-menu.has-user { 
-                display: block; 
+            .user-dropdown:hover .dropdown-menu.active-dropdown {
+                display: block;
             }
         `;
         document.head.appendChild(style);
@@ -96,19 +101,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const contactHref = (currentPage === "index.html" || currentPage === "") ? "#contact" : "index.html#contact";
 
     header.innerHTML = `
-        <nav class="skiz-nav">
-            <a href="index.html" class="${currentPage === 'index.html' ? 'active' : ''}">
-                <i class="fas fa-home"></i> Accueil
-            </a>
-            <a href="services.html" class="${currentPage === 'services.html' ? 'active' : ''}">
-                <i class="fas fa-tools"></i> Services
-            </a>
-            <a href="panier.html" class="${currentPage === 'panier.html' ? 'active' : ''}">
-                <i class="fas fa-shopping-cart"></i> Mon Panier
-            </a>
-            <a href="${contactHref}">
-                <i class="fas fa-envelope"></i> Contact
-            </a>
+        <nav>
+            <a href="index.html" class="${currentPage === 'index.html' ? 'active' : ''}"><i class="fas fa-home"></i> Accueil</a>
+            <a href="services.html" class="${currentPage === 'services.html' ? 'active' : ''}"><i class="fas fa-tools"></i> Services</a>
+            <a href="panier.html" class="${currentPage === 'panier.html' ? 'active' : ''}"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
+            <a href="${contactHref}"><i class="fas fa-envelope"></i> Contact</a>
             
             <div class="user-dropdown">
                 <a href="index.html#auth-box" id="account-link">
@@ -118,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
                     <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
                     <hr>
-                    <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+                    <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
                 </div>
             </div>
         </nav>
@@ -154,11 +151,11 @@ function updateNavbarAuth() {
         
         accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
         accountLink.href = "#"; 
-        dropdownMenu.classList.add('has-user');
+        dropdownMenu.classList.add('active-dropdown');
     } else {
         accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
         accountLink.href = "index.html#auth-box";
-        dropdownMenu.classList.remove('has-user');
+        dropdownMenu.classList.remove('active-dropdown');
     }
 }
 
