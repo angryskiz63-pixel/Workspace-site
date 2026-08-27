@@ -9,336 +9,265 @@
     <style>
         html { scroll-behavior: smooth; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f4f9; color: #333; line-height: 1.6; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
         
-        .hero-banner { width: 100%; height: 300px; overflow: hidden; background-color: #000; box-shadow: inset 0 -20px 30px rgba(0,0,0,0.5); }
-        .hero-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
-
-        @media (max-width: 1200px) { .hero-banner { height: 220px; } }
-        @media (max-width: 768px) { .hero-banner { height: 160px; } }
-        
+        /* Navigation unifiée */
         nav { background-color: #1a1a1a; padding: 18px 0; text-align: center; border-bottom: 3px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         nav a { 
-            color: #fff; text-decoration: none; font-weight: 600; font-size: 1em; margin: 0 15px; 
-            text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.3s ease;
-            display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; line-height: 1;
+            color: #fff; 
+            text-decoration: none; 
+            font-weight: 600; 
+            font-size: 1em; 
+            margin: 0 15px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            vertical-align: middle;
+            line-height: 1;
         }
         nav a:hover, nav a.active { color: #00bcd4; }
         nav a i { color: #00bcd4; }
 
+        /* Menu déroulant Mon Compte */
         .user-dropdown { position: relative; display: inline-block; }
         .user-nav-pic { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #00bcd4; object-fit: cover; vertical-align: middle; }
         .dropdown-menu {
-            display: none; position: absolute; right: 0; top: 100%; background-color: #1a1a1a;
-            min-width: 200px; box-shadow: 0px 8px 16px rgba(0,0,0,0.4); border-radius: 6px;
-            border: 1px solid #333; border-top: 3px solid #00bcd4; z-index: 1000; padding: 8px 0; text-align: left;
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #1a1a1a;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
+            border-radius: 6px;
+            border: 1px solid #333;
+            border-top: 3px solid #00bcd4;
+            z-index: 1000;
+            padding: 8px 0;
+            text-align: left;
         }
         .dropdown-menu a {
-            color: #eee !important; padding: 10px 16px; text-decoration: none; display: flex;
-            align-items: center; gap: 10px; font-size: 0.85em; text-transform: none; letter-spacing: 0.5px; margin: 0; transition: background-color 0.2s, color 0.2s;
+            color: #eee !important;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.85em;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            margin: 0;
+            transition: background-color 0.2s, color 0.2s;
         }
         .dropdown-menu a:hover { background-color: #2a2a2a; color: #00bcd4 !important; }
         .dropdown-menu hr { border: 0; border-top: 1px solid #333; margin: 6px 0; }
         .dropdown-menu a.logout-link:hover { color: #ff4d4d !important; background-color: rgba(255, 77, 77, 0.1); }
         .user-dropdown:hover .dropdown-menu.active-dropdown { display: block; }
 
-        /* Styles Panier */
-        .cart-wrapper { margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .cart-title { border-bottom: 2px solid #00bcd4; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.8em; }
+        /* Cartes et Panier */
+        .cart-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 30px; }
+        .cart-title { font-size: 1.5em; font-weight: bold; border-bottom: 2px solid #00bcd4; padding-bottom: 10px; margin-top: 0; margin-bottom: 25px; }
         
-        .sub-badge { 
-            display: none; background-color: #9146FF; color: #fff; padding: 12px 18px; 
-            border-radius: 6px; font-weight: bold; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(145, 70, 255, 0.3);
-        }
-        .sub-badge i { margin-right: 8px; font-size: 1.2em; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid #eee; border-left: 4px solid #00bcd4; border-radius: 6px; padding: 15px 20px; margin-bottom: 15px; }
+        .cart-item-info h4 { margin: 0; font-size: 1.1em; color: #222; }
+        .cart-item-info p { margin: 4px 0 0 0; color: #777; font-size: 0.85em; }
+        .cart-item-price { font-weight: bold; color: #00bcd4; font-size: 1.1em; display: flex; align-items: center; gap: 15px; }
+        .btn-remove { color: #ff4d4d; cursor: pointer; background: none; border: none; font-size: 1em; transition: transform 0.2s; }
+        .btn-remove:hover { transform: scale(1.2); }
 
-        .cart-items { margin-bottom: 20px; }
+        .notes-box { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 15px; margin: 25px 0; }
+        .notes-box textarea { width: 97%; border: 1px solid #ccc; border-radius: 6px; padding: 10px; font-family: inherit; resize: vertical; min-height: 70px; margin-top: 8px; }
+        .notes-box textarea:focus { border-color: #00bcd4; outline: none; }
 
-        /* Zone de commentaire */
-        .comment-box { margin-top: 25px; background: #f9f9f9; padding: 20px; border-radius: 6px; border: 1px solid #eee; }
-        .comment-box label { font-weight: bold; display: block; margin-bottom: 8px; color: #1a1a1a; }
-        .comment-box textarea { width: 100%; height: 90px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; resize: vertical; box-sizing: border-box; }
-        .comment-box textarea:focus { outline: none; border-color: #00bcd4; }
+        .cart-totals { border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px; }
+        .total-row { display: flex; justify-content: space-between; font-size: 1em; margin-bottom: 8px; }
+        .total-row.final { font-size: 1.25em; font-weight: bold; color: #00bcd4; border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; }
 
-        .summary-box { background: #f9f9f9; padding: 20px; border-radius: 6px; margin-top: 20px; border: 1px solid #eee; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em; }
-        .summary-row.total { font-weight: bold; font-size: 1.3em; color: #00bcd4; border-top: 1px solid #ddd; padding-top: 10px; }
+        .alert-warning { background-color: #fff8e1; color: #856404; border: 1px solid #ffeeba; border-radius: 6px; padding: 12px 16px; margin-top: 20px; text-align: center; }
+        .alert-warning a { color: #00bcd4; font-weight: bold; text-decoration: underline; }
 
-        .btn-checkout {
-            display: block; width: 100%; background: #00bcd4; color: #fff; text-align: center;
-            padding: 15px; border: none; border-radius: 6px; font-size: 1.1em; font-weight: bold;
-            cursor: pointer; margin-top: 20px; transition: background 0.3s ease; text-transform: uppercase;
-        }
-        .btn-checkout:hover { background: #0097a7; }
+        .btn-checkout { background-color: #00bcd4; color: white; border: none; width: 100%; padding: 15px; font-size: 1.05em; font-weight: bold; border-radius: 6px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: background 0.2s; display: block; text-align: center; text-decoration: none; }
+        .btn-checkout:hover { background-color: #0097a7; }
 
-        .auth-warning {
-            display: none; background: #fff3cd; color: #856404; border: 1px solid #ffeeba;
-            padding: 15px; border-radius: 6px; text-align: center; margin-top: 20px; font-weight: 600;
-        }
-        .auth-warning a { color: #00bcd4; text-decoration: underline; }
-
-        .empty-cart-msg { text-align: center; color: #777; padding: 20px 0; font-style: italic; }
-
-        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
-        .btn-social { display: inline-block; padding: 10px 18px; margin: 6px; background-color: #2a2a2a; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; border: 2px solid #00bcd4; transition: 0.3s; }
-        .btn-social:hover { background-color: #00bcd4; transform: translateY(-2px); }
-        .btn-social i { margin-right: 8px; }
-        .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; letter-spacing: 1px; }
-        .footer-bottom span { color: #00bcd4; font-weight: bold; }
+        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 30px 20px; margin-top: 60px; }
     </style>
 </head>
 <body>
 
-    <section class="hero-banner">
-        <img src="../images/banner-montage.png" alt="Banni&egrave;re Montage PC Skiztech">
-    </section>
-
-    <header></header>
-
-    <div class="container">
-        <div class="cart-wrapper">
-            <h1 class="cart-title"><i class="fas fa-shopping-basket"></i> Votre Panier</h1>
-            
-            <div id="badge-promo-sub" class="sub-badge">
-                <i class="fab fa-twitch"></i> Avantage Abonn&eacute; Twitch : -10% appliqu&eacute;s sur votre commande !
-            </div>
-
-            <div id="cart-items-container" class="cart-items"></div>
-
-            <!-- Espace Commentaire / Instructions -->
-            <div class="comment-box" id="comment-section" style="display: none;">
-                <label for="order-comment"><i class="fas fa-comment-dots"></i> Instructions ou pr&eacute;cisions pour votre commande :</label>
-                <textarea id="order-comment" placeholder="Pr&eacute;cisez ici vos contraintes, composants sp&eacute;cifiques, disponibilit&eacute;s..."></textarea>
-            </div>
-
-            <div class="summary-box">
-                <div class="summary-row">
-                    <span>Sous-total :</span>
-                    <span id="total-brut">0.00 &euro;</span>
-                </div>
-                <div class="summary-row" id="row-reduction" style="color: #9146FF; display: none;">
-                    <span>R&eacute;duction Sub Twitch (-10%) :</span>
-                    <span id="reduction-sub">- 0.00 &euro;</span>
-                </div>
-                <div class="summary-row total">
-                    <span>Total final :</span>
-                    <span id="total-final">0.00 &euro;</span>
-                </div>
-
-                <button class="btn-checkout" id="btn-pay" onclick="validerCommande()" style="display: none;">
-                    <i class="fas fa-credit-card"></i> Valider et Payer la commande
-                </button>
-
-                <div class="auth-warning" id="auth-warning-msg">
-                    <i class="fas fa-exclamation-triangle"></i> Vous devez <a href="index.html#auth-box">vous connecter</a> pour valider votre commande.
-                </div>
+    <nav>
+        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+        <a href="services.html"><i class="fas fa-tools"></i> Services</a>
+        <a href="panier.html" class="active"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
+        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
+        
+        <div class="user-dropdown">
+            <a href="index.html#auth-box" id="account-link">
+                <i class="fas fa-sign-in-alt"></i> Se connecter
+            </a>
+            <div class="dropdown-menu" id="dropdown-menu">
+                <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
+                <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
+                <hr>
+                <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- Modal de Confirmation Modernis&eacute; -->
-    <div id="order-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; align-items: center; justify-content: center;">
-        <div style="background: #fff; border-radius: 12px; max-width: 450px; width: 90%; padding: 30px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border-top: 5px solid #00bcd4;">
-            <div style="width: 60px; height: 60px; background: #e0f7fa; color: #00bcd4; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; font-size: 1.8em;">
-                <i class="fas fa-check"></i>
+    <div class="container">
+        <div class="cart-card">
+            <h2 class="cart-title"><i class="fas fa-shopping-basket"></i> Votre Panier</h2>
+
+            <div id="cart-items-container">
+                <!-- Les articles s'afficheront ici -->
             </div>
-            <h2 style="margin: 0 0 10px 0; color: #1a1a1a;">Commande Valid&eacute;e !</h2>
-            <p style="color: #666; font-size: 1em; margin-bottom: 25px;">
-                Votre commande <strong id="modal-order-id" style="color: #00bcd4;">#000000</strong> a bien &eacute;t&eacute; enregistr&eacute;e.
-            </p>
-            <button onclick="redirigerSuivi()" style="background: #00bcd4; color: #fff; border: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; font-size: 1em; cursor: pointer; transition: 0.3s; width: 100%; text-transform: uppercase;">
-                Suivre ma commande
+
+            <div class="notes-box">
+                <label for="order-instructions" style="font-weight: 600; font-size: 0.9em; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-comment-dots"></i> Instructions ou précisions pour votre commande :
+                </label>
+                <textarea id="order-instructions" placeholder="Précisez ici vos contraintes, composants spécifiques, disponibilités..."></textarea>
+            </div>
+
+            <div class="cart-totals">
+                <div class="total-row">
+                    <span>Sous-total :</span>
+                    <span id="subtotal-val">0.00 €</span>
+                </div>
+                <div id="discount-row" class="total-row" style="display: none; color: #2e7d32;">
+                    <span>Remise Twitch Sub (-10%) :</span>
+                    <span id="discount-val">-0.00 €</span>
+                </div>
+                <div class="total-row final">
+                    <span>Total final :</span>
+                    <span id="total-val">0.00 €</span>
+                </div>
+            </div>
+
+            <!-- ZONE D'ACTION : CONNECTÉ vs NON CONNECTÉ -->
+            <div id="auth-alert" class="alert-warning" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i> Vous devez <a href="index.html#auth-box">vous connecter</a> pour valider votre commande.
+            </div>
+
+            <button id="btn-submit-order" class="btn-checkout" onclick="validerCommande()" style="display: none;">
+                <i class="fas fa-check-circle"></i> Valider ma commande
             </button>
         </div>
     </div>
 
-    <footer id="contact">
-        <div class="container">
-            <p>Besoin d'un devis ? Contactez-moi : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
-            <div class="social-links" style="margin-top: 20px;">
-                <a href="https://twitch.tv/angryskiz" target="_blank" class="btn-social"><i class="fab fa-twitch"></i> Twitch</a>
-                <a href="https://youtube.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-youtube"></i> YouTube</a>
-                <a href="https://tiktok.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-tiktok"></i> TikTok</a>
-                <a href="https://instagram.com/angryskiz" target="_blank" class="btn-social"><i class="fab fa-instagram"></i> Instagram</a>
-            </div>
-            <div class="footer-bottom">
-                Skiztech by <span>Skizcorp</span> &copy; 2026 &mdash; Tous droits r&eacute;serv&eacute;s
-            </div>
-        </div>
+    <footer>
+        <p>Une question sur ton projet ? Contacte-moi directement : <a href="mailto:contact@angryskiz.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@angryskiz.fr</a></p>
     </footer>
 
-    <script src="navbar.js"></script>
-
     <script>
-        let montantTotalFinal = 0;
+        // Article par défaut si panier vide pour le test
+        const defaultCart = [
+            { id: 1, title: 'Pack ARGENT - Montage PC', price: 100.00, category: 'Prestation technique' }
+        ];
 
-        function getUser() {
-            return JSON.parse(localStorage.getItem('twitch_user')) || 
-                   JSON.parse(localStorage.getItem('google_user')) || 
-                   JSON.parse(localStorage.getItem('discord_user')) || 
-                   JSON.parse(localStorage.getItem('user_account'));
-        }
+        function chargerPanier() {
+            // Read unified login state
+            const rawUser = localStorage.getItem('auth_user') || localStorage.getItem('twitch_user') || localStorage.getItem('user_account');
+            let user = null;
 
-        function checkLoginState() {
-            const user = getUser();
+            if (rawUser) {
+                try { user = JSON.parse(rawUser); } catch(e) { user = null; }
+            }
+
+            // Update Navigation Menu
             const accountLink = document.getElementById('account-link');
             const dropdownMenu = document.getElementById('dropdown-menu');
+            const alertBox = document.getElementById('auth-alert');
+            const btnSubmit = document.getElementById('btn-submit-order');
 
-            if (accountLink && dropdownMenu) {
-                if (user) {
-                    const userAvatar = user.profile_image_url || user.avatar || user.picture;
-                    const userName = user.display_name || user.name || user.username || "Mon Compte";
-                    
-                    const iconHtml = userAvatar 
-                        ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
-                        : `<i class="fas fa-user-circle"></i>`;
-                    
-                    accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
-                    accountLink.href = "#"; 
-                    dropdownMenu.classList.add('active-dropdown');
-                } else {
-                    accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
-                    accountLink.href = "index.html#auth-box";
-                    dropdownMenu.classList.remove('active-dropdown');
-                }
-            }
-            calculerPanier();
-        }
-
-        function supprimerDuPanier(index) {
-            let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
-            panier.splice(index, 1);
-            localStorage.setItem('skiztech_cart', JSON.stringify(panier));
-            calculerPanier();
-        }
-
-        function calculerPanier() {
-            let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
-            let itemsContainer = document.getElementById('cart-items-container');
-            let commentSection = document.getElementById('comment-section');
-            let btnPay = document.getElementById('btn-pay');
-            let authWarning = document.getElementById('auth-warning-msg');
-            const user = getUser();
-
-            if (!itemsContainer) return;
-
-            itemsContainer.innerHTML = '';
-            let totalBrut = 0;
-
-            if (panier.length === 0) {
-                itemsContainer.innerHTML = '<div class="empty-cart-msg">Votre panier est actuellement vide.</div>';
-                if (commentSection) commentSection.style.display = 'none';
-                if (btnPay) btnPay.style.display = 'none';
-                if (authWarning) authWarning.style.display = 'none';
-            } else {
-                if (commentSection) commentSection.style.display = 'block';
+            if (user) {
+                const userAvatar = user.avatar;
+                const userName = user.name || "Mon Compte";
+                const iconHtml = userAvatar 
+                    ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
+                    : `<i class="fas fa-user-circle"></i>`;
                 
-                // Gestion de la connexion obligatoire pour payer
-                if (user) {
-                    if (btnPay) btnPay.style.display = 'block';
-                    if (authWarning) authWarning.style.display = 'none';
-                } else {
-                    if (btnPay) btnPay.style.display = 'none';
-                    if (authWarning) authWarning.style.display = 'block';
-                }
+                accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
+                accountLink.href = "#";
+                dropdownMenu.classList.add('active-dropdown');
 
-                panier.forEach((item, index) => {
-                    let prixNum = parseFloat(item.price) || 0;
-                    totalBrut += prixNum;
+                alertBox.style.display = 'none';
+                btnSubmit.style.display = 'block';
+            } else {
+                accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
+                accountLink.href = "index.html#auth-box";
+                dropdownMenu.classList.remove('active-dropdown');
 
-                    let nomArticle = item.title || item.name || 'Service Skiztech';
-
-                    let card = document.createElement('div');
-                    card.style.cssText = 'background: #fff; border: 1px solid #e0e0e0; border-left: 4px solid #00bcd4; border-radius: 6px; padding: 15px 20px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);';
-                    
-                    card.innerHTML = `
-                        <div>
-                            <h3 style="margin: 0 0 5px 0; font-size: 1.1em; color: #1a1a1a;">${nomArticle}</h3>
-                            <span style="font-size: 0.85em; color: #666;">Prestation technique</span>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 20px;">
-                            <span style="font-size: 1.2em; font-weight: bold; color: #00bcd4;">${prixNum.toFixed(2)} &euro;</span>
-                            <button onclick="supprimerDuPanier(${index})" title="Supprimer" style="background: none; border: none; color: #ff4d4d; cursor: pointer; font-size: 1.2em;">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
-                        </div>
-                    `;
-                    itemsContainer.appendChild(card);
-                });
+                alertBox.style.display = 'block';
+                btnSubmit.style.display = 'none';
             }
 
-            const isSub = localStorage.getItem('is_twitch_sub') === 'true';
-            let tauxReduction = isSub ? 0.10 : 0;
+            // Charge les items du panier depuis localStorage
+            let cart = JSON.parse(localStorage.getItem('cart_items'));
+            if (!cart || cart.length === 0) {
+                cart = defaultCart; // Fallback pour affichage
+                localStorage.setItem('cart_items', JSON.stringify(cart));
+            }
 
-            let montantReduction = totalBrut * tauxReduction;
-            montantTotalFinal = totalBrut - montantReduction;
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <h4>${item.title}</h4>
+                        <p>${item.category || ''}</p>
+                    </div>
+                    <div class="cart-item-price">
+                        <span>${item.price.toFixed(2)} €</span>
+                        <button class="btn-remove" onclick="supprimerItem(${index})" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `).join('');
 
-            document.getElementById('total-brut').innerHTML = totalBrut.toFixed(2) + ' &euro;';
-            document.getElementById('reduction-sub').innerHTML = '- ' + montantReduction.toFixed(2) + ' &euro;';
-            document.getElementById('total-final').innerHTML = montantTotalFinal.toFixed(2) + ' &euro;';
+            // Calculs Financiers
+            const subtotal = cart.reduce((acc, item) => acc + item.price, 0);
+            const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
+            
+            document.getElementById('subtotal-val').innerText = subtotal.toFixed(2) + ' €';
 
-            const subBadge = document.getElementById('badge-promo-sub');
-            const rowReduction = document.getElementById('row-reduction');
+            let total = subtotal;
+            if (isSub) {
+                const discount = subtotal * 0.10;
+                total = subtotal - discount;
+                document.getElementById('discount-val').innerText = '-' + discount.toFixed(2) + ' €';
+                document.getElementById('discount-row').style.display = 'flex';
+            } else {
+                document.getElementById('discount-row').style.display = 'none';
+            }
 
-            if (subBadge) subBadge.style.display = isSub ? 'block' : 'none';
-            if (rowReduction) rowReduction.style.display = isSub ? 'flex' : 'none';
+            document.getElementById('total-val').innerText = total.toFixed(2) + ' €';
+        }
+
+        function supprimerItem(index) {
+            let cart = JSON.parse(localStorage.getItem('cart_items') || '[]');
+            cart.splice(index, 1);
+            localStorage.setItem('cart_items', JSON.stringify(cart));
+            chargerPanier();
         }
 
         function validerCommande() {
-            const user = getUser();
-            if (!user) {
-                alert("Erreur : Vous devez être connecté pour valider la commande.");
-                window.location.href = "index.html#auth-box";
-                return;
-            }
-
-            let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
-            if (panier.length === 0) return;
-
-            const commentaire = document.getElementById('order-comment').value.trim();
-            const idCommande = Math.floor(100000 + Math.random() * 900000).toString();
-            const listeNoms = panier.map(item => item.title || item.name || 'Service Skiztech').join(', ');
-            
-            const nouvelleCommande = {
-                id: idCommande,
-                date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
-                serviceName: listeNoms,
-                totalPrice: montantTotalFinal.toFixed(2),
-                comment: commentaire || "Aucun commentaire sp\u00e9cifique",
-                statusText: "Commande Valid\u00e9e",
-                step: 1,
-                progress: 0
-            };
-
-            let userOrders = JSON.parse(localStorage.getItem('user_orders')) || [];
-            userOrders.unshift(nouvelleCommande);
-            localStorage.setItem('user_orders', JSON.stringify(userOrders));
-
-            localStorage.removeItem('skiztech_cart');
-
-            document.getElementById('modal-order-id').innerText = '#' + idCommande;
-            document.getElementById('order-modal').style.display = 'flex';
-        }
-
-        function redirigerSuivi() {
+            alert('Commande enregistrée avec succès !');
             window.location.href = "commandes.html";
         }
 
+        // Action de déconnexion
         document.addEventListener('click', function(e) {
             if (e.target && e.target.closest('#btn-logout')) {
                 e.preventDefault();
+                localStorage.removeItem('auth_user');
                 localStorage.removeItem('twitch_user');
-                localStorage.removeItem('google_user');
-                localStorage.removeItem('discord_user');
                 localStorage.removeItem('user_account');
-                localStorage.removeItem('is_twitch_sub');
-                window.location.reload();
+                window.location.href = "index.html";
             }
         });
 
-        window.onload = () => {
-            checkLoginState();
-        };
+        window.addEventListener('DOMContentLoaded', chargerPanier);
     </script>
 </body>
 </html>
