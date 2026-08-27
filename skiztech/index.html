@@ -212,6 +212,7 @@
             align-items: center;
             gap: 8px;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
         }
 
         .btn-auth-custom:hover {
@@ -308,7 +309,7 @@
                 <a href="services.html" class="btn-link"><i class="fas fa-tools" style="margin-right: 8px;"></i> Découvrir mes services</a>
             </div>
 
-            <!-- SECTION CONNEXION CLAIRE & VOYANTE -->
+            <!-- SECTION CONNEXION CLAIRE -->
             <div id="auth-box">
                 <div class="auth-container-wrapper">
                     <div class="auth-card-main">
@@ -319,13 +320,18 @@
                         <p>Connecte-toi pour valider ta commande (-10% appliqués aux abonnés Twitch Sub).</p>
                         
                         <div class="auth-buttons-grid">
+                            <!-- BOUTON TWITCH -->
                             <a href="https://id.twitch.tv/oauth2/authorize?client_id=8p3ywkyx2k286l9wyc8y264zw0zq3j&redirect_uri=https://fanciful-manatee-d2bdd6.netlify.app/skiztech/index.html&response_type=token&scope=user:read:email" class="btn-auth-custom btn-auth-twitch-custom">
                                 <i class="fab fa-twitch"></i> Twitch <span style="font-size: 0.85em; opacity: 0.9;">(-10% Sub)</span>
                             </a>
-                            <a href="#" class="btn-auth-custom btn-auth-google-custom">
+                            
+                            <!-- BOUTON GOOGLE -->
+                            <a id="btn-google-login" href="#" class="btn-auth-custom btn-auth-google-custom">
                                 <i class="fab fa-google" style="color: #4285F4;"></i> Google
                             </a>
-                            <a href="#" class="btn-auth-custom btn-auth-discord-custom">
+
+                            <!-- BOUTON DISCORD -->
+                            <a id="btn-discord-login" href="#" class="btn-auth-custom btn-auth-discord-custom">
                                 <i class="fab fa-discord"></i> Discord
                             </a>
                         </div>
@@ -391,19 +397,29 @@
         </div>
     </footer>
 
-    <!-- Script Connexion, Menu Déroulant et Déconnexion -->
+    <!-- Script de Connexion Multi-Plateformes (Twitch, Google, Discord) -->
     <script>
-        const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
+        // CONFIGURATION DES IDS DE TES APPLICATIONS OAUTH2
+        const TWITCH_CLIENT_ID = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
+        const GOOGLE_CLIENT_ID = 'TON_GOOGLE_CLIENT_ID.apps.googleusercontent.com'; // À remplacer avec ton Client ID Google
+        const DISCORD_CLIENT_ID = 'TON_DISCORD_CLIENT_ID'; // À remplacer avec ton Client ID Discord
+        
+        const REDIRECT_URI = window.location.origin + window.location.pathname;
 
+        // Génération des URLs de redirection d'authentification
+        document.getElementById('btn-google-login').href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=email%20profile`;
+        document.getElementById('btn-discord-login').href = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify%20email`;
+
+        // Vérifie si un utilisateur est déjà stocké en local
         function checkLoginState() {
-            const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
+            const user = JSON.parse(localStorage.getItem('auth_user'));
             const accountLink = document.getElementById('account-link');
             const dropdownMenu = document.getElementById('dropdown-menu');
 
             if (accountLink && dropdownMenu) {
                 if (user) {
-                    const userAvatar = user.profile_image_url || user.avatar || user.picture;
-                    const userName = user.display_name || user.name || "Mon Compte";
+                    const userAvatar = user.avatar;
+                    const userName = user.name || "Mon Compte";
                     
                     const iconHtml = userAvatar 
                         ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
@@ -425,34 +441,67 @@
             }
         }
 
-        function handleTwitchCallback() {
+        // Gère les retours d'authentification des 3 plateformes
+        function handleOAuthCallback() {
             const hash = window.location.hash;
-            if (hash.includes('access_token=')) {
-                const token = new URLSearchParams(hash.substring(1)).get('access_token');
-                
-                window.history.replaceState({}, document.title, window.location.pathname);
+            if (!hash.includes('access_token=')) return;
 
+            const params = new URLSearchParams(hash.substring(1));
+            const token = params.get('access_token');
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            // On identifie la plateforme selon la présence d'autres paramètres ou tente les appels API
+            if (hash.includes('scope=user') || hash.includes('twitch')) {
+                // RETOUR TWITCH
                 fetch('https://api.twitch.tv/helix/users', {
-                    headers: {
-                        'Client-ID': clientId,
-                        'Authorization': `Bearer ${token}`
-                    }
+                    headers: { 'Client-ID': TWITCH_CLIENT_ID, 'Authorization': `Bearer ${token}` }
                 })
                 .then(res => res.json())
                 .then(data => {
                     if (data.data && data.data.length > 0) {
-                        const userData = data.data[0];
-                        localStorage.setItem('twitch_user', JSON.stringify(userData));
+                        const u = data.data[0];
+                        const userData = { provider: 'twitch', name: u.display_name, avatar: u.profile_image_url, email: u.email };
+                        localStorage.setItem('auth_user', JSON.stringify(userData));
                         checkLoginState();
                     }
+                }).catch(err => console.error('Erreur Twitch:', err));
+
+            } else if (hash.includes('discord') || hash.includes('identify')) {
+                // RETOUR DISCORD
+                fetch('https://discord.com/api/users/@me', {
+                    headers: { 'Authorization': `Bearer ${token}` }
                 })
-                .catch(err => console.error('Erreur Twitch:', err));
+                .then(res => res.json())
+                .then(u => {
+                    if (u.id) {
+                        const avatarUrl = u.avatar ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png` : '';
+                        const userData = { provider: 'discord', name: u.username, avatar: avatarUrl, email: u.email };
+                        localStorage.setItem('auth_user', JSON.stringify(userData));
+                        checkLoginState();
+                    }
+                }).catch(err => console.error('Erreur Discord:', err));
+
+            } else {
+                // RETOUR GOOGLE
+                fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                })
+                .then(res => res.json())
+                .then(u => {
+                    if (u.sub) {
+                        const userData = { provider: 'google', name: u.name, avatar: u.picture, email: u.email };
+                        localStorage.setItem('auth_user', JSON.stringify(userData));
+                        checkLoginState();
+                    }
+                }).catch(err => console.error('Erreur Google:', err));
             }
         }
 
+        // Action de déconnexion globale
         document.addEventListener('click', function(e) {
             if (e.target && e.target.closest('#btn-logout')) {
                 e.preventDefault();
+                localStorage.removeItem('auth_user');
                 localStorage.removeItem('twitch_user');
                 localStorage.removeItem('user_account');
                 window.location.reload();
@@ -460,7 +509,7 @@
         });
 
         window.onload = () => {
-            handleTwitchCallback();
+            handleOAuthCallback();
             checkLoginState();
         };
     </script>
