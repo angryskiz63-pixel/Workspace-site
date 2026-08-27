@@ -17,6 +17,18 @@
         .order-row.closed { opacity: 0.5; background: #181818; }
         .order-head { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 8px; color: #00bcd4; flex-wrap: wrap; gap: 10px; }
         
+        /* Style spécifique pour la boîte d'adresse client */
+        .client-info-box {
+            background: #181818;
+            border-left: 3px solid #00bcd4;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #ddd;
+        }
+        .client-info-box strong { color: #fff; }
+
         .controls { display: flex; gap: 12px; align-items: center; margin-top: 15px; background: #1a1a1a; padding: 12px; border-radius: 6px; flex-wrap: wrap; }
         select, button.action-btn { padding: 8px 14px; border-radius: 4px; border: 1px solid #444; background: #2a2a2a; color: #fff; cursor: pointer; font-weight: bold; }
         button.action-btn { background: #00bcd4; color: #111; border: none; }
@@ -42,7 +54,6 @@
 
 <script src="navbar.js"></script>
 <script>
-    // Sécurité accès Admin
     function verifierAccesAdmin() {
         const rawUser = localStorage.getItem('auth_user') || 
                         localStorage.getItem('twitch_user') || 
@@ -77,7 +88,6 @@
         const allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
         const container = document.getElementById('admin-orders-list');
         
-        // Filtre : si le statut n'est pas 'cloturee', il est considéré 'en_cours'
         const filtered = allOrders.filter(o => {
             const statusKey = o.statusCode || o.status;
             return currentFilter === 'cloturee' ? statusKey === 'cloturee' : statusKey !== 'cloturee';
@@ -88,23 +98,38 @@
             return;
         }
 
-        const stepLabels = {
-            1: "Réception des composants",
-            2: "Montage & Tests en cours",
-            3: "Expédié / En livraison",
-            4: "Commande Livrée"
-        };
-
         container.innerHTML = filtered.map(order => {
             const currentStep = order.step || 1;
             const isClosed = (order.statusCode === 'cloturee' || order.status === 'cloturee');
 
+            // Récupération de l'adresse sauvegardée par le client
+            let addressInfo = order.shippingAddress;
+            if (!addressInfo && order.userKey) {
+                addressInfo = JSON.parse(localStorage.getItem('user_address_' + order.userKey));
+            }
+
+            // Mise en forme de l'adresse
+            let addressHTML = "<span style='color:#888;'>Coordonnées non renseignées</span>";
+            if (addressInfo) {
+                addressHTML = `
+                    <strong>${addressInfo.nom || 'N/C'}</strong> — <i class="fas fa-phone"></i> ${addressInfo.phone || 'N/C'}<br>
+                    <i class="fas fa-map-marker-alt"></i> ${addressInfo.street || ''}, ${addressInfo.zip || ''} ${addressInfo.city || ''}
+                `;
+            }
+
             return `
                 <div class="order-row ${isClosed ? 'closed' : ''}">
                     <div class="order-head">
-                        <span>#${order.id} — Client : ${order.userName || 'Anonyme'} (${order.userEmail || 'N/C'})</span>
+                        <span>#${order.id} — Compte : ${order.userName || 'Anonyme'} (${order.userEmail || 'N/C'})</span>
                         <span>${order.date} | Total : ${order.total} €</span>
                     </div>
+
+                    <!-- Affichage détaillé du client et de son adresse -->
+                    <div class="client-info-box">
+                        <i class="fas fa-truck"></i> <strong>Adresse de livraison :</strong><br>
+                        ${addressHTML}
+                    </div>
+
                     <p><strong>Articles :</strong> ${Array.isArray(order.items) ? order.items.join(', ') : order.items}</p>
                     ${order.instructions ? `<p style="color: #aaa;"><strong>Note client :</strong> <em>${order.instructions}</em></p>` : ''}
                     
@@ -149,7 +174,6 @@
             
             localStorage.setItem('skiztech_all_orders', JSON.stringify(allOrders));
 
-            // Synchronisation avec les commandes de l'utilisateur
             if (targetOrder.userKey) {
                 let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
                 let userTarget = userOrders.find(o => o.id === orderId);
