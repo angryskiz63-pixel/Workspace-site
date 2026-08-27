@@ -81,6 +81,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 background-color: #2a2a2a !important;
                 color: #00bcd4 !important;
             }
+            .dropdown-menu a.admin-link {
+                color: #ffb74d !important;
+                font-weight: bold !important;
+            }
+            .dropdown-menu a.admin-link i {
+                color: #ffb74d !important;
+            }
+            .dropdown-menu a.admin-link:hover {
+                background-color: rgba(255, 183, 77, 0.15) !important;
+                color: #ffa726 !important;
+            }
             .dropdown-menu hr {
                 border: 0;
                 border-top: 1px solid #333;
@@ -112,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <i class="fas fa-sign-in-alt"></i> Se connecter
                 </a>
                 <div class="dropdown-menu" id="dropdown-menu">
+                    <div id="admin-menu-item"></div>
                     <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
                     <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
                     <hr>
@@ -127,6 +139,7 @@ document.addEventListener("DOMContentLoaded", function() {
 function updateNavbarAuth() {
     const accountLink = document.getElementById('account-link');
     const dropdownMenu = document.getElementById('dropdown-menu');
+    const adminMenuItem = document.getElementById('admin-menu-item');
 
     if (!accountLink || !dropdownMenu) return;
 
@@ -152,10 +165,25 @@ function updateNavbarAuth() {
         accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
         accountLink.href = "#"; 
         dropdownMenu.classList.add('active-dropdown');
+
+        // Vérification de l'adresse email administrateur
+        if (adminMenuItem) {
+            if (user.email === 'angryskiz63@gmail.com') {
+                adminMenuItem.innerHTML = `
+                    <a href="admin.html" class="admin-link">
+                        <i class="fas fa-user-shield"></i> Administration
+                    </a>
+                    <hr>
+                `;
+            } else {
+                adminMenuItem.innerHTML = '';
+            }
+        }
     } else {
         accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
         accountLink.href = "index.html#auth-box";
         dropdownMenu.classList.remove('active-dropdown');
+        if (adminMenuItem) adminMenuItem.innerHTML = '';
     }
 }
 
