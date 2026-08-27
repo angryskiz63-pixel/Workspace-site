@@ -11,13 +11,7 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f4f9; color: #333; line-height: 1.6; }
         .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
         
-        .hero-banner { 
-            width: 100%; 
-            height: 300px; 
-            overflow: hidden; 
-            background-color: #000; 
-            box-shadow: inset 0 -20px 30px rgba(0,0,0,0.5); 
-        }
+        .hero-banner { width: 100%; height: 300px; overflow: hidden; background-color: #000; box-shadow: inset 0 -20px 30px rgba(0,0,0,0.5); }
         .hero-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 
         @media (max-width: 1200px) { .hero-banner { height: 220px; } }
@@ -53,22 +47,29 @@
         .cart-title { border-bottom: 2px solid #00bcd4; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.8em; }
         
         .sub-badge { 
-            display: none; 
-            background-color: #9146FF; 
-            color: #fff; 
-            padding: 12px 18px; 
-            border-radius: 6px; 
-            font-weight: bold; 
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(145, 70, 255, 0.3);
+            display: none; background-color: #9146FF; color: #fff; padding: 12px 18px; 
+            border-radius: 6px; font-weight: bold; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(145, 70, 255, 0.3);
         }
         .sub-badge i { margin-right: 8px; font-size: 1.2em; }
 
         .cart-items { margin-bottom: 20px; }
 
+        /* Zone de commentaire */
+        .comment-box { margin-top: 25px; background: #f9f9f9; padding: 20px; border-radius: 6px; border: 1px solid #eee; }
+        .comment-box label { font-weight: bold; display: block; margin-bottom: 8px; color: #1a1a1a; }
+        .comment-box textarea { width: 100%; height: 90px; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; resize: vertical; box-sizing: border-box; }
+        .comment-box textarea:focus { outline: none; border-color: #00bcd4; }
+
         .summary-box { background: #f9f9f9; padding: 20px; border-radius: 6px; margin-top: 20px; border: 1px solid #eee; }
         .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 1.1em; }
         .summary-row.total { font-weight: bold; font-size: 1.3em; color: #00bcd4; border-top: 1px solid #ddd; padding-top: 10px; }
+
+        .btn-checkout {
+            display: block; width: 100%; background: #00bcd4; color: #fff; text-align: center;
+            padding: 15px; border: none; border-radius: 6px; font-size: 1.1em; font-weight: bold;
+            cursor: pointer; margin-top: 20px; transition: background 0.3s ease; text-transform: uppercase;
+        }
+        .btn-checkout:hover { background: #0097a7; }
 
         .empty-cart-msg { text-align: center; color: #777; padding: 20px 0; font-style: italic; }
 
@@ -86,7 +87,6 @@
         <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
     </section>
 
-    <!-- Navigation dynamique via navbar.js -->
     <header></header>
 
     <div class="container">
@@ -97,8 +97,13 @@
                 <i class="fab fa-twitch"></i> Avantage Abonné Twitch : -10% appliqués sur votre commande !
             </div>
 
-            <!-- Liste dynamique des cartes de services ajoutés -->
             <div id="cart-items-container" class="cart-items"></div>
+
+            <!-- Espace Commentaire / Instructions -->
+            <div class="comment-box" id="comment-section" style="display: none;">
+                <label for="order-comment"><i class="fas fa-comment-dots"></i> Instructions ou précisions pour votre commande :</label>
+                <textarea id="order-comment" placeholder="Précisez ici vos contraintes, composants spécifiques, disponibilités..."></textarea>
+            </div>
 
             <div class="summary-box">
                 <div class="summary-row">
@@ -113,11 +118,14 @@
                     <span>Total final :</span>
                     <span id="total-final">0.00 &euro;</span>
                 </div>
+
+                <button class="btn-checkout" id="btn-pay" onclick="validerCommande()" style="display: none;">
+                    <i class="fas fa-credit-card"></i> Valider et Payer la commande
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Pied de page avec ancre contact -->
     <footer id="contact">
         <div class="container">
             <p>Besoin d'un devis ? Contactez-moi : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
@@ -133,13 +141,12 @@
         </div>
     </footer>
 
-    <!-- Script de navigation externe -->
     <script src="navbar.js"></script>
 
-    <!-- Code Javascript du Panier -->
     <script>
+        let montantTotalFinal = 0;
+
         function checkLoginState() {
-            // Détection multi-fournisseurs (Twitch, Google, Discord, Generique)
             const user = JSON.parse(localStorage.getItem('twitch_user')) || 
                          JSON.parse(localStorage.getItem('google_user')) || 
                          JSON.parse(localStorage.getItem('discord_user')) || 
@@ -179,6 +186,9 @@
         function calculerPanier() {
             let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
             let itemsContainer = document.getElementById('cart-items-container');
+            let commentSection = document.getElementById('comment-section');
+            let btnPay = document.getElementById('btn-pay');
+
             if (!itemsContainer) return;
 
             itemsContainer.innerHTML = '';
@@ -186,7 +196,12 @@
 
             if (panier.length === 0) {
                 itemsContainer.innerHTML = '<div class="empty-cart-msg">Votre panier est actuellement vide.</div>';
+                if (commentSection) commentSection.style.display = 'none';
+                if (btnPay) btnPay.style.display = 'none';
             } else {
+                if (commentSection) commentSection.style.display = 'block';
+                if (btnPay) btnPay.style.display = 'block';
+
                 panier.forEach((item, index) => {
                     let prixNum = parseFloat(item.price) || 0;
                     totalBrut += prixNum;
@@ -212,16 +227,15 @@
                 });
             }
 
-            // Remise abonné Twitch (-10%)
             const isSub = localStorage.getItem('is_twitch_sub') === 'true';
             let tauxReduction = isSub ? 0.10 : 0;
 
             let montantReduction = totalBrut * tauxReduction;
-            let totalFinal = totalBrut - montantReduction;
+            montantTotalFinal = totalBrut - montantReduction;
 
             document.getElementById('total-brut').innerHTML = totalBrut.toFixed(2) + ' &euro;';
             document.getElementById('reduction-sub').innerHTML = '- ' + montantReduction.toFixed(2) + ' &euro;';
-            document.getElementById('total-final').innerHTML = totalFinal.toFixed(2) + ' &euro;';
+            document.getElementById('total-final').innerHTML = montantTotalFinal.toFixed(2) + ' &euro;';
 
             const subBadge = document.getElementById('badge-promo-sub');
             const rowReduction = document.getElementById('row-reduction');
@@ -230,7 +244,35 @@
             if (rowReduction) rowReduction.style.display = isSub ? 'flex' : 'none';
         }
 
-        // Gestion globale de la déconnexion (Nettoie tous les types de session)
+        function validerCommande() {
+            let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
+            if (panier.length === 0) return;
+
+            const commentaire = document.getElementById('order-comment').value.trim();
+            const idCommande = 'SKZ-' + Math.floor(100000 + Math.random() * 900000);
+            
+            // Création de l'objet commande complet
+            const nouvelleCommande = {
+                id: idCommande,
+                date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                items: panier,
+                total: montantTotalFinal.toFixed(2),
+                comment: commentaire || "Aucun commentaire spécifique",
+                status: "En attente de traitement"
+            };
+
+            // Sauvegarde dans l'historique des commandes
+            let commandes = JSON.parse(localStorage.getItem('skiztech_orders')) || [];
+            commandes.unshift(nouvelleCommande);
+            localStorage.setItem('skiztech_orders', JSON.stringify(commandes));
+
+            // Vider le panier
+            localStorage.removeItem('skiztech_cart');
+
+            alert(`Commande N° ${idCommande} validée avec succès !`);
+            window.location.href = "suivi-commande.html";
+        }
+
         document.addEventListener('click', function(e) {
             if (e.target && e.target.closest('#btn-logout')) {
                 e.preventDefault();
