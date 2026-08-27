@@ -66,7 +66,6 @@
 
         const userEmail = (user?.email || user?.mail || user?.details?.email || '').toLowerCase();
 
-        // Vérification stricte de l'administrateur
         if (!user || userEmail !== 'angryskiz63@gmail.com') {
             alert("Accès refusé : cet espace est réservé à l'administrateur (" + (userEmail || 'non connecté') + ").");
             window.location.href = "index.html";
@@ -80,8 +79,16 @@
     function filtrer(type, evt) {
         currentFilter = type;
         document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        if (evt) evt.target.classList.add('active');
+        if (evt && evt.target) evt.target.classList.add('active');
         afficherCommandes();
+    }
+
+    function formatItems(items) {
+        if (!items) return 'Aucun article';
+        if (Array.isArray(items)) {
+            return items.map(item => (typeof item === 'object' && item !== null) ? (item.name || item.title || JSON.stringify(item)) : item).join(', ');
+        }
+        return items;
     }
 
     function afficherCommandes() {
@@ -102,14 +109,15 @@
             const currentStep = order.step || 1;
             const isClosed = (order.statusCode === 'cloturee' || order.statusClass === 'cloturee' || order.status === 'Commande clôturée');
 
-            // Récupération de l'adresse enregistrée avec la commande
             let addressInfo = order.shippingAddress;
             if (!addressInfo && order.userKey) {
-                addressInfo = JSON.parse(localStorage.getItem('user_address_' + order.userKey));
+                try {
+                    addressInfo = JSON.parse(localStorage.getItem('user_address_' + order.userKey));
+                } catch(e) {}
             }
 
-            // Nom du client
             const clientName = (addressInfo && addressInfo.nom) ? addressInfo.nom : (order.userName || 'Anonyme');
+            const totalFormatted = typeof order.total === 'number' ? order.total.toFixed(2) : order.total;
 
             let addressHTML = "<span style='color:#888;'>Coordonnées non renseignées</span>";
             if (addressInfo) {
@@ -123,7 +131,7 @@
                 <div class="order-row ${isClosed ? 'closed' : ''}">
                     <div class="order-head">
                         <span>#${order.id} — Client : ${clientName} (${order.userEmail || 'N/C'})</span>
-                        <span>${order.date} | Total : ${order.total} €</span>
+                        <span>${order.date || 'Date N/C'} | Total : ${totalFormatted} €</span>
                     </div>
 
                     <div class="client-info-box">
@@ -132,7 +140,7 @@
                         ${addressHTML}
                     </div>
 
-                    <p><strong>Articles :</strong> ${Array.isArray(order.items) ? order.items.join(', ') : order.items}</p>
+                    <p><strong>Articles :</strong> ${formatItems(order.items)}</p>
                     
                     ${order.trackingNumbers ? `<p style="color: #ffb74d; margin: 5px 0;"><strong><i class="fas fa-boxes"></i> Colis & Suivis pièces :</strong> ${order.trackingNumbers}</p>` : ''}
                     ${order.instructions ? `<p style="color: #aaa; margin: 5px 0;"><strong>Note client :</strong> <em>${order.instructions}</em></p>` : ''}
@@ -159,7 +167,10 @@
     }
 
     function updateStep(orderId) {
-        const newStep = parseInt(document.getElementById(`step-select-${orderId}`).value);
+        const selectElem = document.getElementById(`step-select-${orderId}`);
+        if (!selectElem) return;
+        
+        const newStep = parseInt(selectElem.value);
         let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
         
         const stepLabels = {

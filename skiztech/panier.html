@@ -378,7 +378,6 @@
 
     <!-- Script de gestion du Panier -->
     <script>
-        // Fonction pour afficher/masquer le champ adresse Point Relais
         function toggleRelayInput() {
             const isRelaySelected = document.getElementById('radio-relay')?.checked;
             const relayBox = document.getElementById('relay-address-box');
@@ -523,9 +522,10 @@
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             const total = isSub ? (subtotal * 0.90) : subtotal;
 
-            // 6. Objet Commande enrichi et compatible Panel Admin
+            // 6. Nom complet du client
             const fullName = savedAddress.nom || `${savedAddress.firstname || ''} ${savedAddress.lastname || ''}`.trim() || user.name || user.login || 'Client';
 
+            // 7. Structure Unifiée de la Commande
             const newOrder = {
                 id: Math.floor(100000 + Math.random() * 900000),
                 date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
@@ -544,17 +544,17 @@
                 shippingAddress: savedAddress
             };
 
-            // 7. Enregistrement Utilisateur
+            // 8. Sauvegarde Client ("Mes Commandes")
             let userOrders = JSON.parse(localStorage.getItem('user_orders_' + accountKey)) || [];
             userOrders.unshift(newOrder);
             localStorage.setItem('user_orders_' + accountKey, JSON.stringify(userOrders));
 
-            // 8. Enregistrement Globale Admin
+            // 9. Sauvegarde GLOBALE Admin (Indispensable pour qu'Angry Skiz la voie)
             let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
             allOrders.unshift(newOrder);
             localStorage.setItem('skiztech_all_orders', JSON.stringify(allOrders));
 
-            // 9. Nettoyage et Redirection
+            // 10. Vider le panier et rediriger vers le suivi
             localStorage.removeItem('skiztech_cart');
             window.location.href = "commandes.html";
         }
