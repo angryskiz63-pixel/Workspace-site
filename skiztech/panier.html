@@ -201,9 +201,9 @@
                 <i class="fas fa-exclamation-triangle"></i> Vous devez <a href="index.html#auth-box">vous connecter</a> pour valider votre commande.
             </div>
 
-            <!-- Alerte profil incomplet -->
+            <!-- Alerte profil incomplet (Lien mis à jour vers #adresse) -->
             <div id="profile-alert" class="alert-danger" style="display: none;">
-                <i class="fas fa-exclamation-circle"></i> Coordonnées de livraison incomplètes ! Veuillez d'abord compléter votre <a href="profil.html">Profil (Nom, Téléphone, Adresse)</a>.
+                <i class="fas fa-exclamation-circle"></i> Coordonnées de livraison incomplètes ! Veuillez d'abord compléter votre <a href="profil.html#adresse">Profil (Nom, Téléphone, Adresse)</a>.
             </div>
 
             <button id="btn-submit-order" class="btn-checkout" onclick="validerCommande()" style="display: none;">
@@ -222,7 +222,8 @@
             </p>
             <div class="custom-modal-actions">
                 <button class="btn-modal-cancel" onclick="fermerModalSkiztech()">Non</button>
-                <button class="btn-modal-confirm" onclick="window.location.href='profil.html'">M'y emmener</button>
+                <!-- Redirection directe vers la section adresse -->
+                <button class="btn-modal-confirm" onclick="window.location.href='profil.html#adresse'">M'y emmener</button>
             </div>
         </div>
     </div>
@@ -353,7 +354,10 @@
             const savedAddress = JSON.parse(localStorage.getItem('user_address_' + accountKey));
             const profileAlert = document.getElementById('profile-alert');
 
-            if (!savedAddress || !savedAddress.nom || !savedAddress.phone || !savedAddress.street || !savedAddress.zip || !savedAddress.city) {
+            // Accepte soit 'nom' combiné, soit ('lastname' ET 'firstname')
+            const hasValidName = savedAddress && (savedAddress.nom || (savedAddress.lastname && savedAddress.firstname));
+
+            if (!savedAddress || !hasValidName || !savedAddress.phone || !savedAddress.street || !savedAddress.zip || !savedAddress.city) {
                 if (profileAlert) profileAlert.style.display = 'block';
                 // Affichage de la fenêtre modale sur-mesure Skiztech
                 document.getElementById('skiztech-modal-overlay').style.display = 'flex';
@@ -367,7 +371,9 @@
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             const total = isSub ? (subtotal * 0.90) : subtotal;
 
-            // 5. Objet Commande (avec le Nom saisi du profil)
+            // 5. Objet Commande
+            const fullName = savedAddress.nom || `${savedAddress.firstname || ''} ${savedAddress.lastname || ''}`.trim();
+
             const newOrder = {
                 id: Math.floor(100000 + Math.random() * 900000),
                 date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
@@ -377,7 +383,7 @@
                 items: cart.map(item => item.title).join(', '),
                 instructions: document.getElementById('order-instructions')?.value || '',
                 userKey: accountKey,
-                userName: savedAddress.nom, // Nom complet saisi dans le profil
+                userName: fullName,
                 userEmail: userEmail,
                 shippingAddress: savedAddress
             };
