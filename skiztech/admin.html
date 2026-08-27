@@ -17,7 +17,6 @@
         .order-row.closed { opacity: 0.5; background: #181818; }
         .order-head { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 8px; color: #00bcd4; flex-wrap: wrap; gap: 10px; }
         
-        /* Style spécifique pour la boîte d'adresse client */
         .client-info-box {
             background: #181818;
             border-left: 3px solid #00bcd4;
@@ -102,13 +101,15 @@
             const currentStep = order.step || 1;
             const isClosed = (order.statusCode === 'cloturee' || order.status === 'cloturee');
 
-            // Récupération de l'adresse sauvegardée par le client
+            // Récupération de l'adresse enregistrée avec la commande
             let addressInfo = order.shippingAddress;
             if (!addressInfo && order.userKey) {
                 addressInfo = JSON.parse(localStorage.getItem('user_address_' + order.userKey));
             }
 
-            // Mise en forme de l'adresse
+            // Nom du client : Priorité au champ Nom complet du profil
+            const clientName = (addressInfo && addressInfo.nom) ? addressInfo.nom : (order.userName || 'Anonyme');
+
             let addressHTML = "<span style='color:#888;'>Coordonnées non renseignées</span>";
             if (addressInfo) {
                 addressHTML = `
@@ -120,11 +121,10 @@
             return `
                 <div class="order-row ${isClosed ? 'closed' : ''}">
                     <div class="order-head">
-                        <span>#${order.id} — Compte : ${order.userName || 'Anonyme'} (${order.userEmail || 'N/C'})</span>
+                        <span>#${order.id} — Client : ${clientName} (${order.userEmail || 'N/C'})</span>
                         <span>${order.date} | Total : ${order.total} €</span>
                     </div>
 
-                    <!-- Affichage détaillé du client et de son adresse -->
                     <div class="client-info-box">
                         <i class="fas fa-truck"></i> <strong>Adresse de livraison :</strong><br>
                         ${addressHTML}

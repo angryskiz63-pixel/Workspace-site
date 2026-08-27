@@ -28,13 +28,8 @@
             object-position: center; 
         }
 
-        /* Adaptations responsive de la bannière */
-        @media (max-width: 1200px) {
-            .hero-banner { height: 220px; }
-        }
-        @media (max-width: 768px) {
-            .hero-banner { height: 160px; }
-        }
+        @media (max-width: 1200px) { .hero-banner { height: 220px; } }
+        @media (max-width: 768px) { .hero-banner { height: 160px; } }
 
         /* Styles du Conteneur Panier */
         .cart-wrapper { max-width: 900px; margin: 40px auto; padding: 0 20px; }
@@ -63,6 +58,9 @@
         .alert-warning { background-color: #fff8e1; color: #856404; border: 1px solid #ffeeba; border-radius: 6px; padding: 12px 16px; margin-top: 20px; text-align: center; }
         .alert-warning a { color: #00bcd4; font-weight: bold; text-decoration: underline; }
 
+        .alert-danger { background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; border-radius: 6px; padding: 12px 16px; margin-top: 20px; text-align: center; }
+        .alert-danger a { color: #d32f2f; font-weight: bold; text-decoration: underline; }
+
         .btn-checkout { background-color: #00bcd4; color: white; border: none; width: 100%; padding: 15px; font-size: 1.05em; font-weight: bold; border-radius: 6px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: background 0.2s; display: block; text-align: center; text-decoration: none; }
         .btn-checkout:hover { background-color: #0097a7; }
         .btn-checkout:disabled { background-color: #ccc; cursor: not-allowed; }
@@ -84,7 +82,7 @@
         <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
     </section>
 
-    <!-- Navigation injectée dynamiquement par navbar.js -->
+    <!-- Navigation -->
     <header></header>
 
     <div class="cart-wrapper">
@@ -117,9 +115,14 @@
                 </div>
             </div>
 
-            <!-- Alerte de connexion / Validation -->
+            <!-- Alerte de connexion -->
             <div id="auth-alert" class="alert-warning" style="display: none;">
                 <i class="fas fa-exclamation-triangle"></i> Vous devez <a href="index.html#auth-box">vous connecter</a> pour valider votre commande.
+            </div>
+
+            <!-- Alerte profil incomplet -->
+            <div id="profile-alert" class="alert-danger" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i> Coordonnées de livraison incomplètes ! Veuillez d'abord compléter votre <a href="profil.html">Profil (Nom, Téléphone, Adresse)</a>.
             </div>
 
             <button id="btn-submit-order" class="btn-checkout" onclick="validerCommande()" style="display: none;">
@@ -225,7 +228,7 @@
                 return;
             }
 
-            // 1. Récupération de l'utilisateur connecté
+            // 1. Récupération utilisateur connecté
             const authUser = JSON.parse(localStorage.getItem('auth_user'));
             const twitchUser = JSON.parse(localStorage.getItem('twitch_user'));
             const googleUser = JSON.parse(localStorage.getItem('google_user'));
@@ -240,19 +243,31 @@
                 return;
             }
 
-            // 2. Clé identifiante unique pour l'utilisateur
+            // 2. Clé unique utilisateur
             const provider = user.provider || (twitchUser ? 'twitch' : googleUser ? 'google' : discordUser ? 'discord' : 'standard');
             const rawId = user.id || user.sub || user.email || "0000";
             const accountKey = `${provider}_${rawId}`;
-            const userName = user.name || user.display_name || user.username || 'Client';
             const userEmail = (user.email || user.mail || (user.details && user.details.email) || '').toLowerCase();
 
-            // 3. Calcul du montant
+            // 3. VÉRIFICATION DU PROFIL / ADRESSE
+            const savedAddress = JSON.parse(localStorage.getItem('user_address_' + accountKey));
+            const profileAlert = document.getElementById('profile-alert');
+
+            if (!savedAddress || !savedAddress.nom || !savedAddress.phone || !savedAddress.street || !savedAddress.zip || !savedAddress.city) {
+                if (profileAlert) profileAlert.style.display = 'block';
+                alert('Attention : Vos coordonnées de livraison sont incomplètes.\n\nVeuillez d\'abord compléter le champ Nom complet et l\'adresse dans votre Profil avant de valider votre commande.');
+                window.location.href = "profil.html";
+                return;
+            } else {
+                if (profileAlert) profileAlert.style.display = 'none';
+            }
+
+            // 4. Calcul du montant
             const subtotal = cart.reduce((acc, item) => acc + Number(item.price), 0);
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             const total = isSub ? (subtotal * 0.90) : subtotal;
 
-            // 4. Objet Commande
+            // 5. Objet Commande (avec le Nom saisi du profil)
             const newOrder = {
                 id: Math.floor(100000 + Math.random() * 900000),
                 date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
@@ -262,21 +277,22 @@
                 items: cart.map(item => item.title).join(', '),
                 instructions: document.getElementById('order-instructions')?.value || '',
                 userKey: accountKey,
-                userName: userName,
-                userEmail: userEmail
+                userName: savedAddress.nom, // Nom complet saisi dans le profil
+                userEmail: userEmail,
+                shippingAddress: savedAddress
             };
 
-            // 5. Enregistrement pour l'utilisateur
+            // 6. Enregistrement Utilisateur
             let userOrders = JSON.parse(localStorage.getItem('user_orders_' + accountKey)) || [];
             userOrders.unshift(newOrder);
             localStorage.setItem('user_orders_' + accountKey, JSON.stringify(userOrders));
 
-            // 6. ENREGISTREMENT DANS LA LISTE GLOBALE ADMIN
+            // 7. Enregistrement Globale Admin
             let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
             allOrders.unshift(newOrder);
             localStorage.setItem('skiztech_all_orders', JSON.stringify(allOrders));
 
-            // 7. Nettoyage et redirection
+            // 8. Nettoyage et Redirection
             localStorage.removeItem('skiztech_cart');
             alert('Commande enregistrée avec succès !');
             window.location.href = "commandes.html";
