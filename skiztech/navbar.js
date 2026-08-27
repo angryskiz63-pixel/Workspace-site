@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const header = document.querySelector("header");
     if (!header) return;
 
-    // Récupération du nom du fichier actuel (passé en minuscules)
+    // Récupération du nom du fichier actuel (ex: index.html, panier.html...)
     const currentPage = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
 
     header.innerHTML = `
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <i class="fas fa-sign-in-alt"></i> Se connecter
                 </a>
                 <div class="dropdown-menu" id="dropdown-menu">
-                    <a href="mon-compte.html"><i class="fas fa-user-cog"></i> Mon Profil &amp; Achats</a>
+                    <a href="profil.html"><i class="fas fa-user-cog"></i> Mon Profil &amp; Achats</a>
                     <a href="suivi-commande.html"><i class="fas fa-box"></i> Suivre ma commande</a>
                     <hr>
                     <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>

@@ -33,7 +33,7 @@
         nav a i { color: #00bcd4; }
 
         .user-dropdown { position: relative; display: inline-block; }
-        .user-nav-pic { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid #00bcd4; object-fit: cover; vertical-align: middle; }
+        .user-nav-pic { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #00bcd4; object-fit: cover; vertical-align: middle; }
         .dropdown-menu {
             display: none; position: absolute; right: 0; top: 100%; background-color: #1a1a1a;
             min-width: 200px; box-shadow: 0px 8px 16px rgba(0,0,0,0.4); border-radius: 6px;
@@ -117,7 +117,7 @@
         </div>
     </div>
 
-    <!-- Ajout de id="contact" pour l'ancre du menu -->
+    <!-- Pied de page avec ancre contact -->
     <footer id="contact">
         <div class="container">
             <p>Besoin d'un devis ? Contactez-moi : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
@@ -133,21 +133,26 @@
         </div>
     </footer>
 
-    <!-- Script de navigation -->
+    <!-- Script de navigation externe -->
     <script src="navbar.js"></script>
 
+    <!-- Code Javascript du Panier -->
     <script>
-        const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
-
         function checkLoginState() {
-            const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
+            // Détection multi-fournisseurs (Twitch, Google, Discord, Generique)
+            const user = JSON.parse(localStorage.getItem('twitch_user')) || 
+                         JSON.parse(localStorage.getItem('google_user')) || 
+                         JSON.parse(localStorage.getItem('discord_user')) || 
+                         JSON.parse(localStorage.getItem('user_account'));
+
             const accountLink = document.getElementById('account-link');
             const dropdownMenu = document.getElementById('dropdown-menu');
 
             if (accountLink && dropdownMenu) {
                 if (user) {
                     const userAvatar = user.profile_image_url || user.avatar || user.picture;
-                    const userName = user.display_name || user.name || "Mon Compte";
+                    const userName = user.display_name || user.name || user.username || "Mon Compte";
+                    
                     const iconHtml = userAvatar 
                         ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
                         : `<i class="fas fa-user-circle"></i>`;
@@ -174,8 +179,9 @@
         function calculerPanier() {
             let panier = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
             let itemsContainer = document.getElementById('cart-items-container');
-            itemsContainer.innerHTML = '';
+            if (!itemsContainer) return;
 
+            itemsContainer.innerHTML = '';
             let totalBrut = 0;
 
             if (panier.length === 0) {
@@ -206,6 +212,7 @@
                 });
             }
 
+            // Remise abonné Twitch (-10%)
             const isSub = localStorage.getItem('is_twitch_sub') === 'true';
             let tauxReduction = isSub ? 0.10 : 0;
 
@@ -223,10 +230,13 @@
             if (rowReduction) rowReduction.style.display = isSub ? 'flex' : 'none';
         }
 
+        // Gestion globale de la déconnexion (Nettoie tous les types de session)
         document.addEventListener('click', function(e) {
             if (e.target && e.target.closest('#btn-logout')) {
                 e.preventDefault();
                 localStorage.removeItem('twitch_user');
+                localStorage.removeItem('google_user');
+                localStorage.removeItem('discord_user');
                 localStorage.removeItem('user_account');
                 localStorage.removeItem('is_twitch_sub');
                 window.location.reload();
