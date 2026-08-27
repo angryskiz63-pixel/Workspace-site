@@ -153,7 +153,7 @@
     <!-- Script de gestion du Panier -->
     <script>
         function chargerPanier() {
-            const rawUser = localStorage.getItem('auth_user') || localStorage.getItem('twitch_user') || localStorage.getItem('user_account');
+            const rawUser = localStorage.getItem('auth_user') || localStorage.getItem('twitch_user') || localStorage.getItem('google_user') || localStorage.getItem('discord_user') || localStorage.getItem('user_account');
             let user = null;
 
             if (rawUser) {
@@ -224,8 +224,51 @@
                 alert('Votre panier est vide !');
                 return;
             }
-            alert('Commande enregistrée avec succès !');
+
+            // 1. Récupération de l'utilisateur connecté
+            const authUser = JSON.parse(localStorage.getItem('auth_user'));
+            const twitchUser = JSON.parse(localStorage.getItem('twitch_user'));
+            const googleUser = JSON.parse(localStorage.getItem('google_user'));
+            const discordUser = JSON.parse(localStorage.getItem('discord_user'));
+            const genericUser = JSON.parse(localStorage.getItem('user_account'));
+
+            let user = authUser || twitchUser || googleUser || discordUser || genericUser;
+
+            if (!user) {
+                alert('Vous devez être connecté pour passer une commande.');
+                window.location.href = "index.html#auth-box";
+                return;
+            }
+
+            // 2. Clé identifiante unique (identique à celle de commandes.html)
+            const provider = user.provider || (twitchUser ? 'twitch' : googleUser ? 'google' : discordUser ? 'discord' : 'standard');
+            const rawId = user.id || user.sub || user.email || "0000";
+            const accountKey = `${provider}_${rawId}`;
+
+            // 3. Calcul du montant avec remise éventuelle
+            const subtotal = cart.reduce((acc, item) => acc + Number(item.price), 0);
+            const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
+            const total = isSub ? (subtotal * 0.90) : subtotal;
+
+            // 4. Objet Commande
+            const newOrder = {
+                id: Math.floor(100000 + Math.random() * 900000),
+                date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+                status: 'En attente de traitement',
+                statusClass: 'pending',
+                total: total.toFixed(2),
+                items: cart.map(item => item.title),
+                instructions: document.getElementById('order-instructions')?.value || ''
+            };
+
+            // 5. Enregistrement dans la liste des commandes de l'utilisateur
+            let userOrders = JSON.parse(localStorage.getItem('user_orders_' + accountKey)) || [];
+            userOrders.unshift(newOrder);
+            localStorage.setItem('user_orders_' + accountKey, JSON.stringify(userOrders));
+
+            // 6. Nettoyage et redirection
             localStorage.removeItem('skiztech_cart');
+            alert('Commande enregistrée avec succès !');
             window.location.href = "commandes.html";
         }
 
