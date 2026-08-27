@@ -42,8 +42,8 @@
             content: '';
             position: absolute;
             top: 20px;
-            left: 10%;
-            right: 10%;
+            left: 12%;
+            right: 12%;
             height: 3px;
             background-color: #e0e0e0;
             z-index: 1;
@@ -62,7 +62,7 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto 8px auto;
-            font-size: 1em;
+            font-size: 1.1em;
             transition: all 0.3s ease;
         }
 
@@ -131,14 +131,13 @@
     <script>
         let currentAccountKey = null;
 
-        // Fonction pour générer le composant de suivi d'étapes
+        // Fonction pour générer le composant de suivi à 4 étapes
         function renderTrackingSteps(currentStep = 1) {
             const steps = [
                 { id: 1, icon: 'fa-box', label: 'Composants' },
-                { id: 2, icon: 'fa-truck-ramp-box', label: 'Transit Atelier' },
-                { id: 3, icon: 'fa-tools', label: 'Montage & Tests' },
-                { id: 4, icon: 'fa-truck-fast', label: 'Expédition' },
-                { id: 5, icon: 'fa-house-chimney-check', label: 'Livré' }
+                { id: 2, icon: 'fa-tools', label: 'Montage & Tests' },
+                { id: 3, icon: 'fa-truck-fast', label: 'Expédition' },
+                { id: 4, icon: 'fa-face-smile', label: 'Livré' }
             ];
 
             return `
@@ -197,7 +196,6 @@
             }
 
             listContainer.innerHTML = orders.map(order => {
-                // Par défaut, une nouvelle commande est à l'étape 1
                 const currentStep = order.step || 1;
 
                 return `
@@ -212,7 +210,6 @@
                             ${order.instructions ? `<p><strong>Instructions :</strong> <em>${order.instructions}</em></p>` : ''}
                         </div>
                         
-                        <!-- Injection du suivi avec icônes -->
                         ${renderTrackingSteps(currentStep)}
                     </div>
                 `;
