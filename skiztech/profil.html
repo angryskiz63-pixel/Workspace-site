@@ -17,21 +17,12 @@
         }
         .hero-banner img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 
-        nav { background-color: #1a1a1a; padding: 18px 0; text-align: center; border-bottom: 3px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        nav a { 
-            color: #fff; text-decoration: none; font-weight: 600; font-size: 1em; margin: 0 15px; 
-            text-transform: uppercase; letter-spacing: 1.5px; transition: color 0.3s ease;
-            display: inline-flex; align-items: center; gap: 8px; vertical-align: middle;
-        }
-        nav a:hover, nav a.active { color: #00bcd4; }
-        nav a i { color: #00bcd4; }
-
         /* Card Profil */
         .profile-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden; margin: 40px 0; }
         .profile-header { background: #1a1a1a; padding: 40px 20px; text-align: center; color: #fff; position: relative; }
         .profile-avatar { width: 110px; height: 110px; border-radius: 50%; border: 4px solid #00bcd4; object-fit: cover; margin-bottom: 15px; }
         .profile-name { font-size: 1.8em; margin: 0; font-weight: 700; }
-        .profile-badge-twitch { color: #00bcd4; font-size: 0.9em; font-weight: 600; margin-top: 5px; }
+        .profile-badge-provider { color: #00bcd4; font-size: 0.9em; font-weight: 600; margin-top: 5px; display: inline-flex; align-items: center; gap: 6px; }
 
         .profile-body { padding: 30px; }
         .section-title { font-size: 1.2em; border-bottom: 2px solid #00bcd4; padding-bottom: 8px; margin-bottom: 20px; color: #1a1a1a; display: flex; align-items: center; gap: 10px; }
@@ -44,9 +35,18 @@
         .badge-discount { background-color: #e0f7fa; color: #00838f; padding: 6px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85em; border: 1px solid #b2ebf2; }
         .badge-nodiscount { background-color: #f5f5f5; color: #777; padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.85em; border: 1px solid #ddd; }
 
+        /* Formulaire d'adresse */
+        .address-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: span 2; }
+        .form-group label { font-size: 0.9em; font-weight: 600; margin-bottom: 5px; color: #444; }
+        .form-group input { padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.95em; }
+        .form-group input:focus { border-color: #00bcd4; outline: none; }
+        
+        .btn-save { background-color: #00bcd4; color: #fff; border: none; padding: 12px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; margin-top: 15px; grid-column: span 2; }
+        .btn-save:hover { background-color: #0097a7; }
+
         footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
-        .btn-social { display: inline-block; padding: 10px 18px; margin: 6px; background-color: #2a2a2a; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; border: 2px solid #00bcd4; transition: 0.3s; }
-        .btn-social:hover { background-color: #00bcd4; transform: translateY(-2px); }
         .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; }
         .footer-bottom span { color: #00bcd4; font-weight: bold; }
     </style>
@@ -57,19 +57,15 @@
         <img src="../images/banner-montage.png" alt="Bannière Skiztech">
     </section>
 
-    <nav>
-        <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
-        <a href="services.html"><i class="fas fa-tools"></i> Services</a>
-        <a href="panier.html"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
-        <a href="index.html#contact"><i class="fas fa-envelope"></i> Contact</a>
-    </nav>
+    <!-- Navigation unifiée -->
+    <header></header>
 
     <div class="container">
         <div class="profile-card">
             <div class="profile-header">
                 <img src="https://via.placeholder.com/110" id="user-avatar" class="profile-avatar" alt="Avatar Utilisateur">
                 <h1 id="user-name" class="profile-name">Chargement...</h1>
-                <div class="profile-badge-twitch"><i class="fab fa-twitch"></i> Membre Twitch</div>
+                <div id="provider-badge" class="profile-badge-provider"><i class="fas fa-user"></i> Compte Membre</div>
             </div>
 
             <div class="profile-body">
@@ -83,19 +79,47 @@
                 <div class="info-row">
                     <span class="info-label"><i class="fas fa-tags"></i> Remise fidélité</span>
                     <span id="user-discount" class="info-value">
-                        <span class="badge-nodiscount">Vérification en cours...</span>
+                        <span class="badge-nodiscount">Pas de réduction</span>
                     </span>
                 </div>
 
                 <div class="info-row">
-                    <span class="info-label"><i class="fas fa-id-badge"></i> Identifiant Compte</span>
+                    <span class="info-label"><i class="fas fa-id-badge"></i> Identifiant Unique</span>
                     <span id="user-id" class="info-value">#---</span>
                 </div>
+
+                <!-- Formulaire d'Adresse Cloisonné -->
+                <div class="section-title" style="margin-top: 30px;"><i class="fas fa-map-marker-alt"></i> Adresse de Livraison</div>
+                
+                <form id="address-form" class="address-form" onsubmit="sauvegarderAdresse(event)">
+                    <div class="form-group">
+                        <label for="address-nom">Nom complet</label>
+                        <input type="text" id="address-nom" placeholder="Jean Dupont" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address-phone">Téléphone</label>
+                        <input type="tel" id="address-phone" placeholder="06 00 00 00 00" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="address-street">Adresse</label>
+                        <input type="text" id="address-street" placeholder="123 Rue de la République" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address-zip">Code Postal</label>
+                        <input type="text" id="address-zip" placeholder="75000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address-city">Ville</label>
+                        <input type="text" id="address-city" placeholder="Paris" required>
+                    </div>
+
+                    <button type="submit" class="btn-save"><i class="fas fa-save"></i> Enregistrer mes coordonnées</button>
+                </form>
             </div>
         </div>
     </div>
 
-    <footer>
+    <footer id="contact">
         <div class="container">
             <div class="footer-bottom">
                 Skiztech by <span>Skizcorp</span> &copy; 2026 — Tous droits réservés
@@ -103,31 +127,104 @@
         </div>
     </footer>
 
+    <!-- Script Navigation -->
+    <script src="navbar.js"></script>
+
     <script>
+        let currentAccountKey = null;
+
         function chargerProfil() {
-            const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
-            
+            // 1. Détection dynamique de la source de connexion
+            const twitchUser = JSON.parse(localStorage.getItem('twitch_user'));
+            const googleUser = JSON.parse(localStorage.getItem('google_user'));
+            const discordUser = JSON.parse(localStorage.getItem('discord_user'));
+            const genericUser = JSON.parse(localStorage.getItem('user_account'));
+
+            let user = null;
+            let provider = "";
+            let providerIcon = "";
+
+            if (twitchUser) {
+                user = twitchUser;
+                provider = "twitch";
+                providerIcon = `<i class="fab fa-twitch" style="color:#9146FF;"></i> Membre Twitch`;
+            } else if (googleUser) {
+                user = googleUser;
+                provider = "google";
+                providerIcon = `<i class="fab fa-google" style="color:#EA4335;"></i> Membre Google`;
+            } else if (discordUser) {
+                user = discordUser;
+                provider = "discord";
+                providerIcon = `<i class="fab fa-discord" style="color:#5865F2;"></i> Membre Discord`;
+            } else if (genericUser) {
+                user = genericUser;
+                provider = genericUser.provider || "standard";
+                providerIcon = `<i class="fas fa-user-circle"></i> Compte Skiztech`;
+            }
+
+            // Redirection si aucun compte connecté
             if (!user) {
-                // Si l'utilisateur n'est pas connecté, retour à l'accueil
                 window.location.href = "index.html#auth-box";
                 return;
             }
 
-            // Affichage des données de l'utilisateur
-            document.getElementById('user-name').innerText = user.display_name || user.name || "Utilisateur";
-            document.getElementById('user-avatar').src = user.profile_image_url || user.avatar || "https://via.placeholder.com/110";
+            // 2. Génération d'un ID UNIQUE universel (ex: "twitch_239189219" ou "google_10482938201")
+            const rawId = user.id || user.sub || user.email || "0000";
+            currentAccountKey = `${provider}_${rawId}`;
+
+            // 3. Remplissage des infos affichées
+            document.getElementById('user-name').innerText = user.display_name || user.name || user.username || "Utilisateur";
+            document.getElementById('user-avatar').src = user.profile_image_url || user.picture || user.avatar || "https://via.placeholder.com/110";
             document.getElementById('user-email').innerText = user.email || "Non communiquée";
-            document.getElementById('user-id').innerText = "#" + (user.id || "0000");
+            document.getElementById('user-id').innerText = "#" + rawId;
+            document.getElementById('provider-badge').innerHTML = providerIcon;
 
-            // --- VÉRIFICATION EXACTE DU STATUT DE SUB ---
-            const isSub = localStorage.getItem('is_twitch_sub') === 'true';
+            // Avantage réduction (Twitch uniquement)
+            const isSub = (provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             const discountContainer = document.getElementById('user-discount');
-
             if (isSub) {
                 discountContainer.innerHTML = `<span class="badge-discount">-10% appliqué au panier</span>`;
             } else {
-                discountContainer.innerHTML = `<span class="badge-nodiscount">Pas de réduction (Abonne-toi sur Twitch !)</span>`;
+                discountContainer.innerHTML = `<span class="badge-nodiscount">Pas de réduction active</span>`;
             }
+
+            // 4. Chargement des données d'adresse uniques à cette clé
+            chargerAdresseCompte();
+        }
+
+        function chargerAdresseCompte() {
+            if (!currentAccountKey) return;
+
+            // Récupération avec la clé unique : "user_address_twitch_12345" ou "user_address_google_6789"
+            const savedAddress = JSON.parse(localStorage.getItem('user_address_' + currentAccountKey));
+
+            if (savedAddress) {
+                document.getElementById('address-nom').value = savedAddress.nom || '';
+                document.getElementById('address-phone').value = savedAddress.phone || '';
+                document.getElementById('address-street').value = savedAddress.street || '';
+                document.getElementById('address-zip').value = savedAddress.zip || '';
+                document.getElementById('address-city').value = savedAddress.city || '';
+            } else {
+                // Formulaire vierge si nouveau compte
+                document.getElementById('address-form').reset();
+            }
+        }
+
+        function sauvegarderAdresse(event) {
+            event.preventDefault();
+            if (!currentAccountKey) return;
+
+            const adresseData = {
+                nom: document.getElementById('address-nom').value,
+                phone: document.getElementById('address-phone').value,
+                street: document.getElementById('address-street').value,
+                zip: document.getElementById('address-zip').value,
+                city: document.getElementById('address-city').value
+            };
+
+            // Enregistrement strictement réservé à la clé actuelle
+            localStorage.setItem('user_address_' + currentAccountKey, JSON.stringify(adresseData));
+            alert('Coordonnées enregistrées en toute sécurité !');
         }
 
         window.onload = chargerProfil;
