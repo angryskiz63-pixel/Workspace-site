@@ -2,13 +2,50 @@ document.addEventListener("DOMContentLoaded", function() {
     const header = document.querySelector("header");
     if (!header) return;
 
-    // Injecter les styles CSS nécessaires pour le dropdown
+    // Injection du CSS complet de la barre de navigation
     if (!document.getElementById("navbar-styles")) {
         const style = document.createElement("style");
         style.id = "navbar-styles";
         style.textContent = `
-            .user-dropdown { position: relative; display: inline-block; }
-            .user-nav-pic { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #00bcd4; object-fit: cover; vertical-align: middle; }
+            nav.skiz-nav {
+                background-color: #1a1a1a !important;
+                padding: 15px 0 !important;
+                text-align: center !important;
+                border-bottom: 3px solid #00bcd4 !important;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.3) !important;
+                width: 100% !important;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+            }
+            nav.skiz-nav a {
+                color: #ffffff !important;
+                text-decoration: none !important;
+                font-weight: 600 !important;
+                font-size: 0.95em !important;
+                margin: 0 12px !important;
+                text-transform: uppercase !important;
+                letter-spacing: 1px !important;
+                transition: color 0.3s ease !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+            }
+            nav.skiz-nav a:hover, nav.skiz-nav a.active {
+                color: #00bcd4 !important;
+            }
+            nav.skiz-nav a i {
+                color: #00bcd4 !important;
+            }
+            .user-dropdown { 
+                position: relative; 
+                display: inline-block; 
+            }
+            .user-nav-pic { 
+                width: 22px; 
+                height: 22px; 
+                border-radius: 50%; 
+                border: 1.5px solid #00bcd4; 
+                object-fit: cover; 
+            }
             .dropdown-menu {
                 display: none;
                 position: absolute;
@@ -26,21 +63,31 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             .dropdown-menu a {
                 color: #eee !important;
-                padding: 10px 16px;
-                text-decoration: none;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                font-size: 0.85em;
-                text-transform: none;
-                letter-spacing: 0.5px;
-                margin: 0;
-                transition: background-color 0.2s, color 0.2s;
+                padding: 10px 16px !important;
+                text-decoration: none !important;
+                display: flex !important;
+                align-items: center !important;
+                gap: 10px !important;
+                font-size: 0.85em !important;
+                text-transform: none !important;
+                margin: 0 !important;
             }
-            .dropdown-menu a:hover { background-color: #2a2a2a; color: #00bcd4 !important; }
-            .dropdown-menu hr { border: 0; border-top: 1px solid #333; margin: 6px 0; }
-            .dropdown-menu a.logout-link:hover { color: #ff4d4d !important; background-color: rgba(255, 77, 77, 0.1); }
-            .user-dropdown:hover .dropdown-menu.has-user { display: block; }
+            .dropdown-menu a:hover { 
+                background-color: #2a2a2a !important; 
+                color: #00bcd4 !important; 
+            }
+            .dropdown-menu hr { 
+                border: 0; 
+                border-top: 1px solid #333; 
+                margin: 6px 0; 
+            }
+            .dropdown-menu a.logout-link:hover { 
+                color: #ff4d4d !important; 
+                background-color: rgba(255, 77, 77, 0.1) !important; 
+            }
+            .user-dropdown:hover .dropdown-menu.has-user { 
+                display: block; 
+            }
         `;
         document.head.appendChild(style);
     }
@@ -49,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const contactHref = (currentPage === "index.html" || currentPage === "") ? "#contact" : "index.html#contact";
 
     header.innerHTML = `
-        <nav style="background-color: #1a1a1a; padding: 18px 0; text-align: center; border-bottom: 3px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 100%;">
+        <nav class="skiz-nav">
             <a href="index.html" class="${currentPage === 'index.html' ? 'active' : ''}">
                 <i class="fas fa-home"></i> Accueil
             </a>
