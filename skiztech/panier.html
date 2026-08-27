@@ -2,7 +2,6 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skiztech - Mon Panier</title>
     
@@ -14,7 +13,7 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f4f4f9; color: #333; line-height: 1.6; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         
-        /* Bannière Hero identique à index.html */
+        /* BanniÃ¨re Hero */
         .hero-banner { 
             width: 100%; 
             height: 300px; 
@@ -29,7 +28,7 @@
             object-position: center; 
         }
 
-        /* Adaptations responsive de la bannière */
+        /* Adaptations responsive de la banniÃ¨re */
         @media (max-width: 1200px) {
             .hero-banner { height: 220px; }
         }
@@ -68,7 +67,7 @@
         .btn-checkout:hover { background-color: #0097a7; }
         .btn-checkout:disabled { background-color: #ccc; cursor: not-allowed; }
 
-        /* Footer identique à index.html */
+        /* Footer */
         footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
         .btn-social { display: inline-block; padding: 10px 18px; margin: 6px; background-color: #2a2a2a; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; border: 2px solid #00bcd4; transition: 0.3s; }
         .btn-social:hover { background-color: #00bcd4; transform: translateY(-2px); }
@@ -80,12 +79,12 @@
 </head>
 <body>
 
-    <!-- VRAIE BANNIÈRE IMAGE -->
+    <!-- BANNIÃˆRE IMAGE -->
     <section class="hero-banner">
-        <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
+        <img src="../images/banner-montage.png" alt="BanniÃ¨re Montage PC Skiztech">
     </section>
 
-    <!-- Navigation injectée dynamiquement par navbar.js -->
+    <!-- Navigation injectÃ©e dynamiquement par navbar.js -->
     <header></header>
 
     <div class="cart-wrapper">
@@ -98,23 +97,23 @@
 
             <div class="notes-box">
                 <label for="order-instructions" style="font-weight: 600; font-size: 0.9em; display: flex; align-items: center; gap: 6px;">
-                    <i class="fas fa-comment-dots" style="color: #00bcd4;"></i> Instructions ou précisions pour votre commande :
+                    <i class="fas fa-comment-dots" style="color: #00bcd4;"></i> Instructions ou prÃ©cisions pour votre commande :
                 </label>
-                <textarea id="order-instructions" placeholder="Précisez ici vos contraintes, composants spécifiques, disponibilités..."></textarea>
+                <textarea id="order-instructions" placeholder="PrÃ©cisez ici vos contraintes, composants spÃ©cifiques, disponibilitÃ©s..."></textarea>
             </div>
 
             <div class="cart-totals">
                 <div class="total-row">
                     <span>Sous-total :</span>
-                    <span id="subtotal-val">0.00 €</span>
+                    <span id="subtotal-val">0.00 â‚¬</span>
                 </div>
                 <div id="discount-row" class="total-row" style="display: none; color: #2e7d32;">
                     <span>Remise Twitch Sub (-10%) :</span>
-                    <span id="discount-val">-0.00 €</span>
+                    <span id="discount-val">-0.00 â‚¬</span>
                 </div>
                 <div class="total-row final">
                     <span>Total final :</span>
-                    <span id="total-val">0.00 €</span>
+                    <span id="total-val">0.00 â‚¬</span>
                 </div>
             </div>
 
@@ -129,13 +128,13 @@
         </div>
     </div>
 
-    <!-- Footer identique -->
+    <!-- Footer -->
     <footer id="contact">
         <div class="container">
             <p>Une question sur ton projet ? Contacte-moi directement : <a href="mailto:contact@angryskiz.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@angryskiz.fr</a></p>
             
             <div class="social-links" style="margin-top: 20px;">
-                <p style="color: #ccc; margin-bottom: 10px;">Retrouve-moi sur les réseaux :</p>
+                <p style="color: #ccc; margin-bottom: 10px;">Retrouve-moi sur les rÃ©seaux :</p>
                 <a href="https://twitch.tv/angryskiz" target="_blank" class="btn-social"><i class="fab fa-twitch"></i> Twitch</a>
                 <a href="https://youtube.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-youtube"></i> YouTube</a>
                 <a href="https://tiktok.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-tiktok"></i> TikTok</a>
@@ -143,7 +142,7 @@
             </div>
 
             <div class="footer-bottom">
-                Skiztech by <span>Skizcorp</span> &copy; 2026 — Tous droits réservés
+                Skiztech by <span>Skizcorp</span> &copy; 2026 â€” Tous droits rÃ©servÃ©s
             </div>
         </div>
     </footer>
@@ -187,7 +186,7 @@
                             <p>${item.category || 'Prestation technique'}</p>
                         </div>
                         <div class="cart-item-price">
-                            <span>${Number(item.price).toFixed(2)} €</span>
+                            <span>${Number(item.price).toFixed(2)} â‚¬</span>
                             <button class="btn-remove" onclick="supprimerItem(${index})" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
@@ -197,19 +196,19 @@
             const subtotal = cart.reduce((acc, item) => acc + Number(item.price), 0);
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             
-            document.getElementById('subtotal-val').innerText = subtotal.toFixed(2) + ' €';
+            document.getElementById('subtotal-val').innerText = subtotal.toFixed(2) + ' â‚¬';
 
             let total = subtotal;
             if (isSub && subtotal > 0) {
                 const discount = subtotal * 0.10;
                 total = subtotal - discount;
-                document.getElementById('discount-val').innerText = '-' + discount.toFixed(2) + ' €';
+                document.getElementById('discount-val').innerText = '-' + discount.toFixed(2) + ' â‚¬';
                 document.getElementById('discount-row').style.display = 'flex';
             } else {
                 document.getElementById('discount-row').style.display = 'none';
             }
 
-            document.getElementById('total-val').innerText = total.toFixed(2) + ' €';
+            document.getElementById('total-val').innerText = total.toFixed(2) + ' â‚¬';
         }
 
         function supprimerItem(index) {
@@ -225,7 +224,7 @@
                 alert('Votre panier est vide !');
                 return;
             }
-            alert('Commande enregistrée avec succès !');
+            alert('Commande enregistrÃ©e avec succÃ¨s !');
             localStorage.removeItem('skiztech_cart');
             window.location.href = "commandes.html";
         }
