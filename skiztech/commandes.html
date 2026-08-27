@@ -22,18 +22,74 @@
         .section-title { font-size: 1.4em; border-bottom: 2px solid #00bcd4; padding-bottom: 10px; margin-bottom: 25px; color: #1a1a1a; display: flex; align-items: center; gap: 10px; }
         
         /* Item Commande */
-        .order-item { border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; background-color: #fafafa; }
+        .order-item { border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 25px; background-color: #fafafa; }
         .order-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; font-weight: 600; }
-        .order-id { color: #00bcd4; }
+        .order-id { color: #00bcd4; font-size: 1.1em; }
         .order-date { color: #777; font-size: 0.9em; }
         
-        .order-status { display: inline-block; padding: 4px 12px; border-radius: 15px; font-size: 0.85em; font-weight: bold; }
-        .status-pending { background-color: #fff3cd; color: #856404; }
-        .status-shipped { background-color: #d4edda; color: #155724; }
-
-        .order-details { font-size: 0.95em; line-height: 1.8; }
+        .order-details { font-size: 0.95em; line-height: 1.8; margin-bottom: 20px; }
         .order-empty { text-align: center; padding: 40px 20px; color: #777; }
         .order-empty i { font-size: 3em; color: #ccc; margin-bottom: 10px; display: block; }
+
+        /* --- STYLES TIMELINE / SUIVI DE COMMANDE --- */
+        .tracking-wrapper { margin-top: 25px; padding-top: 15px; border-top: 1px dashed #ddd; }
+        .tracking-title { font-size: 0.95em; font-weight: bold; color: #444; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .stepper { display: flex; justify-content: space-between; align-items: flex-start; position: relative; margin: 20px 0 10px 0; }
+        
+        /* Ligne grise en arrière-plan */
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+
+        .step-item { position: relative; z-index: 2; text-align: center; flex: 1; }
+        
+        .step-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 3px solid #ccc;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px auto;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .step-label { font-size: 0.75em; font-weight: 600; color: #888; text-transform: uppercase; line-height: 1.2; }
+
+        /* États validés / actifs */
+        .step-item.completed .step-icon {
+            background-color: #00bcd4;
+            border-color: #00bcd4;
+            color: #fff;
+        }
+        .step-item.completed .step-label { color: #00bcd4; }
+
+        .step-item.active .step-icon {
+            background-color: #fff;
+            border-color: #00bcd4;
+            color: #00bcd4;
+            box-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+            transform: scale(1.1);
+        }
+        .step-item.active .step-label { color: #111; font-weight: bold; }
+
+        @media (max-width: 600px) {
+            .step-label { font-size: 0.65em; }
+            .step-icon { width: 34px; height: 34px; font-size: 0.85em; }
+            .stepper::before { top: 16px; }
+        }
 
         footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
         .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; }
@@ -75,6 +131,39 @@
     <script>
         let currentAccountKey = null;
 
+        // Fonction pour générer le composant de suivi d'étapes
+        function renderTrackingSteps(currentStep = 1) {
+            const steps = [
+                { id: 1, icon: 'fa-box', label: 'Composants' },
+                { id: 2, icon: 'fa-truck-ramp-box', label: 'Transit Atelier' },
+                { id: 3, icon: 'fa-tools', label: 'Montage & Tests' },
+                { id: 4, icon: 'fa-truck-fast', label: 'Expédition' },
+                { id: 5, icon: 'fa-house-chimney-check', label: 'Livré' }
+            ];
+
+            return `
+                <div class="tracking-wrapper">
+                    <div class="tracking-title"><i class="fas fa-route" style="color: #00bcd4;"></i> Suivi d'avancement</div>
+                    <div class="stepper">
+                        ${steps.map(step => {
+                            let stateClass = '';
+                            if (step.id < currentStep) stateClass = 'completed';
+                            else if (step.id === currentStep) stateClass = 'active';
+
+                            return `
+                                <div class="step-item ${stateClass}">
+                                    <div class="step-icon">
+                                        <i class="fas ${step.icon}"></i>
+                                    </div>
+                                    <div class="step-label">${step.label}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
         function chargerCommandes() {
             const authUser = JSON.parse(localStorage.getItem('auth_user'));
             const twitchUser = JSON.parse(localStorage.getItem('twitch_user'));
@@ -107,19 +196,27 @@
                 return;
             }
 
-            listContainer.innerHTML = orders.map(order => `
-                <div class="order-item">
-                    <div class="order-header">
-                        <span class="order-id">Commande #${order.id}</span>
-                        <span class="order-date"><i class="far fa-calendar-alt"></i> ${order.date}</span>
+            listContainer.innerHTML = orders.map(order => {
+                // Par défaut, une nouvelle commande est à l'étape 1
+                const currentStep = order.step || 1;
+
+                return `
+                    <div class="order-item">
+                        <div class="order-header">
+                            <span class="order-id">Commande #${order.id}</span>
+                            <span class="order-date"><i class="far fa-calendar-alt"></i> ${order.date}</span>
+                        </div>
+                        <div class="order-details">
+                            <p><strong>Total :</strong> ${order.total} €</p>
+                            <p><strong>Articles :</strong> ${order.items.join(', ')}</p>
+                            ${order.instructions ? `<p><strong>Instructions :</strong> <em>${order.instructions}</em></p>` : ''}
+                        </div>
+                        
+                        <!-- Injection du suivi avec icônes -->
+                        ${renderTrackingSteps(currentStep)}
                     </div>
-                    <div class="order-details">
-                        <p><strong>Statut :</strong> <span class="order-status status-${order.statusClass}">${order.status}</span></p>
-                        <p><strong>Total :</strong> ${order.total} €</p>
-                        <p><strong>Articles :</strong> ${order.items.join(', ')}</p>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         window.addEventListener('DOMContentLoaded', chargerCommandes);
