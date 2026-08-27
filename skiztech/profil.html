@@ -134,33 +134,16 @@
         let currentAccountKey = null;
 
         function chargerProfil() {
-            // 1. Détection dynamique de la source de connexion
+            // Read main unified user key 'auth_user', with fallbacks for legacy keys
+            const authUser = JSON.parse(localStorage.getItem('auth_user'));
             const twitchUser = JSON.parse(localStorage.getItem('twitch_user'));
             const googleUser = JSON.parse(localStorage.getItem('google_user'));
             const discordUser = JSON.parse(localStorage.getItem('discord_user'));
             const genericUser = JSON.parse(localStorage.getItem('user_account'));
 
-            let user = null;
+            let user = authUser || twitchUser || googleUser || discordUser || genericUser;
             let provider = "";
             let providerIcon = "";
-
-            if (twitchUser) {
-                user = twitchUser;
-                provider = "twitch";
-                providerIcon = `<i class="fab fa-twitch" style="color:#9146FF;"></i> Membre Twitch`;
-            } else if (googleUser) {
-                user = googleUser;
-                provider = "google";
-                providerIcon = `<i class="fab fa-google" style="color:#EA4335;"></i> Membre Google`;
-            } else if (discordUser) {
-                user = discordUser;
-                provider = "discord";
-                providerIcon = `<i class="fab fa-discord" style="color:#5865F2;"></i> Membre Discord`;
-            } else if (genericUser) {
-                user = genericUser;
-                provider = genericUser.provider || "standard";
-                providerIcon = `<i class="fas fa-user-circle"></i> Compte Skiztech`;
-            }
 
             // Redirection si aucun compte connecté
             if (!user) {
@@ -168,11 +151,23 @@
                 return;
             }
 
-            // 2. Génération d'un ID UNIQUE universel (ex: "twitch_239189219" ou "google_10482938201")
+            provider = user.provider || (twitchUser ? 'twitch' : googleUser ? 'google' : discordUser ? 'discord' : 'standard');
+
+            if (provider === 'twitch') {
+                providerIcon = `<i class="fab fa-twitch" style="color:#9146FF;"></i> Membre Twitch`;
+            } else if (provider === 'google') {
+                providerIcon = `<i class="fab fa-google" style="color:#EA4335;"></i> Membre Google`;
+            } else if (provider === 'discord') {
+                providerIcon = `<i class="fab fa-discord" style="color:#5865F2;"></i> Membre Discord`;
+            } else {
+                providerIcon = `<i class="fas fa-user-circle"></i> Compte Skiztech`;
+            }
+
+            // Génération d'un ID UNIQUE universel
             const rawId = user.id || user.sub || user.email || "0000";
             currentAccountKey = `${provider}_${rawId}`;
 
-            // 3. Remplissage des infos affichées
+            // Remplissage des infos affichées
             document.getElementById('user-name').innerText = user.display_name || user.name || user.username || "Utilisateur";
             document.getElementById('user-avatar').src = user.profile_image_url || user.picture || user.avatar || "https://via.placeholder.com/110";
             document.getElementById('user-email').innerText = user.email || "Non communiquée";
@@ -188,14 +183,13 @@
                 discountContainer.innerHTML = `<span class="badge-nodiscount">Pas de réduction active</span>`;
             }
 
-            // 4. Chargement des données d'adresse uniques à cette clé
+            // Chargement des données d'adresse uniques à cette clé
             chargerAdresseCompte();
         }
 
         function chargerAdresseCompte() {
             if (!currentAccountKey) return;
 
-            // Récupération avec la clé unique : "user_address_twitch_12345" ou "user_address_google_6789"
             const savedAddress = JSON.parse(localStorage.getItem('user_address_' + currentAccountKey));
 
             if (savedAddress) {
@@ -205,7 +199,6 @@
                 document.getElementById('address-zip').value = savedAddress.zip || '';
                 document.getElementById('address-city').value = savedAddress.city || '';
             } else {
-                // Formulaire vierge si nouveau compte
                 document.getElementById('address-form').reset();
             }
         }
@@ -222,12 +215,11 @@
                 city: document.getElementById('address-city').value
             };
 
-            // Enregistrement strictement réservé à la clé actuelle
             localStorage.setItem('user_address_' + currentAccountKey, JSON.stringify(adresseData));
             alert('Coordonnées enregistrées en toute sécurité !');
         }
 
-        window.onload = chargerProfil;
+        window.addEventListener('DOMContentLoaded', chargerProfil);
     </script>
 </body>
 </html>
