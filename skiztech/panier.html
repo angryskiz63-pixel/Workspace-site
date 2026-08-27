@@ -84,7 +84,7 @@
 <body>
 
     <section class="hero-banner">
-        <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
+        <img src="../images/banner-montage.png" alt="Banni&egrave;re Montage PC Skiztech">
     </section>
 
     <header></header>
@@ -94,15 +94,15 @@
             <h1 class="cart-title"><i class="fas fa-shopping-basket"></i> Votre Panier</h1>
             
             <div id="badge-promo-sub" class="sub-badge">
-                <i class="fab fa-twitch"></i> Avantage Abonné Twitch : -10% appliqués sur votre commande !
+                <i class="fab fa-twitch"></i> Avantage Abonn&eacute; Twitch : -10% appliqu&eacute;s sur votre commande !
             </div>
 
             <div id="cart-items-container" class="cart-items"></div>
 
             <!-- Espace Commentaire / Instructions -->
             <div class="comment-box" id="comment-section" style="display: none;">
-                <label for="order-comment"><i class="fas fa-comment-dots"></i> Instructions ou précisions pour votre commande :</label>
-                <textarea id="order-comment" placeholder="Précisez ici vos contraintes, composants spécifiques, disponibilités..."></textarea>
+                <label for="order-comment"><i class="fas fa-comment-dots"></i> Instructions ou pr&eacute;cisions pour votre commande :</label>
+                <textarea id="order-comment" placeholder="Pr&eacute;cisez ici vos contraintes, composants sp&eacute;cifiques, disponibilit&eacute;s..."></textarea>
             </div>
 
             <div class="summary-box">
@@ -111,7 +111,7 @@
                     <span id="total-brut">0.00 &euro;</span>
                 </div>
                 <div class="summary-row" id="row-reduction" style="color: #9146FF; display: none;">
-                    <span>Réduction Sub Twitch (-10%) :</span>
+                    <span>R&eacute;duction Sub Twitch (-10%) :</span>
                     <span id="reduction-sub">- 0.00 &euro;</span>
                 </div>
                 <div class="summary-row total">
@@ -136,7 +136,7 @@
                 <a href="https://instagram.com/angryskiz" target="_blank" class="btn-social"><i class="fab fa-instagram"></i> Instagram</a>
             </div>
             <div class="footer-bottom">
-                Skiztech by <span>Skizcorp</span> &copy; 2026 &mdash; Tous droits réservés
+                Skiztech by <span>Skizcorp</span> &copy; 2026 &mdash; Tous droits r&eacute;serv&eacute;s
             </div>
         </div>
     </footer>
@@ -251,25 +251,22 @@
             const commentaire = document.getElementById('order-comment').value.trim();
             const idCommande = 'SKZ-' + Math.floor(100000 + Math.random() * 900000);
             
-            // Création de l'objet commande complet
             const nouvelleCommande = {
                 id: idCommande,
                 date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
                 items: panier,
                 total: montantTotalFinal.toFixed(2),
-                comment: commentaire || "Aucun commentaire spécifique",
+                comment: commentaire || "Aucun commentaire sp\u00e9cifique",
                 status: "En attente de traitement"
             };
 
-            // Sauvegarde dans l'historique des commandes
             let commandes = JSON.parse(localStorage.getItem('skiztech_orders')) || [];
             commandes.unshift(nouvelleCommande);
             localStorage.setItem('skiztech_orders', JSON.stringify(commandes));
 
-            // Vider le panier
             localStorage.removeItem('skiztech_cart');
 
-            alert(`Commande N° ${idCommande} validée avec succès !`);
+            alert(`Commande N° ${idCommande} valid\u00e9e avec succ\u00e8s !`);
             window.location.href = "suivi-commande.html";
         }
 
