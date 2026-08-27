@@ -35,90 +35,6 @@
             .hero-banner { height: 160px; }
         }
         
-        nav { background-color: #1a1a1a; padding: 18px 0; text-align: center; border-bottom: 3px solid #00bcd4; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        nav a { 
-            color: #fff; 
-            text-decoration: none; 
-            font-weight: 600; 
-            font-size: 1em; 
-            margin: 0 15px; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            transition: color 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            vertical-align: middle;
-            line-height: 1;
-        }
-        nav a:hover, nav a.active { color: #00bcd4; }
-        nav a i { color: #00bcd4; }
-
-        /* Conteneur et styles pour le menu déroulant "Mon Compte" */
-        .user-dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .user-nav-pic {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            border: 1.5px solid #00bcd4;
-            object-fit: cover;
-            vertical-align: middle;
-        }
-
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background-color: #1a1a1a;
-            min-width: 200px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
-            border-radius: 6px;
-            border: 1px solid #333;
-            border-top: 3px solid #00bcd4;
-            z-index: 1000;
-            padding: 8px 0;
-            text-align: left;
-        }
-
-        .dropdown-menu a {
-            color: #eee !important;
-            padding: 10px 16px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85em;
-            text-transform: none;
-            letter-spacing: 0.5px;
-            margin: 0;
-            transition: background-color 0.2s, color 0.2s;
-        }
-
-        .dropdown-menu a:hover {
-            background-color: #2a2a2a;
-            color: #00bcd4 !important;
-        }
-
-        .dropdown-menu hr {
-            border: 0;
-            border-top: 1px solid #333;
-            margin: 6px 0;
-        }
-
-        .dropdown-menu a.logout-link:hover {
-            color: #ff4d4d !important;
-            background-color: rgba(255, 77, 77, 0.1);
-        }
-
-        .user-dropdown:hover .dropdown-menu.active-dropdown {
-            display: block;
-        }
-        
         .hero { 
             background-color: #ffffff; 
             color: #111111; 
@@ -273,6 +189,9 @@
         .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; letter-spacing: 1px; }
         .footer-bottom span { color: #00bcd4; font-weight: bold; }
     </style>
+
+    <!-- Inclusion du script de la Navbar centralisé -->
+    <script src="navbar.js" defer></script>
 </head>
 <body>
 
@@ -280,25 +199,8 @@
         <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
     </section>
 
-    <!-- Navigation uniformisée avec le menu déroulant du compte -->
-    <nav>
-        <a href="index.html" class="active"><i class="fas fa-home"></i> Accueil</a>
-        <a href="services.html"><i class="fas fa-tools"></i> Services</a>
-        <a href="panier.html"><i class="fas fa-shopping-cart"></i> Mon Panier</a>
-        <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-        
-        <div class="user-dropdown">
-            <a href="#auth-box" id="account-link">
-                <i class="fas fa-sign-in-alt"></i> Se connecter
-            </a>
-            <div class="dropdown-menu" id="dropdown-menu">
-                <a href="commandes.html"><i class="fas fa-box"></i> Suivre ma commande</a>
-                <a href="profil.html"><i class="fas fa-id-card"></i> Mon Profil</a>
-                <hr>
-                <a href="#" id="btn-logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
-            </div>
-        </div>
-    </nav>
+    <!-- Header / Navbar dynamique injectée via navbar.js -->
+    <header></header>
 
     <section class="hero">
         <div class="container">
@@ -320,7 +222,6 @@
                         <p>Connecte-toi pour valider ta commande (-10% appliqués aux abonnés Twitch Sub).</p>
                         
                         <div class="auth-buttons-grid">
-                            <!-- BOUTONS AVEC HREF DIRECTS POUR ÉVITER LE SAUT DE PAGE EN HAUT -->
                             <a id="btn-twitch-login" href="https://id.twitch.tv/oauth2/authorize?client_id=8p3ywkyx2k286l9wyc8y264zw0zq3j&redirect_uri=https%3A%2F%2Fangryskiz.fr%2Fskiztech%2Findex.html&response_type=token&scope=user:read:email" class="btn-auth-custom btn-auth-twitch-custom">
                                 <i class="fab fa-twitch"></i> Twitch <span style="font-size: 0.85em; opacity: 0.9;">(-10% Sub)</span>
                             </a>
@@ -395,38 +296,21 @@
         </div>
     </footer>
 
-    <!-- Script de Connexion Multi-Plateformes (Twitch, Google, Discord) -->
+    <!-- Script de Connexion OAuth (Twitch, Google, Discord) -->
     <script>
         const TWITCH_CLIENT_ID = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
 
-        // Vérifie si un utilisateur est déjà connecté
-        function checkLoginState() {
-            const user = JSON.parse(localStorage.getItem('auth_user'));
-            const accountLink = document.getElementById('account-link');
-            const dropdownMenu = document.getElementById('dropdown-menu');
-
-            if (accountLink && dropdownMenu) {
-                if (user) {
-                    const userAvatar = user.avatar;
-                    const userName = user.name || "Mon Compte";
-                    
-                    const iconHtml = userAvatar 
-                        ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
-                        : `<i class="fas fa-user-circle"></i>`;
-                    
-                    accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
-                    accountLink.href = "#"; 
-                    
-                    dropdownMenu.classList.add('active-dropdown');
-
-                    const authBox = document.getElementById('auth-box');
-                    if (authBox) authBox.style.display = 'none';
-                } else {
-                    accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
-                    accountLink.href = "#auth-box";
-                    
-                    dropdownMenu.classList.remove('active-dropdown');
-                }
+        // Masque le pavé de connexion si l'utilisateur est déjà connecté
+        function checkLocalAuthDisplay() {
+            const rawUser = localStorage.getItem('auth_user') || 
+                            localStorage.getItem('google_user') || 
+                            localStorage.getItem('twitch_user') || 
+                            localStorage.getItem('discord_user') || 
+                            localStorage.getItem('user_account');
+            
+            const authBox = document.getElementById('auth-box');
+            if (rawUser && authBox) {
+                authBox.style.display = 'none';
             }
         }
 
@@ -451,7 +335,8 @@
                     if (u.sub) {
                         const userData = { provider: 'google', name: u.name, avatar: u.picture, email: u.email };
                         localStorage.setItem('auth_user', JSON.stringify(userData));
-                        checkLoginState();
+                        if (typeof updateNavbarAuth === 'function') updateNavbarAuth();
+                        checkLocalAuthDisplay();
                     }
                 }).catch(err => console.error('Erreur Google:', err));
 
@@ -466,7 +351,8 @@
                         const avatarUrl = u.avatar ? `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.png` : '';
                         const userData = { provider: 'discord', name: u.username, avatar: avatarUrl, email: u.email };
                         localStorage.setItem('auth_user', JSON.stringify(userData));
-                        checkLoginState();
+                        if (typeof updateNavbarAuth === 'function') updateNavbarAuth();
+                        checkLocalAuthDisplay();
                     }
                 }).catch(err => console.error('Erreur Discord:', err));
 
@@ -484,26 +370,16 @@
                         const u = data.data[0];
                         const userData = { provider: 'twitch', name: u.display_name, avatar: u.profile_image_url, email: u.email };
                         localStorage.setItem('auth_user', JSON.stringify(userData));
-                        checkLoginState();
+                        if (typeof updateNavbarAuth === 'function') updateNavbarAuth();
+                        checkLocalAuthDisplay();
                     }
                 }).catch(err => console.error('Erreur Twitch:', err));
             }
         }
 
-        // Action de déconnexion
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.closest('#btn-logout')) {
-                e.preventDefault();
-                localStorage.removeItem('auth_user');
-                localStorage.removeItem('twitch_user');
-                localStorage.removeItem('user_account');
-                window.location.reload();
-            }
-        });
-
         window.addEventListener('DOMContentLoaded', () => {
             handleOAuthCallback();
-            checkLoginState();
+            checkLocalAuthDisplay();
         });
     </script>
 </body>
