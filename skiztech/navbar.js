@@ -144,8 +144,8 @@ function updateNavbarAuth() {
     if (!accountLink || !dropdownMenu) return;
 
     const rawUser = localStorage.getItem('auth_user') || 
-                    localStorage.getItem('twitch_user') || 
                     localStorage.getItem('google_user') || 
+                    localStorage.getItem('twitch_user') || 
                     localStorage.getItem('discord_user') || 
                     localStorage.getItem('user_account');
 
@@ -158,6 +158,9 @@ function updateNavbarAuth() {
         const userAvatar = user.avatar || user.profile_image_url || user.picture;
         const userName = user.name || user.display_name || user.username || "Mon Compte";
         
+        // Extraction souple de l'e-mail (gère Google, Twitch, Discord, etc.)
+        const userEmail = (user.email || user.mail || (user.details && user.details.email) || "").toLowerCase();
+
         const iconHtml = userAvatar 
             ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
             : `<i class="fas fa-user-circle"></i>`;
@@ -166,9 +169,9 @@ function updateNavbarAuth() {
         accountLink.href = "#"; 
         dropdownMenu.classList.add('active-dropdown');
 
-        // Vérification de l'adresse email administrateur
+        // Affichage du bouton Administration pour l'admin
         if (adminMenuItem) {
-            if (user.email === 'angryskiz63@gmail.com') {
+            if (userEmail === 'angryskiz63@gmail.com') {
                 adminMenuItem.innerHTML = `
                     <a href="admin.html" class="admin-link">
                         <i class="fas fa-user-shield"></i> Administration
