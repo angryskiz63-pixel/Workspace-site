@@ -46,10 +46,51 @@
 
         .empty-cart-msg { text-align: center; padding: 30px; color: #666; font-size: 1.1em; }
 
-        /* Notes et Totaux */
-        .notes-box { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 15px; margin: 25px 0; }
-        .notes-box textarea { width: 97%; border: 1px solid #ccc; border-radius: 6px; padding: 10px; font-family: inherit; resize: vertical; min-height: 70px; margin-top: 8px; }
-        .notes-box textarea:focus { border-color: #00bcd4; outline: none; }
+        /* Box d'informations livraison composants */
+        .reception-info-box {
+            background: #e0f7fa;
+            border: 1px solid #b2ebf2;
+            border-left: 5px solid #00bcd4;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+        .reception-info-box h4 { margin: 0 0 8px 0; color: #00838f; display: flex; align-items: center; gap: 8px; }
+
+        /* Choix Mode de Retour */
+        .shipping-choice-box {
+            background: #fafafa;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .shipping-choice-box h4 { margin-top: 0; margin-bottom: 15px; color: #222; font-size: 1em; display: flex; align-items: center; gap: 8px; }
+        .shipping-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background: #fff;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .shipping-option:hover { border-color: #00bcd4; background: #f4fcfd; }
+        .shipping-option input[type="radio"] { accent-color: #00bcd4; transform: scale(1.2); }
+        .shipping-option-label { font-size: 0.95em; font-weight: 600; color: #333; flex-grow: 1; }
+        .shipping-option-desc { display: block; font-size: 0.8em; color: #666; font-weight: normal; }
+
+        /* Notes et Suivis */
+        .notes-box { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 15px; margin: 20px 0; }
+        .notes-box label { font-weight: 600; font-size: 0.9em; display: flex; align-items: center; gap: 6px; margin-top: 10px; }
+        .notes-box label:first-child { margin-top: 0; }
+        .notes-box input[type="text"], .notes-box textarea { width: 97%; border: 1px solid #ccc; border-radius: 6px; padding: 10px; font-family: inherit; margin-top: 6px; }
+        .notes-box textarea { resize: vertical; min-height: 60px; }
+        .notes-box input:focus, .notes-box textarea:focus { border-color: #00bcd4; outline: none; }
 
         .cart-totals { border-top: 1px solid #eee; padding-top: 15px; margin-top: 20px; }
         .total-row { display: flex; justify-content: space-between; font-size: 1em; margin-bottom: 8px; }
@@ -174,11 +215,56 @@
                 <!-- Les articles s'affichent ici -->
             </div>
 
-            <div class="notes-box">
-                <label for="order-instructions" style="font-weight: 600; font-size: 0.9em; display: flex; align-items: center; gap: 6px;">
-                    <i class="fas fa-comment-dots" style="color: #00bcd4;"></i> Instructions ou précisions pour votre commande :
+            <!-- Notice d'expédition des composants par le client -->
+            <div class="reception-info-box">
+                <h4><i class="fas fa-store"></i> Adresse d'expédition pour vos composants</h4>
+                <p style="margin: 0; line-height: 1.5;">
+                    Pour l'envoi de vos pièces (achats direct marchandise ou Mondial Relay), veuillez faire livrer à :<br>
+                    <strong>Point Relais : TABAC PRESSE</strong> — 71 rue du Commerce, 63310 Randan.<br>
+                    <small style="color: #555;"><i>* Pensez bien à inclure votre N° de commande Skiztech lors du suivi ou dans le nom du destinataire !</i></small>
+                </p>
+            </div>
+
+            <!-- Choix Mode de Retour du PC assemblé -->
+            <div class="shipping-choice-box">
+                <h4><i class="fas fa-truck" style="color: #00bcd4;"></i> Mode de retour de votre PC assemblé :</h4>
+                
+                <label class="shipping-option">
+                    <input type="radio" name="shipping_method" value="Domicile avec Signature" checked>
+                    <span class="shipping-option-label">
+                        Livraison à Domicile (Recommandé avec Signature)
+                        <span class="shipping-option-desc">Remise directe en main propre à votre adresse personnelle</span>
+                    </span>
                 </label>
-                <textarea id="order-instructions" placeholder="Précisez ici vos contraintes, composants spécifiques, disponibilités..."></textarea>
+
+                <label class="shipping-option">
+                    <input type="radio" name="shipping_method" value="Point Relais (Chrono/Mondial Relay)">
+                    <span class="shipping-option-label">
+                        Point Relais (Mondial Relay / Shop2Shop)
+                        <span class="shipping-option-desc">Livraison dans le commerce partenaire le plus proche de chez vous</span>
+                    </span>
+                </label>
+
+                <label class="shipping-option">
+                    <input type="radio" name="shipping_method" value="Remise en Main Propre">
+                    <span class="shipping-option-label">
+                        Remise en Main Propre
+                        <span class="shipping-option-desc">Récupération directement sur place à Randan (63310)</span>
+                    </span>
+                </label>
+            </div>
+
+            <!-- Champs Suivi de Colis & Précisions -->
+            <div class="notes-box">
+                <label for="tracking-numbers">
+                    <i class="fas fa-barcode" style="color: #00bcd4;"></i> Numéros de suivi de vos composants (Optionnel) :
+                </label>
+                <input type="text" id="tracking-numbers" placeholder="Ex: Amazon 111-222, Mondial Relay 8847291...">
+
+                <label for="order-instructions">
+                    <i class="fas fa-comment-dots" style="color: #00bcd4;"></i> Instructions ou précisions pour votre montage :
+                </label>
+                <textarea id="order-instructions" placeholder="Précisez vos contraintes, composants spécifiques, disponibilités..."></textarea>
             </div>
 
             <div class="cart-totals">
@@ -201,7 +287,7 @@
                 <i class="fas fa-exclamation-triangle"></i> Vous devez <a href="index.html#auth-box">vous connecter</a> pour valider votre commande.
             </div>
 
-            <!-- Alerte profil incomplet (Lien mis à jour vers #adresse) -->
+            <!-- Alerte profil incomplet -->
             <div id="profile-alert" class="alert-danger" style="display: none;">
                 <i class="fas fa-exclamation-circle"></i> Coordonnées de livraison incomplètes ! Veuillez d'abord compléter votre <a href="profil.html#adresse">Profil (Nom, Téléphone, Adresse)</a>.
             </div>
@@ -222,7 +308,6 @@
             </p>
             <div class="custom-modal-actions">
                 <button class="btn-modal-cancel" onclick="fermerModalSkiztech()">Non</button>
-                <!-- Redirection directe vers la section adresse -->
                 <button class="btn-modal-confirm" onclick="window.location.href='profil.html#adresse'">M'y emmener</button>
             </div>
         </div>
@@ -354,24 +439,26 @@
             const savedAddress = JSON.parse(localStorage.getItem('user_address_' + accountKey));
             const profileAlert = document.getElementById('profile-alert');
 
-            // Accepte soit 'nom' combiné, soit ('lastname' ET 'firstname')
             const hasValidName = savedAddress && (savedAddress.nom || (savedAddress.lastname && savedAddress.firstname));
 
             if (!savedAddress || !hasValidName || !savedAddress.phone || !savedAddress.street || !savedAddress.zip || !savedAddress.city) {
                 if (profileAlert) profileAlert.style.display = 'block';
-                // Affichage de la fenêtre modale sur-mesure Skiztech
                 document.getElementById('skiztech-modal-overlay').style.display = 'flex';
                 return;
             } else {
                 if (profileAlert) profileAlert.style.display = 'none';
             }
 
+            // Récupération mode de livraison sélectionné
+            const selectedShipping = document.querySelector('input[name="shipping_method"]:checked')?.value || 'Livraison à Domicile';
+            const trackingNums = document.getElementById('tracking-numbers')?.value || '';
+
             // 4. Calcul du montant
             const subtotal = cart.reduce((acc, item) => acc + Number(item.price), 0);
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             const total = isSub ? (subtotal * 0.90) : subtotal;
 
-            // 5. Objet Commande
+            // 5. Objet Commande enrichi
             const fullName = savedAddress.nom || `${savedAddress.firstname || ''} ${savedAddress.lastname || ''}`.trim();
 
             const newOrder = {
@@ -381,6 +468,8 @@
                 statusClass: 'pending',
                 total: total.toFixed(2),
                 items: cart.map(item => item.title).join(', '),
+                shippingMethod: selectedShipping,
+                trackingNumbers: trackingNums,
                 instructions: document.getElementById('order-instructions')?.value || '',
                 userKey: accountKey,
                 userName: fullName,

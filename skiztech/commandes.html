@@ -21,6 +21,18 @@
         .orders-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden; margin: 40px 0; padding: 30px; }
         .section-title { font-size: 1.4em; border-bottom: 2px solid #00bcd4; padding-bottom: 10px; margin-bottom: 25px; color: #1a1a1a; display: flex; align-items: center; gap: 10px; }
         
+        /* Box d'informations livraison composants */
+        .reception-info-box {
+            background: #e0f7fa;
+            border: 1px solid #b2ebf2;
+            border-left: 5px solid #00bcd4;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            font-size: 0.95em;
+        }
+        .reception-info-box h4 { margin: 0 0 8px 0; color: #00838f; display: flex; align-items: center; gap: 8px; }
+
         /* Item Commande */
         .order-item { border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 25px; background-color: #fafafa; }
         .order-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 15px; font-weight: 600; }
@@ -28,6 +40,7 @@
         .order-date { color: #777; font-size: 0.9em; }
         
         .order-details { font-size: 0.95em; line-height: 1.8; margin-bottom: 20px; }
+        .order-details p { margin: 4px 0; }
         .order-empty { text-align: center; padding: 40px 20px; color: #777; }
         .order-empty i { font-size: 3em; color: #ccc; margin-bottom: 10px; display: block; }
 
@@ -109,6 +122,16 @@
         <div class="orders-card">
             <div class="section-title">
                 <i class="fas fa-box-open"></i> Historique et suivi de mes commandes
+            </div>
+
+            <!-- Notice d'expédition permanente pour le client -->
+            <div class="reception-info-box">
+                <h4><i class="fas fa-store"></i> Rappel pour l'envoi de vos composants</h4>
+                <p style="margin: 0; line-height: 1.5;">
+                    Veuillez adresser vos colis de composants (Mondial Relay / Shop2Shop / Transports) à l’adresse :<br>
+                    <strong>Point Relais : TABAC PRESSE</strong> — 71 rue du Commerce, 63310 Randan.<br>
+                    <small style="color: #555;"><i>⚠️ N'oubliez pas d'inclure votre <strong>N° de Commande Skiztech</strong> dans les références ou sur le colis !</i></small>
+                </p>
             </div>
 
             <div id="orders-list">
@@ -219,6 +242,8 @@
                         <div class="order-details">
                             <p><strong>Total :</strong> ${order.total} €</p>
                             <p><strong>Articles :</strong> ${itemsDisplay}</p>
+                            ${order.shippingMethod ? `<p><strong>Mode de retour :</strong> ${order.shippingMethod}</p>` : ''}
+                            ${order.trackingNumbers ? `<p><strong>N° Suivi composants :</strong> <code>${order.trackingNumbers}</code></p>` : ''}
                             ${order.instructions ? `<p><strong>Instructions :</strong> <em>${order.instructions}</em></p>` : ''}
                         </div>
                         
