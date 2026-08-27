@@ -116,7 +116,7 @@
             background-color: rgba(255, 77, 77, 0.1);
         }
 
-        .user-dropdown:hover .dropdown-menu.active-dropdown {
+        .user-dropdown:hover .dropdown-menu {
             display: block;
         }
 
@@ -180,7 +180,7 @@
         <img src="../images/banner-montage.png" alt="Bannière Montage PC Skiztech">
     </section>
 
-    <!-- Navigation unifiée -->
+    <!-- Navigation unifiée (Infectée par navbar.js) -->
     <header></header>
 
     <div class="promo-banner">
@@ -300,19 +300,14 @@
         </div>
     </footer>
 
-    <!-- Script de navigation -->
+    <!-- Script unique de navigation et d'authentification -->
     <script src="navbar.js"></script>
 
-    <!-- Script Panier, Connexion Twitch et Menu Déroulant -->
+    <!-- Script Panier Uniquement -->
     <script>
-        const clientId = '8p3ywkyx2k286l9wyc8y264zw0zq3j';
-
-        /* Gestion du Panier (Format unifié avec title et price) */
         function addToCart(title, price) {
             let cart = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
-            
             cart.push({ title: title, price: parseFloat(price) });
-
             localStorage.setItem('skiztech_cart', JSON.stringify(cart));
             window.location.href = 'panier.html';
         }
@@ -325,73 +320,6 @@
             let prixTotal = 20 * qty;
             addToCart(`ASSISTANCE - Support Technique (${qty}h)`, prixTotal);
         }
-
-        /* Gestion de l'Authentification */
-        function checkLoginState() {
-            const user = JSON.parse(localStorage.getItem('twitch_user')) || JSON.parse(localStorage.getItem('user_account'));
-            const accountLink = document.getElementById('account-link');
-            const dropdownMenu = document.getElementById('dropdown-menu');
-
-            if (accountLink && dropdownMenu) {
-                if (user) {
-                    const userAvatar = user.profile_image_url || user.avatar || user.picture;
-                    const userName = user.display_name || user.name || "Mon Compte";
-                    
-                    const iconHtml = userAvatar 
-                        ? `<img src="${userAvatar}" class="user-nav-pic" alt="Avatar">`
-                        : `<i class="fas fa-user-circle"></i>`;
-                    
-                    accountLink.innerHTML = `${iconHtml} ${userName} <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>`;
-                    accountLink.href = "#"; 
-                    
-                    dropdownMenu.classList.add('active-dropdown');
-                } else {
-                    accountLink.innerHTML = `<i class="fas fa-sign-in-alt"></i> Se connecter`;
-                    accountLink.href = "index.html#auth-box";
-                    
-                    dropdownMenu.classList.remove('active-dropdown');
-                }
-            }
-        }
-
-        function handleTwitchCallback() {
-            const hash = window.location.hash;
-            if (hash.includes('access_token=')) {
-                const token = new URLSearchParams(hash.substring(1)).get('access_token');
-                
-                window.history.replaceState({}, document.title, window.location.pathname);
-
-                fetch('https://api.twitch.tv/helix/users', {
-                    headers: {
-                        'Client-ID': clientId,
-                        'Authorization': `Bearer ${token}`
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.data && data.data.length > 0) {
-                        const userData = data.data[0];
-                        localStorage.setItem('twitch_user', JSON.stringify(userData));
-                        checkLoginState();
-                    }
-                })
-                .catch(err => console.error('Erreur Twitch:', err));
-            }
-        }
-
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.closest('#btn-logout')) {
-                e.preventDefault();
-                localStorage.removeItem('twitch_user');
-                localStorage.removeItem('user_account');
-                window.location.reload();
-            }
-        });
-
-        window.onload = () => {
-            handleTwitchCallback();
-            checkLoginState();
-        };
     </script>
 </body>
 </html>
