@@ -66,8 +66,8 @@
 
         const userEmail = (user?.email || user?.mail || user?.details?.email || '').toLowerCase();
 
-        // Sécurité assouplie : Si aucun email n'est détecté, on prévient mais on accepte si c'est en test local
-        if (!user || (userEmail && userEmail !== 'angryskiz63@gmail.com')) {
+        // Vérification stricte de l'administrateur
+        if (!user || userEmail !== 'angryskiz63@gmail.com') {
             alert("Accès refusé : cet espace est réservé à l'administrateur (" + (userEmail || 'non connecté') + ").");
             window.location.href = "index.html";
             return false;
@@ -169,7 +169,7 @@
             4: "Livré"
         };
 
-        const targetOrder = allOrders.find(o => o.id === orderId);
+        const targetOrder = allOrders.find(o => o.id == orderId);
         if (targetOrder) {
             targetOrder.step = newStep;
             if (targetOrder.statusCode !== 'cloturee') {
@@ -180,7 +180,7 @@
 
             if (targetOrder.userKey) {
                 let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
-                let userTarget = userOrders.find(o => o.id === orderId);
+                let userTarget = userOrders.find(o => o.id == orderId);
                 if (userTarget) {
                     userTarget.step = newStep;
                     if (userTarget.statusCode !== 'cloturee') {
@@ -197,7 +197,7 @@
 
     function toggleCloture(orderId, newStatusCode) {
         let allOrders = JSON.parse(localStorage.getItem('skiztech_all_orders')) || [];
-        const targetOrder = allOrders.find(o => o.id === orderId);
+        const targetOrder = allOrders.find(o => o.id == orderId);
         
         if (targetOrder) {
             targetOrder.statusCode = newStatusCode;
@@ -208,7 +208,7 @@
 
             if (targetOrder.userKey) {
                 let userOrders = JSON.parse(localStorage.getItem('user_orders_' + targetOrder.userKey)) || [];
-                let userTarget = userOrders.find(o => o.id === orderId);
+                let userTarget = userOrders.find(o => o.id == orderId);
                 if (userTarget) {
                     userTarget.statusCode = newStatusCode;
                     userTarget.statusClass = newStatusCode;

@@ -380,7 +380,7 @@
     <script>
         // Fonction pour afficher/masquer le champ adresse Point Relais
         function toggleRelayInput() {
-            const isRelaySelected = document.getElementById('radio-relay').checked;
+            const isRelaySelected = document.getElementById('radio-relay')?.checked;
             const relayBox = document.getElementById('relay-address-box');
             if (relayBox) {
                 relayBox.style.display = isRelaySelected ? 'block' : 'none';
@@ -445,7 +445,6 @@
 
             document.getElementById('total-val').innerText = total.toFixed(2) + ' €';
 
-            // Initialiser la visibilité au chargement
             toggleRelayInput();
         }
 
@@ -482,11 +481,11 @@
                 return;
             }
 
-            // 2. Clé unique utilisateur
+            // 2. Clé unique utilisateur & Email
             const provider = user.provider || (twitchUser ? 'twitch' : googleUser ? 'google' : discordUser ? 'discord' : 'standard');
             const rawId = user.id || user.sub || user.email || "0000";
             const accountKey = `${provider}_${rawId}`;
-            const userEmail = (user.email || user.mail || (user.details && user.details.email) || '').toLowerCase();
+            const userEmail = (user.email || user.mail || (user.details && user.details.email) || `${accountKey}@client.local`).toLowerCase();
 
             // 3. VÉRIFICATION DU PROFIL / ADRESSE
             const savedAddress = JSON.parse(localStorage.getItem('user_address_' + accountKey));
@@ -503,7 +502,7 @@
             }
 
             // 4. Récupération mode de livraison sélectionné & Adresse du Relais le cas échéant
-            const isRelaySelected = document.getElementById('radio-relay').checked;
+            const isRelaySelected = document.getElementById('radio-relay')?.checked;
             const relayAddressVal = document.getElementById('relay-address-input')?.value.trim() || '';
 
             if (isRelaySelected && !relayAddressVal) {
@@ -524,14 +523,16 @@
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             const total = isSub ? (subtotal * 0.90) : subtotal;
 
-            // 6. Objet Commande enrichi
-            const fullName = savedAddress.nom || `${savedAddress.firstname || ''} ${savedAddress.lastname || ''}`.trim();
+            // 6. Objet Commande enrichi et compatible Panel Admin
+            const fullName = savedAddress.nom || `${savedAddress.firstname || ''} ${savedAddress.lastname || ''}`.trim() || user.name || user.login || 'Client';
 
             const newOrder = {
                 id: Math.floor(100000 + Math.random() * 900000),
                 date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
-                status: 'En attente de traitement',
-                statusClass: 'pending',
+                status: 'En cours de traitement',
+                statusClass: 'en_cours',
+                statusCode: 'en_cours',
+                step: 1,
                 total: total.toFixed(2),
                 items: cart.map(item => item.title).join(', '),
                 shippingMethod: selectedShipping,
