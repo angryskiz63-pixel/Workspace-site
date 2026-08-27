@@ -404,8 +404,8 @@
         const GOOGLE_CLIENT_ID = '181389383732-eq8mepcv2i408n9hf3snne7j7oa6bhet.apps.googleusercontent.com';
         const DISCORD_CLIENT_ID = 'TON_DISCORD_CLIENT_ID';                         // À remplacer avec ton ID Discord
         
-        // Détection dynamique du domaine (ex: https://angryskiz.fr/skiztech/index.html)
-        const REDIRECT_URI = window.location.origin + window.location.pathname;
+        // URL fixe exacte pour la redirection (évite le mismatch 400 Google)
+        const REDIRECT_URI = 'https://angryskiz.fr/skiztech/index.html';
 
         // Génération dynamique des URLs d'authentification
         document.getElementById('btn-twitch-login').href = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
@@ -450,13 +450,12 @@
 
             const params = new URLSearchParams(hash.substring(1));
             const token = params.get('access_token');
-            const state = params.get('state');
 
             // Nettoyage de l'URL dans le navigateur
             window.history.replaceState({}, document.title, window.location.pathname);
 
-            // 1. RETOUR GOOGLE (contient id_token ou scope googleapis)
-            if (hash.includes('googleapis.com') || hash.includes('authuser')) {
+            // 1. RETOUR GOOGLE (requête API de profil)
+            if (hash.includes('scope=') && hash.includes('google')) {
                 fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 })
