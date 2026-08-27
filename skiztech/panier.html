@@ -249,25 +249,30 @@
             if (panier.length === 0) return;
 
             const commentaire = document.getElementById('order-comment').value.trim();
-            const idCommande = 'SKZ-' + Math.floor(100000 + Math.random() * 900000);
+            const idCommande = Math.floor(100000 + Math.random() * 900000).toString();
+            const listeNoms = panier.map(item => item.title || item.name || 'Service Skiztech').join(', ');
             
             const nouvelleCommande = {
                 id: idCommande,
-                date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-                items: panier,
-                total: montantTotalFinal.toFixed(2),
+                date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+                serviceName: listeNoms,
+                totalPrice: montantTotalFinal.toFixed(2),
                 comment: commentaire || "Aucun commentaire sp\u00e9cifique",
-                status: "En attente de traitement"
+                statusText: "Commande Valid\u00e9e",
+                step: 1,
+                progress: 0
             };
 
-            let commandes = JSON.parse(localStorage.getItem('skiztech_orders')) || [];
-            commandes.unshift(nouvelleCommande);
-            localStorage.setItem('skiztech_orders', JSON.stringify(commandes));
+            // Sauvegarde dans `user_orders` utilisé par ton fichier commande.html
+            let userOrders = JSON.parse(localStorage.getItem('user_orders')) || [];
+            userOrders.unshift(nouvelleCommande);
+            localStorage.setItem('user_orders', JSON.stringify(userOrders));
 
+            // Vider le panier
             localStorage.removeItem('skiztech_cart');
 
             alert(`Commande N° ${idCommande} valid\u00e9e avec succ\u00e8s !`);
-            window.location.href = "suivi-commande.html";
+            window.location.href = "commande.html";
         }
 
         document.addEventListener('click', function(e) {
