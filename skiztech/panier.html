@@ -31,42 +31,6 @@
         nav a:hover, nav a.active { color: #00bcd4; }
         nav a i { color: #00bcd4; }
 
-        /* Menu déroulant Mon Compte */
-        .user-dropdown { position: relative; display: inline-block; }
-        .user-nav-pic { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #00bcd4; object-fit: cover; vertical-align: middle; }
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            top: 100%;
-            background-color: #1a1a1a;
-            min-width: 200px;
-            box-shadow: 0px 8px 16px rgba(0,0,0,0.4);
-            border-radius: 6px;
-            border: 1px solid #333;
-            border-top: 3px solid #00bcd4;
-            z-index: 1000;
-            padding: 8px 0;
-            text-align: left;
-        }
-        .dropdown-menu a {
-            color: #eee !important;
-            padding: 10px 16px;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.85em;
-            text-transform: none;
-            letter-spacing: 0.5px;
-            margin: 0;
-            transition: background-color 0.2s, color 0.2s;
-        }
-        .dropdown-menu a:hover { background-color: #2a2a2a; color: #00bcd4 !important; }
-        .dropdown-menu hr { border: 0; border-top: 1px solid #333; margin: 6px 0; }
-        .dropdown-menu a.logout-link:hover { color: #ff4d4d !important; background-color: rgba(255, 77, 77, 0.1); }
-        .user-dropdown:hover .dropdown-menu.active-dropdown { display: block; }
-
         /* Cartes et Panier */
         .cart-card { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); padding: 30px; }
         .cart-title { font-size: 1.5em; font-weight: bold; border-bottom: 2px solid #00bcd4; padding-bottom: 10px; margin-top: 0; margin-bottom: 25px; }
@@ -75,8 +39,10 @@
         .cart-item-info h4 { margin: 0; font-size: 1.1em; color: #222; }
         .cart-item-info p { margin: 4px 0 0 0; color: #777; font-size: 0.85em; }
         .cart-item-price { font-weight: bold; color: #00bcd4; font-size: 1.1em; display: flex; align-items: center; gap: 15px; }
-        .btn-remove { color: #ff4d4d; cursor: pointer; background: none; border: none; font-size: 1em; transition: transform 0.2s; }
+        .btn-remove { color: #ff4d4d; cursor: pointer; background: none; border: none; font-size: 1.1em; transition: transform 0.2s; padding: 5px; }
         .btn-remove:hover { transform: scale(1.2); }
+
+        .empty-cart-msg { text-align: center; padding: 30px; color: #666; font-size: 1.1em; }
 
         .notes-box { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 15px; margin: 25px 0; }
         .notes-box textarea { width: 97%; border: 1px solid #ccc; border-radius: 6px; padding: 10px; font-family: inherit; resize: vertical; min-height: 70px; margin-top: 8px; }
@@ -91,8 +57,15 @@
 
         .btn-checkout { background-color: #00bcd4; color: white; border: none; width: 100%; padding: 15px; font-size: 1.05em; font-weight: bold; border-radius: 6px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: background 0.2s; display: block; text-align: center; text-decoration: none; }
         .btn-checkout:hover { background-color: #0097a7; }
+        .btn-checkout:disabled { background-color: #ccc; cursor: not-allowed; }
 
-        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 30px 20px; margin-top: 60px; }
+        /* Footer unifie avec reseaux sociaux */
+        footer { background-color: #1a1a1a; color: #fff; text-align: center; padding: 40px 20px; margin-top: 60px; }
+        .btn-social { display: inline-block; padding: 10px 18px; margin: 6px; background-color: #2a2a2a; color: #fff; text-decoration: none; border-radius: 6px; font-weight: bold; border: 2px solid #00bcd4; transition: 0.3s; }
+        .btn-social:hover { background-color: #00bcd4; transform: translateY(-2px); }
+        .btn-social i { margin-right: 8px; }
+        .footer-bottom { margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; font-size: 0.9em; color: #aaa; letter-spacing: 1px; }
+        .footer-bottom span { color: #00bcd4; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -109,23 +82,23 @@
 
             <div class="notes-box">
                 <label for="order-instructions" style="font-weight: 600; font-size: 0.9em; display: flex; align-items: center; gap: 6px;">
-                    <i class="fas fa-comment-dots"></i> Instructions ou pr&eacute;cisions pour votre commande :
+                    <i class="fas fa-comment-dots"></i> Instructions ou précisions pour votre commande :
                 </label>
-                <textarea id="order-instructions" placeholder="Pr&eacute;cisez ici vos contraintes, composants sp&eacute;cifiques, disponibilit&eacute;s..."></textarea>
+                <textarea id="order-instructions" placeholder="Précisez ici vos contraintes, composants spécifiques, disponibilités..."></textarea>
             </div>
 
             <div class="cart-totals">
                 <div class="total-row">
                     <span>Sous-total :</span>
-                    <span id="subtotal-val">0.00 &euro;</span>
+                    <span id="subtotal-val">0.00 €</span>
                 </div>
                 <div id="discount-row" class="total-row" style="display: none; color: #2e7d32;">
                     <span>Remise Twitch Sub (-10%) :</span>
-                    <span id="discount-val">-0.00 &euro;</span>
+                    <span id="discount-val">-0.00 €</span>
                 </div>
                 <div class="total-row final">
                     <span>Total final :</span>
-                    <span id="total-val">0.00 &euro;</span>
+                    <span id="total-val">0.00 €</span>
                 </div>
             </div>
 
@@ -140,17 +113,28 @@
         </div>
     </div>
 
-    <footer>
-        <p>Une question sur ton projet ? Contacte-moi directement : <a href="mailto:contact@angryskiz.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@angryskiz.fr</a></p>
+    <!-- Footer complet avec reseaux sociaux -->
+    <footer id="contact">
+        <div class="container" style="margin: 0 auto;">
+            <p>Besoin d'un devis ? Contactez-moi : <a href="mailto:contact@skiztech.fr" style="color: #00bcd4; text-decoration: none; font-weight: bold;">contact@skiztech.fr</a></p>
+            
+            <div class="social-links" style="margin-top: 20px;">
+                <p style="color: #ccc; margin-bottom: 10px;">Mes réseaux :</p>
+                <a href="https://twitch.tv/angryskiz" target="_blank" class="btn-social"><i class="fab fa-twitch"></i> Twitch</a>
+                <a href="https://youtube.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-youtube"></i> YouTube</a>
+                <a href="https://tiktok.com/@angryskiz" target="_blank" class="btn-social"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="https://instagram.com/angryskiz" target="_blank" class="btn-social"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+
+            <div class="footer-bottom">
+                Skiztech by <span>Skizcorp</span> &copy; 2026 — Tous droits réservés
+            </div>
+        </div>
     </footer>
 
     <script src="navbar.js"></script>
 
     <script>
-        const defaultCart = [
-            { title: 'Pack ARGENT - Montage PC', price: 100.00, category: 'Prestation technique' }
-        ];
-
         function chargerPanier() {
             const rawUser = localStorage.getItem('auth_user') || localStorage.getItem('twitch_user') || localStorage.getItem('user_account');
             let user = null;
@@ -170,55 +154,63 @@
                 if (btnSubmit) btnSubmit.style.display = 'none';
             }
 
-            // Uniformisation de la clé LocalStorage avec services.html
-            let cart = JSON.parse(localStorage.getItem('skiztech_cart'));
-            if (!cart || cart.length === 0) {
-                cart = defaultCart;
-                localStorage.setItem('skiztech_cart', JSON.stringify(cart));
-            }
-
+            // Recupere le panier reel depuis localStorage
+            let cart = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
             const container = document.getElementById('cart-items-container');
-            container.innerHTML = cart.map((item, index) => `
-                <div class="cart-item">
-                    <div class="cart-item-info">
-                        <h4>${item.title}</h4>
-                        <p>${item.category || 'Prestation technique'}</p>
+
+            if (cart.length === 0) {
+                container.innerHTML = `<div class="empty-cart-msg"><i class="fas fa-shopping-cart" style="font-size: 2em; margin-bottom: 10px; display: block; color: #ccc;"></i>Votre panier est vide.</div>`;
+                if (btnSubmit) btnSubmit.disabled = true;
+            } else {
+                if (btnSubmit) btnSubmit.disabled = false;
+                container.innerHTML = cart.map((item, index) => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.title}</h4>
+                            <p>${item.category || 'Prestation technique'}</p>
+                        </div>
+                        <div class="cart-item-price">
+                            <span>${Number(item.price).toFixed(2)} €</span>
+                            <button class="btn-remove" onclick="supprimerItem(${index})" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
+                        </div>
                     </div>
-                    <div class="cart-item-price">
-                        <span>${Number(item.price).toFixed(2)} &euro;</span>
-                        <button class="btn-remove" onclick="supprimerItem(${index})" title="Supprimer"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
 
             // Calculs Financiers
             const subtotal = cart.reduce((acc, item) => acc + Number(item.price), 0);
             const isSub = user && (user.provider === 'twitch') && (localStorage.getItem('is_twitch_sub') === 'true');
             
-            document.getElementById('subtotal-val').innerHTML = subtotal.toFixed(2) + ' &euro;';
+            document.getElementById('subtotal-val').innerText = subtotal.toFixed(2) + ' €';
 
             let total = subtotal;
-            if (isSub) {
+            if (isSub && subtotal > 0) {
                 const discount = subtotal * 0.10;
                 total = subtotal - discount;
-                document.getElementById('discount-val').innerHTML = '-' + discount.toFixed(2) + ' &euro;';
+                document.getElementById('discount-val').innerText = '-' + discount.toFixed(2) + ' €';
                 document.getElementById('discount-row').style.display = 'flex';
             } else {
                 document.getElementById('discount-row').style.display = 'none';
             }
 
-            document.getElementById('total-val').innerHTML = total.toFixed(2) + ' &euro;';
+            document.getElementById('total-val').innerText = total.toFixed(2) + ' €';
         }
 
         function supprimerItem(index) {
-            let cart = JSON.parse(localStorage.getItem('skiztech_cart') || '[]');
+            let cart = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
             cart.splice(index, 1);
             localStorage.setItem('skiztech_cart', JSON.stringify(cart));
             chargerPanier();
         }
 
         function validerCommande() {
+            let cart = JSON.parse(localStorage.getItem('skiztech_cart')) || [];
+            if (cart.length === 0) {
+                alert('Votre panier est vide !');
+                return;
+            }
             alert('Commande enregistrée avec succès !');
+            localStorage.removeItem('skiztech_cart');
             window.location.href = "commandes.html";
         }
 
