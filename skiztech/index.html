@@ -122,7 +122,7 @@
         .hero { 
             background-color: #ffffff; 
             color: #111111; 
-            padding: 70px 0; 
+            padding: 70px 0 40px 0; 
             text-align: center; 
             border-bottom: 2px solid #eaeaea; 
         }
@@ -161,46 +161,89 @@
             box-shadow: 0 6px 20px rgba(0,188,212,0.5);
         }
 
-        .auth-box-home {
-            background: #fdfdfe;
-            padding: 20px 25px;
-            border-radius: 8px;
-            max-width: 550px;
+        /* --- NOUVEAU STYLE BOX CONNEXION --- */
+        #auth-box {
+            scroll-margin-top: 15vh; /* Centre le bloc verticalement lors du clic sur le lien */
+            margin-top: 50px;
+        }
+
+        .auth-container-wrapper {
+            background: #111111;
+            padding: 50px 20px;
+            border-top: 3px solid #00bcd4;
+            border-bottom: 3px solid #00bcd4;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .auth-card-main {
+            max-width: 520px;
             margin: 0 auto;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            background: #1a1a1a;
+            padding: 35px 30px;
+            border-radius: 10px;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 188, 212, 0.15);
+            border: 1px solid #333;
         }
-        .auth-box-home h3 {
-            margin-top: 0;
-            font-size: 0.95em;
-            color: #4a5568;
+
+        .auth-card-main h3 {
+            color: #ffffff;
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 15px;
+            letter-spacing: 1px;
         }
-        .auth-buttons {
+
+        .auth-card-main p {
+            color: #aaa;
+            font-size: 0.9em;
+            margin-bottom: 25px;
+        }
+
+        .auth-buttons-grid {
             display: flex;
             gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
         }
-        .btn-auth {
-            padding: 10px 18px;
+
+        .btn-auth-custom {
+            padding: 12px 22px;
             border-radius: 6px;
             text-decoration: none;
-            font-size: 0.9em;
+            font-size: 0.95em;
             font-weight: bold;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            transition: transform 0.2s, opacity 0.2s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            gap: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
-        .btn-auth:hover { transform: translateY(-2px); opacity: 0.9; }
-        .btn-auth-twitch { background: #9146FF; color: white; }
-        .btn-auth-google { background: #fff; color: #444; border: 1px solid #cbd5e1; }
-        .btn-auth-discord { background: #5865F2; color: white; }
+
+        .btn-auth-custom:hover {
+            transform: translateY(-3px);
+        }
+
+        .btn-auth-twitch-custom {
+            background: #9146FF;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(145, 70, 255, 0.4);
+        }
+
+        .btn-auth-google-custom {
+            background: #ffffff;
+            color: #333333;
+        }
+
+        .btn-auth-discord-custom {
+            background: #5865F2;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+        }
+
+        /* --- FIN CONNEXION --- */
         
         .news-section { background-color: #f4f4f9; padding: 70px 0; }
         .news-section h2 { text-align: center; color: #222; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 40px; }
@@ -274,21 +317,32 @@
                 <a href="services.html" class="btn-link"><i class="fas fa-tools" style="margin-right: 8px;"></i> Découvrir mes services</a>
             </div>
 
-            <!-- Bloc Connexion Rapide -->
-            <div class="auth-box-home" id="auth-box">
-                <h3><i class="fas fa-lock" style="color: #00bcd4;"></i> Connexion rapide &amp; Avantages</h3>
-                <div class="auth-buttons">
-                    <a href="https://id.twitch.tv/oauth2/authorize?client_id=8p3ywkyx2k286l9wyc8y264zw0zq3j&redirect_uri=https://fanciful-manatee-d2bdd6.netlify.app/skiztech/index.html&response_type=token&scope=user:read:email" class="btn-auth btn-auth-twitch">
-                        <i class="fab fa-twitch"></i> Twitch <span style="font-size: 0.8em; opacity: 0.8;">(-10%)</span>
-                    </a>
-                    <a href="#" class="btn-auth btn-auth-google">
-                        <i class="fab fa-google" style="color: #4285F4;"></i> Google
-                    </a>
-                    <a href="#" class="btn-auth btn-auth-discord">
-                        <i class="fab fa-discord"></i> Discord
-                    </a>
+            <!-- NOUVELLE SECTION CONNEXION ULTRA VISIBLE -->
+            <div id="auth-box">
+                <div class="auth-container-wrapper">
+                    <div class="auth-card-main">
+                        <div style="width: 55px; height: 55px; background: rgba(0, 188, 212, 0.1); color: #00bcd4; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; font-size: 1.6em;">
+                            <i class="fas fa-user-lock"></i>
+                        </div>
+                        <h3>Espace <span style="color: #00bcd4;">Connexion</span></h3>
+                        <p>Connecte-toi pour valider tes commandes et bénéficier de la réduction Twitch Sub (-10%).</p>
+                        
+                        <div class="auth-buttons-grid">
+                            <a href="https://id.twitch.tv/oauth2/authorize?client_id=8p3ywkyx2k286l9wyc8y264zw0zq3j&redirect_uri=https://fanciful-manatee-d2bdd6.netlify.app/skiztech/index.html&response_type=token&scope=user:read:email" class="btn-auth-custom btn-auth-twitch-custom">
+                                <i class="fab fa-twitch"></i> Twitch <span style="font-size: 0.8em; opacity: 0.9;">(-10%)</span>
+                            </a>
+                            <a href="#" class="btn-auth-custom btn-auth-google-custom">
+                                <i class="fab fa-google" style="color: #4285F4;"></i> Google
+                            </a>
+                            <a href="#" class="btn-auth-custom btn-auth-discord-custom">
+                                <i class="fab fa-discord"></i> Discord
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <!-- FIN SECTION CONNEXION -->
+
         </div>
     </section>
 
@@ -420,5 +474,4 @@
         };
     </script>
 </body>
-
 </html>
