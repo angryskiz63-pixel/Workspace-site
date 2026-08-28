@@ -35,7 +35,7 @@
       flex-direction: column;
     }
 
-    /* Header Aion 2 agrandi */
+    /* Header Aion 2 */
     .aion-nav {
       background: rgba(7, 11, 22, 0.95);
       backdrop-filter: blur(12px);
@@ -54,12 +54,6 @@
       gap: 15px;
       text-decoration: none;
     }
-    .aion-logo img {
-      height: 48px;
-      width: auto;
-      filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.6));
-      mix-blend-mode: multiply;
-    }
     .aion-logo-text {
       font-family: 'Cinzel', serif;
       font-size: 1.8rem;
@@ -77,16 +71,16 @@
     }
     .aion-menu a:hover { color: var(--accent-cyan); }
 
-    /* Hero Section Agrandie avec fond-aion2.jpeg */
+    /* Hero Section avec fond-aion2bis.jpg */
     .aion-hero {
       position: relative;
-      height: 600px; /* PORTAIL AGRANDI */
+      height: 600px;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      background-image: url('../images/fond-aion2.jpeg');
+      background-image: url('../images/fond-aion2bis.jpg');
       background-size: cover;
       background-position: center top;
     }
@@ -101,12 +95,6 @@
       max-width: 900px;
       padding: 0 20px;
     }
-    .hero-logo-main {
-      max-height: 120px;
-      margin-bottom: 15px;
-      filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.8));
-      mix-blend-mode: multiply;
-    }
     .hero-content h1 {
       font-family: 'Cinzel', serif;
       font-size: 3.8rem;
@@ -119,7 +107,7 @@
     }
     .hero-content p { font-size: 1.3rem; color: #cbd5e1; margin-bottom: 30px; text-shadow: 0 2px 6px rgba(0,0,0,0.8); }
     
-    /* Grille de raccourcis agrandie */
+    /* Grille de raccourcis */
     .quick-links {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -150,7 +138,7 @@
     .quick-card i { font-size: 2.2rem; color: var(--accent-cyan); margin-bottom: 12px; }
     .quick-card h3 { font-size: 1.15rem; font-family: 'Cinzel', serif; }
 
-    /* Disposition principale 2 colonnes (Conteneur élargi à 1400px) */
+    /* Disposition principale */
     .main-layout {
       max-width: 1400px;
       margin: 0 auto;
@@ -236,10 +224,9 @@
 </head>
 <body>
 
-<!-- Navigation Aion 2 avec Logo -->
+<!-- Navigation Aion 2 -->
 <nav class="aion-nav">
   <a href="index.html" class="aion-logo">
-    <img src="../images/logo-aion2.jpeg" alt="Aion 2 Logo">
     <span class="aion-logo-text">AION 2 <span>FR</span></span>
   </a>
   <ul class="aion-menu">
@@ -249,17 +236,16 @@
   </ul>
 </nav>
 
-<!-- Hero Banner Agrandie avec fond-aion2.jpeg -->
+<!-- Hero Banner avec fond-aion2bis.jpg -->
 <section class="aion-hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <img src="../images/logo-aion2.jpeg" alt="Logo officiel Aion 2" class="hero-logo-main">
     <h1>L'HÉRITAGE ÉTERNEL</h1>
     <p>Le portail francophone ultime : guides de jeu, builds optimisés et actualités en direct.</p>
   </div>
 </section>
 
-<!-- Raccourcis Guides agrandis -->
+<!-- Raccourcis Guides -->
 <div class="quick-links">
   <a href="guides.html?cat=classes" class="quick-card">
     <i class="fas fa-shield-halved"></i>
