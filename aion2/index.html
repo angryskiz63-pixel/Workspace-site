@@ -57,19 +57,26 @@
       align-items: center;
       text-decoration: none;
       height: 100%;
+      position: relative;
+      width: 120px; /* Espace réservé pour éviter que le menu glisse sur mobile */
     }
     
-    /* Logo parfaitement aligné dans le header */
+    /* Logo grand format (100px) centré verticalement sur la barre (70px) */
     .aion-logo-img {
-      height: 50px;
+      height: 100px;
       width: auto;
       object-fit: contain;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
       transition: transform 0.3s ease;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.9));
+      z-index: 10;
     }
     
     .aion-logo-img:hover {
-      transform: scale(1.05);
+      transform: translateY(-50%) scale(1.05);
     }
     
     .aion-menu { 
@@ -315,7 +322,7 @@
       .hero-content { padding-bottom: 60px; }
       .hero-content h1 { font-size: 2.2rem; }
       .hero-content p { font-size: 1.05rem; }
-      .aion-logo-img { height: 40px; }
+      .aion-logo-img { height: 60px; }
     }
   </style>
 </head>
