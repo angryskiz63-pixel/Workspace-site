@@ -35,12 +35,13 @@
       flex-direction: column;
     }
 
-    /* Header Aion 2 */
+    /* Header Aion 2 - Hauteur fixe et compacte pour le bandeau */
     .aion-nav {
       background: rgba(7, 11, 22, 0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-card);
-      padding: 10px 5%;
+      padding: 0 5%;
+      height: 65px; /* Hauteur fixe du bandeau */
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -48,23 +49,38 @@
       top: 0;
       z-index: 100;
     }
+    
     .aion-logo {
       display: flex;
       align-items: center;
       text-decoration: none;
-    }
-    /* Logo grand format */
-    .aion-logo-img {
-      height: 110px;
-      width: auto;
-      object-fit: contain;
-      transition: transform 0.3s ease;
-    }
-    .aion-logo-img:hover {
-      transform: scale(1.05);
+      position: relative;
+      height: 100%;
     }
     
-    .aion-menu { display: flex; gap: 25px; list-style: none; }
+    /* Logo très grand qui dépasse du bandeau sans aggrandir le bandeau */
+    .aion-logo-img {
+      height: 110px; /* Grand logo */
+      width: auto;
+      object-fit: contain;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
+    }
+    
+    .aion-logo-img:hover {
+      transform: translateY(-50%) scale(1.05);
+    }
+    
+    .aion-menu { 
+      display: flex; 
+      gap: 25px; 
+      list-style: none; 
+      margin-left: auto; /* Aligne le menu à droite */
+    }
     .aion-menu a {
       color: var(--text-main);
       text-decoration: none;
@@ -83,6 +99,7 @@
       align-items: flex-end;
       justify-content: center;
       text-align: center;
+      background-color: var(--bg-main);
     }
 
     .slider-bg {
@@ -91,11 +108,13 @@
       z-index: 0;
     }
 
+    /* Option pour afficher l'image entière sans rognage */
     .slide {
       position: absolute;
       inset: 0;
-      background-size: cover;
-      background-position: center top;
+      background-size: contain; /* L'image s'affiche EN ENTIER sans coupe */
+      background-repeat: no-repeat;
+      background-position: center center;
       opacity: 0;
       transition: opacity 1s ease-in-out;
     }
@@ -110,7 +129,7 @@
       top: 50%;
       transform: translateY(-50%);
       z-index: 10;
-      background: rgba(7, 11, 22, 0.6);
+      background: rgba(7, 11, 22, 0.7);
       border: 1px solid var(--border-card);
       color: var(--text-main);
       font-size: 1.5rem;
@@ -137,8 +156,9 @@
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(7,11,22,0.3) 0%, rgba(7,11,22,0.95) 100%);
+      background: linear-gradient(180deg, rgba(7,11,22,0.1) 0%, rgba(7,11,22,0.95) 100%);
       z-index: 1;
+      pointer-events: none;
     }
     .hero-content {
       position: relative;
@@ -253,11 +273,6 @@
     .tag { font-size: 0.75rem; padding: 4px 9px; border-radius: 4px; font-weight: bold; width: fit-content; }
     .tag-kr { background: #e53935; color: white; }
     .tag-off { background: var(--accent-cyan); color: #070b16; }
-    
-    .code-item { background: rgba(0,0,0,0.4); border: 1px dashed var(--border-card); padding: 14px; border-radius: 10px; margin-bottom: 12px; }
-    .code-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 6px; }
-    .code-str { font-family: monospace; font-weight: bold; color: var(--accent-gold); font-size: 1.15rem; }
-    .code-copy { background: var(--accent-cyan); border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
     .news-item { display: flex; gap: 14px; text-decoration: none; color: white; margin-bottom: 18px; }
     .news-thumb { width: 80px; height: 60px; border-radius: 8px; background-size: cover; flex-shrink: 0; }
@@ -278,7 +293,7 @@
       .hero-content { padding-bottom: 70px; }
       .hero-content h1 { font-size: 2.2rem; }
       .hero-content p { font-size: 1.05rem; }
-      .aion-logo-img { height: 75px; }
+      .aion-logo-img { height: 70px; }
     }
   </style>
 </head>
@@ -299,13 +314,9 @@
 <!-- Hero Banner avec Slider -->
 <section class="aion-hero">
   <div class="slider-bg">
-    <!-- Image 1 : Première affichée -->
     <div class="slide active" style="background-image: url('../images/fond-aion2bis.jpg');"></div>
-    <!-- Image 2 -->
     <div class="slide" style="background-image: url('../images/fondaion2.png');"></div>
-    <!-- Image 3 -->
     <div class="slide" style="background-image: url('../images/fondaion3.png');"></div>
-    <!-- Image 4 -->
     <div class="slide" style="background-image: url('../images/fondaion4.png');"></div>
   </div>
 
@@ -346,7 +357,6 @@
 
 <!-- Layout Principal -->
 <main class="main-layout">
-  <!-- Colonne Gauche : Dernières Actus Principales -->
   <section class="content-left">
     <div class="section-title">
       <span><i class="fas fa-fire" style="color:var(--accent-cyan);"></i> Dernières Actualités</span>
@@ -373,7 +383,6 @@
     </div>
   </section>
 
-  <!-- Colonne Droite : Sidebar -->
   <aside class="sidebar-section">
     <div class="side-box">
       <div class="section-title">
@@ -412,7 +421,6 @@
   <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
 </footer>
 
-<!-- Script de défilement automatique à 3,5s et manuel -->
 <script>
   const slides = document.querySelectorAll('.slide');
   const prevBtn = document.getElementById('prevBtn');
@@ -440,7 +448,6 @@
   }
 
   function startTimer() {
-    // 3500 ms = 3.5 secondes
     slideInterval = setInterval(nextSlide, 3500);
   }
 
