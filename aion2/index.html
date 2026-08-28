@@ -54,7 +54,7 @@
       text-decoration: none;
     }
     .aion-logo-img {
-      height: 70px; /* Taille agrandie pour le logo */
+      height: 70px;
       width: auto;
       object-fit: contain;
       transition: transform 0.3s ease;
@@ -285,7 +285,25 @@
       <a href="actualite.html">Voir tout &rarr;</a>
     </div>
     <div class="ln-grid" id="latest-news-grid">
-      <div style="color:var(--text-muted);">Chargement des actualités...</div>
+      <!-- Article 1 : Pré-lancement -->
+      <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
+        <div class="ln-img" style="background-image:url('../images/prelancement.jpeg')"></div>
+        <div class="ln-body">
+          <span class="tag tag-off">Global</span>
+          <div class="ln-title">Pré-lancement Aion 2 : Préparez-vous !</div>
+          <div class="ln-date">Disponible sur Steam</div>
+        </div>
+      </a>
+
+      <!-- Article 2 : Pack Fondateur -->
+      <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
+        <div class="ln-img" style="background-image:url('../images/packfondateur.jpeg')"></div>
+        <div class="ln-body">
+          <span class="tag tag-off">Global</span>
+          <div class="ln-title">Packs Fondateurs disponibles sur Steam</div>
+          <div class="ln-date">Disponible sur Steam</div>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -297,7 +315,7 @@
         <span><i class="fas fa-gift" style="color:var(--accent-gold);"></i> Codes Récompenses</span>
       </div>
       <div id="codes-list">
-        <div style="color:var(--text-muted); font-size:0.85rem;">Chargement des codes...</div>
+        <div style="color:var(--text-muted); font-size:0.85rem;">Aucun code actif.</div>
       </div>
     </div>
 
@@ -307,7 +325,20 @@
         <span><i class="fas fa-rss"></i> Flash Actus</span>
       </div>
       <div id="sidebar-news-list">
-        <div style="color:var(--text-muted); font-size:0.85rem;">Chargement...</div>
+        <a class="news-item" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
+          <div class="news-thumb" style="background-image:url('../images/prelancement.jpeg')"></div>
+          <div>
+            <div class="news-title">Pré-lancement Aion 2</div>
+            <span class="ln-date">Steam</span>
+          </div>
+        </a>
+        <a class="news-item" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
+          <div class="news-thumb" style="background-image:url('../images/packfondateur.jpeg')"></div>
+          <div>
+            <div class="news-title">Packs Fondateurs</div>
+            <span class="ln-date">Steam</span>
+          </div>
+        </a>
       </div>
     </div>
   </aside>
@@ -316,79 +347,6 @@
 <footer>
   <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
 </footer>
-
-<!-- Scripts API Actualités & Codes -->
-<script>
-(function() {
-  function tagLabel(t) { return t === 'KR' ? 'KR / TW' : 'Global'; }
-  function tagCss(t) { return t === 'KR' ? 'tag-kr' : 'tag-off'; }
-  function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function relDate(d) {
-    var diff = (Date.now() - new Date(d)) / 1000;
-    if (diff < 3600) return 'Il y a ' + Math.floor(diff/60) + ' min';
-    if (diff < 86400) return 'Il y a ' + Math.floor(diff/3600) + ' h';
-    return new Date(d).toLocaleDateString('fr-FR', { day:'2-digit', month:'short' });
-  }
-
-  // Fetch Actualités
-  fetch('/api/news?status=published&limit=4')
-    .then(r => r.json())
-    .then(news => {
-      var grid = document.getElementById('latest-news-grid');
-      if (grid) {
-        if (!news.length) { grid.innerHTML = '<p style="color:var(--text-muted);">Aucune actualité publiée</p>'; }
-        else {
-          grid.innerHTML = news.map(n => `
-            <a class="ln-card" href="actualite.html?slug=${encodeURIComponent(n.slug || n.id)}">
-              <div class="ln-img" style="background-image:url('${escHtml(n.cover_image || '/api/uploads/annonce.png')}')"></div>
-              <div class="ln-body">
-                <span class="tag ${tagCss(n.tag)}">${tagLabel(n.tag)}</span>
-                <div class="ln-title">${escHtml(n.title)}</div>
-                <div class="ln-date">${relDate(n.published_at)}</div>
-              </div>
-            </a>
-          `).join('');
-        }
-      }
-
-      var sidebar = document.getElementById('sidebar-news-list');
-      if (sidebar && news.length) {
-        sidebar.innerHTML = news.slice(0, 3).map(n => `
-          <a class="news-item" href="actualite.html?slug=${encodeURIComponent(n.slug || n.id)}">
-            <div class="news-thumb" style="background-image:url('${escHtml(n.cover_image || '/api/uploads/annonce.png')}')"></div>
-            <div>
-              <div class="news-title">${escHtml(n.title)}</div>
-              <span class="ln-date">${relDate(n.published_at)}</span>
-            </div>
-          </a>
-        `).join('');
-      }
-    }).catch(() => {
-      document.getElementById('latest-news-grid').innerHTML = '<p style="color:var(--text-muted);">Actualités non disponibles</p>';
-    });
-
-  // Fetch Codes
-  fetch('/api/codes')
-    .then(r => r.json())
-    .then(codes => {
-      var list = document.getElementById('codes-list');
-      if (!list) return;
-      codes = codes.filter(c => c.code || c.url);
-      if (!codes.length) { list.innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem;">Aucun code actif.</div>'; return; }
-      list.innerHTML = codes.map(c => `
-        <div class="code-item">
-          <span class="${c.tag === 'KR' ? 'tag tag-kr' : 'tag tag-off'}">${c.tag === 'KR' ? 'KR / TW' : 'Global'}</span>
-          <div class="code-row">
-            <span class="code-str">${c.code || 'Lien Cadeau'}</span>
-            ${c.code ? `<button class="code-copy" onclick="navigator.clipboard.writeText('${c.code}'); this.textContent='✓';">Copier</button>` : ''}
-          </div>
-        </div>
-      `).join('');
-    }).catch(() => {
-      document.getElementById('codes-list').innerHTML = '<div style="color:var(--text-muted); font-size:0.85rem;">Codes indisponibles.</div>';
-    });
-})();
-</script>
 
 </body>
 </html>
