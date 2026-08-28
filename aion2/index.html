@@ -40,7 +40,7 @@
       background: rgba(7, 11, 22, 0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-card);
-      padding: 18px 5%;
+      padding: 12px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -51,20 +51,18 @@
     .aion-logo {
       display: flex;
       align-items: center;
-      gap: 12px;
       text-decoration: none;
     }
     .aion-logo-img {
-      height: 45px;
+      height: 70px; /* Taille agrandie pour le logo */
       width: auto;
       object-fit: contain;
+      transition: transform 0.3s ease;
     }
-    .aion-logo-text {
-      font-family: 'Cinzel', serif;
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: #fff;
+    .aion-logo-img:hover {
+      transform: scale(1.05);
     }
+    
     .aion-menu { display: flex; gap: 25px; list-style: none; }
     .aion-menu a {
       color: var(--text-main);
@@ -75,13 +73,13 @@
     }
     .aion-menu a:hover { color: var(--accent-cyan); }
 
-    /* Hero Section avec positionnement abaissé du texte */
+    /* Hero Section */
     .aion-hero {
       position: relative;
       height: 600px;
       overflow: hidden;
       display: flex;
-      align-items: flex-end; /* Aligne le contenu vers le bas */
+      align-items: flex-end;
       justify-content: center;
       text-align: center;
       background-image: url('../images/fond-aion2bis.jpg');
@@ -97,7 +95,7 @@
       position: relative;
       z-index: 2;
       max-width: 900px;
-      padding: 0 20px 100px 20px; /* Padding bas pour laisser respirer au-dessus des cartes */
+      padding: 0 20px 100px 20px;
     }
     .hero-content h1 {
       font-family: 'Cinzel', serif;
@@ -231,16 +229,16 @@
       .hero-content { padding-bottom: 70px; }
       .hero-content h1 { font-size: 2.2rem; }
       .hero-content p { font-size: 1.05rem; }
+      .aion-logo-img { height: 50px; }
     }
   </style>
 </head>
 <body>
 
-<!-- Navigation Aion 2 -->
+<!-- Navigation -->
 <nav class="aion-nav">
   <a href="index.html" class="aion-logo">
-    <img src="../images/logo-aion2.png" alt="Logo Aion 2" class="aion-logo-img">
-    <span class="aion-logo-text">AION 2</span>
+    <img src="../images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
   </a>
   <ul class="aion-menu">
     <li><a href="actualite.html">Actualités</a></li>
@@ -249,7 +247,7 @@
   </ul>
 </nav>
 
-<!-- Hero Banner avec texte ajusté vers le bas -->
+<!-- Hero Banner -->
 <section class="aion-hero">
   <div class="hero-overlay"></div>
   <div class="hero-content">
