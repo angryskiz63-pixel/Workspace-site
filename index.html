@@ -15,6 +15,7 @@
       --instagram: #E1306C;
       --tiktok: #010101;
       --aion-cyan: #00f2fe;
+      --aion-blue: #0083b0;
     }
     body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; overflow: hidden; }
 
@@ -48,66 +49,76 @@
     .card { padding: 40px; text-align: center; z-index: 2; transition: transform 0.3s; width: 100%; max-width: 500px; }
     .side:hover .card { transform: scale(1.02); }
     
-    .logo-container { margin-bottom: 1.5rem; }
-    .logo-container img { max-height: 110px; width: auto; }
+    .logo-container { margin-bottom: 1.2rem; }
+    .logo-container img { max-height: 100px; width: auto; }
 
-    /* --- BOUTON AION 2 AGRANDI AVEC LOGO DU JEU --- */
-    .aion2-tab-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      background: linear-gradient(135deg, rgba(0, 92, 151, 0.85) 0%, rgba(54, 55, 149, 0.85) 100%);
-      color: #ffffff !important;
-      font-weight: 900;
-      font-size: 1.25rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 18px 25px; /* Plus large et plus haut */
+    /* --- PORTAIL AION 2 AU FORMAT 16:9 / 1080P COMME TWITCH --- */
+    .aion2-card-banner {
+      width: 100%;
+      aspect-ratio: 16 / 9; /* Même ratio que l'écran Twitch */
+      background-image: linear-gradient(180deg, rgba(7, 11, 22, 0.45) 0%, rgba(5, 10, 20, 0.85) 100%), url('images/fond-aion2.jpeg');
+      background-size: cover;
+      background-position: center;
       border-radius: 12px;
-      border: 2px solid var(--aion-cyan);
-      box-shadow: 0 0 25px rgba(0, 242, 254, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.2);
-      margin-top: 20px;
+      border: 2px solid rgba(0, 242, 254, 0.8);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.4), inset 0 0 20px rgba(0, 0, 0, 0.6);
+      margin-top: 15px;
       margin-bottom: 25px;
       position: relative;
       overflow: hidden;
-      transition: all 0.3s ease;
-      animation: pulseAion 2s infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      animation: pulseAionCard 3s infinite alternate;
     }
 
-    .aion2-img-logo {
-      height: 48px; /* Taille généreuse pour le logo officiel */
+    .aion2-card-banner:hover {
+      transform: translateY(-4px) scale(1.02);
+      border-color: #00f2fe;
+      box-shadow: 0 0 40px rgba(0, 242, 254, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Logo centré dans la carte 16:9 */
+    .aion2-center-logo {
+      max-height: 65px;
       width: auto;
       object-fit: contain;
-      mix-blend-mode: screen; /* Rend le fond noir/sombre du logo totalement transparent */
-      filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.9));
+      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.9));
+      margin-bottom: 8px;
     }
 
-    .aion2-tab-btn:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 0 35px rgba(0, 242, 254, 1), inset 0 0 20px rgba(255, 255, 255, 0.4);
-      background: linear-gradient(135deg, rgba(0, 131, 176, 0.95) 0%, rgba(0, 180, 219, 0.95) 100%);
+    /* Titre "PORTAIL AION 2" stylisé et fluide */
+    .aion2-title-text {
+      font-weight: 900;
+      font-size: 1.35rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, #ffffff 0%, var(--aion-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
     }
 
     .aion2-badge {
       position: absolute;
-      top: 4px;
-      right: 8px;
+      top: 10px;
+      right: 12px;
       background: #ff0055;
       color: white;
       font-size: 0.65rem;
-      padding: 2px 7px;
+      padding: 3px 8px;
       border-radius: 4px;
       font-weight: 900;
       letter-spacing: 1px;
-      box-shadow: 0 0 8px #ff0055;
+      box-shadow: 0 0 10px #ff0055;
     }
 
-    @keyframes pulseAion {
-      0% { box-shadow: 0 0 12px rgba(0, 242, 254, 0.4); }
-      50% { box-shadow: 0 0 28px rgba(0, 242, 254, 0.9); }
-      100% { box-shadow: 0 0 12px rgba(0, 242, 254, 0.4); }
+    @keyframes pulseAionCard {
+      0% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.3); }
+      100% { box-shadow: 0 0 30px rgba(0, 242, 254, 0.7); }
     }
 
     .twitch-embed-container {
@@ -211,11 +222,11 @@
           <a href="https://instagram.com/angryskiz" target="_blank" class="platform-link instagram" title="Suivre sur Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
 
-        <!-- BOUTON REPRIS : PLUS GRAND + LOGO DE JEU INTEGRÉ AU LIEU DE L'ICÔNE -->
-        <a href="aion2/index.html" class="aion2-tab-btn">
+        <!-- PORTAIL AION 2 AU FORMAT 16:9 / 1080P -->
+        <a href="aion2/index.html" class="aion2-card-banner">
           <span class="aion2-badge">NOUVEAU</span>
-          <img src="images/logo-aion2.jpeg" alt="Aion 2 Logo" class="aion2-img-logo">
-          <span>PORTAIL AION 2</span>
+          <img src="images/logo-aion2.jpeg" alt="Aion 2 Logo" class="aion2-center-logo">
+          <span class="aion2-title-text">PORTAIL AION 2</span>
         </a>
 
         <!-- STREAM TWITCH EMBED -->
