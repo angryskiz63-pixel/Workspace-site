@@ -40,7 +40,7 @@
       background: rgba(7, 11, 22, 0.95);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border-card);
-      padding: 12px 5%;
+      padding: 10px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -53,8 +53,9 @@
       align-items: center;
       text-decoration: none;
     }
+    /* Logo agrandi */
     .aion-logo-img {
-      height: 70px;
+      height: 110px;
       width: auto;
       object-fit: contain;
       transition: transform 0.3s ease;
@@ -73,7 +74,7 @@
     }
     .aion-menu a:hover { color: var(--accent-cyan); }
 
-    /* Hero Section */
+    /* Hero Section avec Slider */
     .aion-hero {
       position: relative;
       height: 600px;
@@ -82,14 +83,62 @@
       align-items: flex-end;
       justify-content: center;
       text-align: center;
-      background-image: url('../images/fond-aion2bis.jpg');
+    }
+
+    .slider-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
       background-size: cover;
       background-position: center top;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
     }
+
+    .slide.active {
+      opacity: 1;
+    }
+
+    /* Boutons de navigation du Slider */
+    .slider-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(7, 11, 22, 0.6);
+      border: 1px solid var(--border-card);
+      color: var(--text-main);
+      font-size: 1.5rem;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .slider-btn:hover {
+      background: var(--accent-cyan);
+      color: #070b16;
+      box-shadow: 0 0 15px var(--accent-cyan);
+    }
+
+    .slider-btn.prev { left: 20px; }
+    .slider-btn.next { right: 20px; }
+
     .hero-overlay {
       position: absolute;
       inset: 0;
       background: linear-gradient(180deg, rgba(7,11,22,0.3) 0%, rgba(7,11,22,0.95) 100%);
+      z-index: 1;
     }
     .hero-content {
       position: relative;
@@ -229,7 +278,7 @@
       .hero-content { padding-bottom: 70px; }
       .hero-content h1 { font-size: 2.2rem; }
       .hero-content p { font-size: 1.05rem; }
-      .aion-logo-img { height: 50px; }
+      .aion-logo-img { height: 75px; }
     }
   </style>
 </head>
@@ -247,8 +296,23 @@
   </ul>
 </nav>
 
-<!-- Hero Banner -->
+<!-- Hero Banner avec Slider -->
 <section class="aion-hero">
+  <div class="slider-bg">
+    <!-- Ajoutez ou modifiez vos images ici -->
+    <div class="slide active" style="background-image: url('../images/fond-aion2bis.jpg');"></div>
+    <div class="slide" style="background-image: url('../images/prelancement.jpeg');"></div>
+    <div class="slide" style="background-image: url('../images/packfondateur.jpeg');"></div>
+  </div>
+
+  <!-- Flèches manuelle de défilement -->
+  <button class="slider-btn prev" id="prevBtn" aria-label="Image précédente">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+  <button class="slider-btn next" id="nextBtn" aria-label="Image suivante">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1>L'HÉRITAGE ÉTERNEL</h1>
@@ -285,7 +349,6 @@
       <a href="actualite.html">Voir tout &rarr;</a>
     </div>
     <div class="ln-grid" id="latest-news-grid">
-      <!-- Article 1 : Pré-lancement -->
       <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
         <div class="ln-img" style="background-image:url('../images/prelancement.jpeg')"></div>
         <div class="ln-body">
@@ -295,7 +358,6 @@
         </div>
       </a>
 
-      <!-- Article 2 : Pack Fondateur -->
       <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
         <div class="ln-img" style="background-image:url('../images/packfondateur.jpeg')"></div>
         <div class="ln-body">
@@ -307,9 +369,8 @@
     </div>
   </section>
 
-  <!-- Colonne Droite : Sidebar (Codes & Flash Actus) -->
+  <!-- Colonne Droite : Sidebar -->
   <aside class="sidebar-section">
-    <!-- Box Codes Promo -->
     <div class="side-box">
       <div class="section-title">
         <span><i class="fas fa-gift" style="color:var(--accent-gold);"></i> Codes Récompenses</span>
@@ -319,7 +380,6 @@
       </div>
     </div>
 
-    <!-- Box Fil d'actualité secondaire -->
     <div class="side-box">
       <div class="section-title">
         <span><i class="fas fa-rss"></i> Flash Actus</span>
@@ -347,6 +407,55 @@
 <footer>
   <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
 </footer>
+
+<!-- Script de défilement automatique & manuel des images -->
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let currentSlide = 0;
+  let slideInterval;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+      if (i === index) {
+        slide.classList.add('active');
+      }
+    });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function startTimer() {
+    slideInterval = setInterval(nextSlide, 5000);
+  }
+
+  function resetTimer() {
+    clearInterval(slideInterval);
+    startTimer();
+  }
+
+  nextBtn.addEventListener('click', () => {
+    nextSlide();
+    resetTimer();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    prevSlide();
+    resetTimer();
+  });
+
+  startTimer();
+</script>
 
 </body>
 </html>
