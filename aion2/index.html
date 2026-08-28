@@ -56,18 +56,14 @@
       display: flex;
       align-items: center;
       text-decoration: none;
-      position: relative;
       height: 100%;
     }
     
-    /* Logo grand format qui déborde sans déformer le bandeau */
+    /* Logo parfaitement aligné dans le header */
     .aion-logo-img {
-      height: 100px;
+      height: 50px;
       width: auto;
       object-fit: contain;
-      position: absolute;
-      top: 15px;
-      left: 0;
       transition: transform 0.3s ease;
       filter: drop-shadow(0 4px 10px rgba(0,0,0,0.8));
     }
@@ -92,10 +88,10 @@
     }
     .aion-menu a:hover { color: var(--accent-cyan); }
 
-    /* Hero Section - Passage à 800px de hauteur */
+    /* Hero Section à 800px */
     .aion-hero {
       position: relative;
-      height: 800px; /* <--- Ajusté à 800px */
+      height: 800px;
       width: 100%;
       overflow: hidden;
       display: flex;
@@ -319,7 +315,7 @@
       .hero-content { padding-bottom: 60px; }
       .hero-content h1 { font-size: 2.2rem; }
       .hero-content p { font-size: 1.05rem; }
-      .aion-logo-img { height: 75px; }
+      .aion-logo-img { height: 40px; }
     }
   </style>
 </head>
