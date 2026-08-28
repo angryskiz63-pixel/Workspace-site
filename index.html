@@ -14,6 +14,7 @@
       --youtube: #FF0000;
       --instagram: #E1306C;
       --tiktok: #010101;
+      --aion-cyan: #00f2fe;
     }
     body, html { margin: 0; padding: 0; height: 100%; font-family: 'Inter', sans-serif; background: var(--bg); color: #fff; overflow: hidden; }
 
@@ -47,12 +48,62 @@
     .card { padding: 40px; text-align: center; z-index: 2; transition: transform 0.3s; width: 100%; max-width: 500px; }
     .side:hover .card { transform: scale(1.02); }
     
-    .logo-container { margin-bottom: 2rem; }
-    .logo-container img { max-height: 120px; width: auto; }
+    .logo-container { margin-bottom: 1.5rem; }
+    .logo-container img { max-height: 110px; width: auto; }
+
+    /* --- BOUTON VOYANT AION 2 --- */
+    .aion2-tab-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #005c97 0%, #363795 100%);
+      color: #ffffff !important;
+      font-weight: 800;
+      font-size: 1.05rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 20px;
+      border-radius: 8px;
+      border: 2px solid var(--aion-cyan);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.2);
+      margin-top: 25px;
+      margin-bottom: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      animation: pulseAion 2s infinite;
+    }
+
+    .aion2-tab-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.9), inset 0 0 15px rgba(255, 255, 255, 0.4);
+      background: linear-gradient(135deg, #0083b0 0%, #00b4db 100%);
+    }
+
+    .aion2-badge {
+      position: absolute;
+      top: 3px;
+      right: 6px;
+      background: #ff0055;
+      color: white;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      box-shadow: 0 0 6px #ff0055;
+    }
+
+    @keyframes pulseAion {
+      0% { box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
+      50% { box-shadow: 0 0 22px rgba(0, 242, 254, 0.85); }
+      100% { box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
+    }
 
     .twitch-embed-container {
       width: 100%;
-      margin-top: 50px;
       border-radius: 12px;
       overflow: hidden;
       border: 2px solid rgba(145, 70, 255, 0.5);
@@ -124,7 +175,11 @@
     .footer-brand { color: #00bcd4; font-weight: bold; }
 
     @media (max-width: 768px) { 
-      .container { flex-direction: column; } .divider { display: none; } 
+      body, html { overflow: auto; }
+      .container { flex-direction: column; height: auto; } 
+      .divider { display: none; } 
+      .side { padding-bottom: 60px; }
+      .content-right { margin-top: 0; }
     }
   </style>
 </head>
@@ -147,6 +202,15 @@
           <a href="https://www.youtube.com/@angryskiz" target="_blank" class="platform-link youtube" title="S'abonner sur YouTube"><i class="fa-brands fa-youtube"></i></a>
           <a href="https://instagram.com/angryskiz" target="_blank" class="platform-link instagram" title="Suivre sur Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
+
+        <!-- ONGLET AION 2 VOYANT (PLACÉ AU-DESSUS DU STREAM TWITCH) -->
+        <a href="https://angryskiz.fr/aion/index.html" class="aion2-tab-btn">
+          <span class="aion2-badge">NOUVEAU</span>
+          <i class="fa-solid fa-dragon"></i>
+          <span>PORTAIL AION 2</span>
+        </a>
+
+        <!-- STREAM TWITCH EMBED -->
         <div class="twitch-embed-container">
           <iframe
             src="https://player.twitch.tv/?channel=angryskiz&parent=angryskiz.fr&parent=www.angryskiz.fr"
