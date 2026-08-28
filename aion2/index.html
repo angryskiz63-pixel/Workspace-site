@@ -51,8 +51,13 @@
     .aion-logo {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
       text-decoration: none;
+    }
+    .aion-logo-img {
+      height: 45px;
+      width: auto;
+      object-fit: contain;
     }
     .aion-logo-text {
       font-family: 'Cinzel', serif;
@@ -60,7 +65,6 @@
       font-weight: 900;
       color: #fff;
     }
-    .aion-logo-text span { color: var(--accent-cyan); }
     .aion-menu { display: flex; gap: 25px; list-style: none; }
     .aion-menu a {
       color: var(--text-main);
@@ -235,7 +239,8 @@
 <!-- Navigation Aion 2 -->
 <nav class="aion-nav">
   <a href="index.html" class="aion-logo">
-    <span class="aion-logo-text">AION 2 <span>FR</span></span>
+    <img src="../images/logo-aion2.png" alt="Logo Aion 2" class="aion-logo-img">
+    <span class="aion-logo-text">AION 2</span>
   </a>
   <ul class="aion-menu">
     <li><a href="actualite.html">Actualités</a></li>
