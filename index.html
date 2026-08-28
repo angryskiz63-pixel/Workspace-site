@@ -51,24 +51,24 @@
     .logo-container { margin-bottom: 1.5rem; }
     .logo-container img { max-height: 110px; width: auto; }
 
-    /* --- BOUTON VOYANT AION 2 --- */
+    /* --- BOUTON LARGE AION 2 AVEC LOGO DU JEU --- */
     .aion2-tab-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      background: linear-gradient(135deg, #005c97 0%, #363795 100%);
+      gap: 15px;
+      background: linear-gradient(135deg, rgba(0, 131, 176, 0.9) 0%, rgba(0, 180, 219, 0.9) 100%);
       color: #ffffff !important;
-      font-weight: 800;
-      font-size: 1.05rem;
-      letter-spacing: 1.5px;
+      font-weight: 900;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
       text-transform: uppercase;
       text-decoration: none;
-      padding: 14px 20px;
-      border-radius: 8px;
+      padding: 16px 24px;
+      border-radius: 12px;
       border: 2px solid var(--aion-cyan);
-      box-shadow: 0 0 15px rgba(0, 242, 254, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.2);
-      margin-top: 25px;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.6), inset 0 0 12px rgba(255, 255, 255, 0.3);
+      margin-top: 20px;
       margin-bottom: 25px;
       position: relative;
       overflow: hidden;
@@ -76,30 +76,37 @@
       animation: pulseAion 2s infinite;
     }
 
+    .aion2-tab-btn img {
+      height: 42px;
+      width: auto;
+      filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.8));
+      mix-blend-mode: multiply; /* Nettoie le fond blanc du logo */
+    }
+
     .aion2-tab-btn:hover {
-      transform: translateY(-3px) scale(1.03);
-      box-shadow: 0 0 25px rgba(0, 242, 254, 0.9), inset 0 0 15px rgba(255, 255, 255, 0.4);
-      background: linear-gradient(135deg, #0083b0 0%, #00b4db 100%);
+      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 1), inset 0 0 18px rgba(255, 255, 255, 0.5);
+      background: linear-gradient(135deg, #00f2fe 0%, #0083b0 100%);
     }
 
     .aion2-badge {
       position: absolute;
-      top: 3px;
-      right: 6px;
+      top: 4px;
+      right: 8px;
       background: #ff0055;
       color: white;
-      font-size: 0.6rem;
-      padding: 2px 6px;
+      font-size: 0.65rem;
+      padding: 2px 7px;
       border-radius: 4px;
       font-weight: 900;
       letter-spacing: 1px;
-      box-shadow: 0 0 6px #ff0055;
+      box-shadow: 0 0 8px #ff0055;
     }
 
     @keyframes pulseAion {
-      0% { box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
-      50% { box-shadow: 0 0 22px rgba(0, 242, 254, 0.85); }
-      100% { box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
+      0% { box-shadow: 0 0 12px rgba(0, 242, 254, 0.4); }
+      50% { box-shadow: 0 0 26px rgba(0, 242, 254, 0.9); }
+      100% { box-shadow: 0 0 12px rgba(0, 242, 254, 0.4); }
     }
 
     .twitch-embed-container {
@@ -203,10 +210,10 @@
           <a href="https://instagram.com/angryskiz" target="_blank" class="platform-link instagram" title="Suivre sur Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
 
-        <!-- ONGLET AION 2 VOYANT (PLACÉ AU-DESSUS DU STREAM TWITCH) -->
-        <a href="https://angryskiz.fr/aion/index.html" class="aion2-tab-btn">
+        <!-- BOUTON AION 2 PLUS GRAND AVEC LOGO -->
+        <a href="aion2/index.html" class="aion2-tab-btn">
           <span class="aion2-badge">NOUVEAU</span>
-          <i class="fa-solid fa-dragon"></i>
+          <img src="images/logo-aion2.jpeg" alt="Logo Aion 2">
           <span>PORTAIL AION 2</span>
         </a>
 
@@ -224,7 +231,6 @@
 
     <section class="side side-right">
       <div class="card content-right">
-        <!-- Logo supprimé ici pour éviter le doublon -->
         <p>Expertise PC, Montage, et Maintenance Informatique.</p>
         <a href="skiztech/index.html" class="btn">VOIR LES SERVICES</a>
       </div>
