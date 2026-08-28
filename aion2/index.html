@@ -92,10 +92,10 @@
     }
     .aion-menu a:hover { color: var(--accent-cyan); }
 
-    /* Hero Section - Plein écran large */
+    /* Hero Section - Passage à 850px de hauteur */
     .aion-hero {
       position: relative;
-      height: 650px;
+      height: 850px; /* <--- Passé de 650px à 850px */
       width: 100%;
       overflow: hidden;
       display: flex;
@@ -110,7 +110,7 @@
       z-index: 0;
     }
 
-    /* L'image s'étale sur 100% de la largeur comme sur le modèle */
+    /* Image qui couvre tout en grand format */
     .slide {
       position: absolute;
       inset: 0;
@@ -127,7 +127,7 @@
     /* Boutons de navigation du Slider */
     .slider-btn {
       position: absolute;
-      top: 55%;
+      top: 50%;
       transform: translateY(-50%);
       z-index: 10;
       background: rgba(7, 11, 22, 0.6);
@@ -154,11 +154,11 @@
     .slider-btn.prev { left: 25px; }
     .slider-btn.next { right: 25px; }
 
-    /* Dégradé sombre en bas de l'image pour fusionner avec le site */
+    /* Overlay mis à jour pour bien faire le dégradé sur 850px */
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(7,11,22,0.2) 0%, rgba(7,11,22,0.6) 60%, rgba(7,11,22,1) 100%);
+      background: linear-gradient(180deg, rgba(7,11,22,0.2) 0%, rgba(7,11,22,0.5) 65%, rgba(7,11,22,1) 100%);
       z-index: 1;
       pointer-events: none;
     }
@@ -167,11 +167,11 @@
       position: relative;
       z-index: 2;
       max-width: 900px;
-      padding: 0 20px 80px 20px;
+      padding: 0 20px 100px 20px;
     }
     .hero-content h1 {
       font-family: 'Cinzel', serif;
-      font-size: 3.5rem;
+      font-size: 3.8rem;
       font-weight: 900;
       letter-spacing: 2px;
       background: linear-gradient(to right, #ffffff, var(--accent-cyan));
@@ -181,7 +181,7 @@
       text-shadow: 0 4px 15px rgba(0,0,0,0.9);
     }
     .hero-content p { 
-      font-size: 1.25rem; 
+      font-size: 1.3rem; 
       color: #cbd5e1; 
       margin-bottom: 0; 
       text-shadow: 0 2px 10px rgba(0,0,0,0.9); 
@@ -291,6 +291,7 @@
     }
 
     @media (max-width: 900px) {
+      .aion-hero { height: 550px; }
       .main-layout { grid-template-columns: 1fr; }
       .hero-content { padding-bottom: 60px; }
       .hero-content h1 { font-size: 2.2rem; }
@@ -313,7 +314,7 @@
   </ul>
 </nav>
 
-<!-- Hero Banner plein écran avec slider -->
+<!-- Hero Banner plein écran avec slider à 850px de hauteur -->
 <section class="aion-hero">
   <div class="slider-bg">
     <div class="slide active" style="background-image: url('../images/fond-aion2bis.jpg');"></div>
