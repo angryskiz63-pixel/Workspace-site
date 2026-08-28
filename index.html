@@ -48,16 +48,16 @@
     .card { padding: 40px; text-align: center; z-index: 2; transition: transform 0.3s; width: 100%; max-width: 500px; }
     .side:hover .card { transform: scale(1.02); }
 
-    /* CADRE AION 2 AU FORMAT 16:9 / 1080P AVEC TON IMAGE PERSO EN FOND */
+    /* BLOC 16:9 AVEC IMAGES/FOND-AION2BIS.JPG */
     .aion2-card-banner {
       width: 100%;
-      aspect-ratio: 16 / 9; /* Même dimension que l'écran Twitch */
-      background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.65) 100%), url('images/fond-aion2bis.jpg');
+      aspect-ratio: 16 / 9;
+      background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.65) 100%), url('images/fond-aion2bis.jpg');
       background-size: cover;
       background-position: center;
       border-radius: 12px;
       border: 2px solid rgba(0, 242, 254, 0.8);
-      box-shadow: 0 0 25px rgba(0, 242, 254, 0.45), inset 0 0 15px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.45);
       margin-top: 15px;
       margin-bottom: 25px;
       position: relative;
@@ -65,20 +65,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-end; /* Met le texte sur le bas du cadre pour laisser voir l'image */
-      padding-bottom: 20px;
+      justify-content: flex-end;
+      padding-bottom: 18px;
       text-decoration: none;
-      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.4s ease;
       animation: pulseAionCard 3s infinite alternate;
     }
 
     .aion2-card-banner:hover {
       transform: translateY(-4px) scale(1.02);
       border-color: #00f2fe;
-      box-shadow: 0 0 40px rgba(0, 242, 254, 0.85), inset 0 0 20px rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 40px rgba(0, 242, 254, 0.85);
     }
 
-    /* Titre "PORTAIL AION 2" néon et lisible */
     .aion2-title-text {
       font-weight: 900;
       font-size: 1.4rem;
@@ -196,7 +195,6 @@
     <section class="side side-left">
       <div class="card">
 
-        <!-- BOUTONS SOCIAUX -->
         <div class="stream-platforms">
           <a href="https://www.twitch.tv/Angryskiz" target="_blank" class="platform-link twitch" title="Regarder sur Twitch">
             <div id="twitch-badge" class="live-badge">LIVE</div>
@@ -207,13 +205,11 @@
           <a href="https://instagram.com/angryskiz" target="_blank" class="platform-link instagram" title="Suivre sur Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
 
-        <!-- PORTAIL AION 2 (FORMAT 16:9 1080P - FOND FOND-AION2BIS.JPG) -->
         <a href="aion2/index.html" class="aion2-card-banner">
           <span class="aion2-badge">NOUVEAU</span>
           <span class="aion2-title-text">PORTAIL AION 2</span>
         </a>
 
-        <!-- STREAM TWITCH EMBED -->
         <div class="twitch-embed-container">
           <iframe
             src="https://player.twitch.tv/?channel=angryskiz&parent=angryskiz.fr&parent=www.angryskiz.fr"
