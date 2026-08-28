@@ -48,14 +48,11 @@
 
     .card { padding: 40px; text-align: center; z-index: 2; transition: transform 0.3s; width: 100%; max-width: 500px; }
     .side:hover .card { transform: scale(1.02); }
-    
-    .logo-container { margin-bottom: 1.2rem; }
-    .logo-container img { max-height: 100px; width: auto; }
 
-    /* --- PORTAIL AION 2 AU FORMAT 16:9 / 1080P COMME TWITCH --- */
+    /* PORTAIL AION 2 AU FORMAT 16:9 / 1080P */
     .aion2-card-banner {
       width: 100%;
-      aspect-ratio: 16 / 9; /* Même ratio que l'écran Twitch */
+      aspect-ratio: 16 / 9;
       background-image: linear-gradient(180deg, rgba(7, 11, 22, 0.45) 0%, rgba(5, 10, 20, 0.85) 100%), url('images/fond-aion2.jpeg');
       background-size: cover;
       background-position: center;
@@ -81,7 +78,6 @@
       box-shadow: 0 0 40px rgba(0, 242, 254, 0.8), inset 0 0 15px rgba(255, 255, 255, 0.2);
     }
 
-    /* Logo centré dans la carte 16:9 */
     .aion2-center-logo {
       max-height: 65px;
       width: auto;
@@ -90,7 +86,6 @@
       margin-bottom: 8px;
     }
 
-    /* Titre "PORTAIL AION 2" stylisé et fluide */
     .aion2-title-text {
       font-weight: 900;
       font-size: 1.35rem;
@@ -157,7 +152,7 @@
       transform: translateY(-5px);
     }
 
-    .stream-platforms { display: flex; gap: 20px; justify-content: center; align-items: center; margin-bottom: 20px;}
+    .stream-platforms { display: flex; gap: 20px; justify-content: center; align-items: center; margin-bottom: 25px; margin-top: 10px;}
 
     .platform-link {
       position: relative; display: flex; align-items: center; justify-content: center;
@@ -209,9 +204,8 @@
 
     <section class="side side-left">
       <div class="card">
-        <div class="logo-container">
-            <img src="images/logo-skiztech.png" alt="Skiztech Logo">
-        </div>
+
+        <!-- BOUTONS SOCIAUX -->
         <div class="stream-platforms">
           <a href="https://www.twitch.tv/Angryskiz" target="_blank" class="platform-link twitch" title="Regarder sur Twitch">
             <div id="twitch-badge" class="live-badge">LIVE</div>
