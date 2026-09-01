@@ -264,7 +264,7 @@
       line-height: 1.5;
     }
 
-    /* Sidebar Boxes */
+    /* Sidebar Boxes & Buttons */
     .sidebar-section { display: flex; flex-direction: column; gap: 35px; }
     .side-box {
       background: var(--bg-card);
@@ -291,6 +291,29 @@
     .join-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
+    }
+
+    /* Bouton secondaire en jeu */
+    .secondary-game-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .secondary-game-btn:hover {
+      background: rgba(0, 242, 254, 0.1);
+      border-color: var(--accent-cyan);
+      color: #fff;
     }
 
     footer {
@@ -402,6 +425,14 @@
 
       <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="join-btn">
         <i class="fab fa-discord"></i> Postuler sur Discord
+      </a>
+
+      <div style="margin: 12px 0 8px 0; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
+        ou
+      </div>
+
+      <a href="steam://rungameid/APP_ID_AION2" class="secondary-game-btn">
+        <i class="fas fa-gamepad"></i> Postuler directement en jeu
       </a>
     </div>
 
