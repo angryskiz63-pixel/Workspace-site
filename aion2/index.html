@@ -81,9 +81,10 @@
     
     .aion-menu { 
       display: flex; 
-      gap: 25px; 
+      gap: 20px; 
       list-style: none; 
       margin-left: auto;
+      align-items: center;
     }
     .aion-menu a {
       color: var(--text-main);
@@ -94,6 +95,25 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
     .aion-menu a:hover { color: var(--accent-cyan); }
+
+    /* Bouton Discord dans le Header */
+    .aion-discord-btn {
+      background: #5865F2;
+      color: #fff !important;
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold !important;
+      box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+      transition: all 0.2s ease !important;
+    }
+    .aion-discord-btn:hover {
+      background: #4752C4;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
+    }
 
     /* Hero Section à 800px */
     .aion-hero {
@@ -193,7 +213,7 @@
     /* Grille de raccourcis */
     .quick-links {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
       max-width: 1400px;
       margin: -40px auto 50px auto;
@@ -345,6 +365,11 @@
     <li><a href="actualite.html">Actualités</a></li>
     <li><a href="guides.html">Guides & Builds</a></li>
     <li><a href="https://angryskiz.fr" target="_blank">Retour AngrySkiz.fr</a></li>
+    <li>
+      <a href="https://discord.gg/TON_LIEN_DISCORD" target="_blank" class="aion-discord-btn">
+        <i class="fab fa-discord"></i> Discord
+      </a>
+    </li>
   </ul>
 </nav>
 
@@ -382,6 +407,10 @@
   <a href="actualite.html" class="quick-card">
     <i class="fas fa-newspaper"></i>
     <h3>Notes de Patch</h3>
+  </a>
+  <a href="https://discord.gg/TON_LIEN_DISCORD" target="_blank" class="quick-card">
+    <i class="fab fa-discord" style="color: #5865F2;"></i>
+    <h3>Rejoindre Discord</h3>
   </a>
 </div>
 
@@ -447,6 +476,11 @@
 </main>
 
 <footer>
+  <p style="margin-bottom: 12px;">
+    <a href="https://discord.gg/TON_LIEN_DISCORD" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
+      <i class="fab fa-discord"></i> Rejoindre la communauté sur Discord
+    </a>
+  </p>
   <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
 </footer>
 
