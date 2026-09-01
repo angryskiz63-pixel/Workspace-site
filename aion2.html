@@ -333,7 +333,6 @@
 </head>
 <body>
 
-<!-- Bandeau de navigation du haut -->
 <nav class="aion-nav">
   <a href="aion2.html" class="aion-logo">
     <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
@@ -343,7 +342,7 @@
     <li><a href="guides.html?cat=classes">Classes</a></li>
     <li><a href="guides.html?cat=builds">Builds</a></li>
     <li><a href="guides.html">Guides</a></li>
-    <li><a href="#actualites">Patch</a></li>
+    <li><a href="#actualites">Patchs</a></li>
     <li>
       <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
         <i class="fab fa-discord"></i> Discord
@@ -370,7 +369,6 @@
   </div>
 </section>
 
-<!-- Cartes de raccourcis sous le slider -->
 <div class="quick-links">
   <a href="guides.html?cat=classes" class="quick-card">
     <i class="fas fa-shield-halved"></i>
@@ -382,11 +380,11 @@
   </a>
   <a href="guides.html" class="quick-card">
     <i class="fas fa-book-bookmark"></i>
-    <h3>Guide</h3>
+    <h3>Guides</h3>
   </a>
   <a href="#actualites" class="quick-card">
     <i class="fas fa-newspaper"></i>
-    <h3>Patch</h3>
+    <h3>Patchs</h3>
   </a>
   <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="quick-card">
     <i class="fab fa-discord" style="color: #5865F2; filter: drop-shadow(0 0 8px rgba(88, 101, 242, 0.6));"></i>
@@ -422,7 +420,6 @@
   </section>
 
   <aside class="sidebar-section">
-    <!-- Bloc Discord -->
     <div class="side-box" style="text-align: center;">
       <div class="section-title" style="justify-content: center; margin-bottom: 15px;">
         <span><i class="fab fa-discord" style="color:#5865F2;"></i> Communauté Discord</span>
@@ -441,7 +438,6 @@
       </a>
     </div>
 
-    <!-- Flash Actus -->
     <div class="side-box">
       <div class="section-title">
         <span><i class="fas fa-rss"></i> Flash Actus</span>
@@ -469,46 +465,4 @@
 <footer>
   <p style="margin-bottom: 12px;">
     <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
-      <i class="fab fa-discord"></i> Rejoindre la communauté sur Discord
-    </a>
-  </p>
-  <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
-</footer>
-
-<script>
-  // Slider Hero
-  const slides = document.querySelectorAll('.slide');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  let currentSlide = 0;
-  let slideInterval;
-
-  function showSlide(index) {
-    slides.forEach((slide, i) => {
-      slide.classList.remove('active');
-      if (i === index) slide.classList.add('active');
-    });
-  }
-
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-  }
-
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(currentSlide);
-  }
-
-  function startTimer() { slideInterval = setInterval(nextSlide, 3500); }
-  function resetTimer() { clearInterval(slideInterval); startTimer(); }
-
-  nextBtn.addEventListener('click', () => { nextSlide(); resetTimer(); });
-  prevBtn.addEventListener('click', () => { prevSlide(); resetTimer(); });
-  startTimer();
-</script>
-
-<script src="js/player.js?v=2"></script>
-
-</body>
-</html>
+      <i class="
