@@ -55,23 +55,32 @@
       z-index: 100;
     }
     
+    /* Format grand logo identique à la page d'accueil */
     .aion-logo {
       display: flex;
       align-items: center;
       text-decoration: none;
       height: 100%;
       position: relative;
-      min-width: 140px;
+      width: 120px;
     }
     
     .aion-logo-img {
-      height: 55px;
+      height: 100px;
       width: auto;
       object-fit: contain;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
       transition: transform 0.3s ease;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.9));
+      z-index: 10;
     }
-    .aion-logo-img:hover { transform: scale(1.05); }
+    
+    .aion-logo-img:hover {
+      transform: translateY(-50%) scale(1.05);
+    }
     
     .aion-menu { 
       display: flex; 
@@ -110,7 +119,7 @@
       box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
     }
 
-    /* Hero Banner — Image Lumineuse d'origine */
+    /* Hero Banner */
     .guild-hero {
       position: relative;
       height: 480px;
@@ -338,6 +347,7 @@
     @media (max-width: 900px) {
       .main-layout { grid-template-columns: 1fr; }
       .guild-hero-content h1 { font-size: 2.3rem; }
+      .aion-logo-img { height: 60px; }
       .aion-menu { display: none; }
     }
   </style>
