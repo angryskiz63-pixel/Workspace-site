@@ -124,7 +124,8 @@
     /* Hero Section */
     .aion-hero {
       position: relative;
-      height: 800px;
+      min-height: calc(100vh - 180px);
+      max-height: 700px;
       width: 100%;
       overflow: hidden;
       display: flex;
@@ -184,7 +185,7 @@
       position: relative;
       z-index: 2;
       max-width: 900px;
-      padding: 0 20px 90px 20px;
+      padding: 0 20px 120px 20px;
     }
     .hero-content h1 {
       font-family: 'Cinzel', serif;
@@ -205,7 +206,7 @@
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 18px;
       max-width: 1400px;
-      margin: -40px auto 50px auto;
+      margin: -70px auto 40px auto;
       padding: 0 20px;
       position: relative;
       z-index: 10;
@@ -320,7 +321,7 @@
     }
 
     @media (max-width: 900px) {
-      .aion-hero { height: 550px; }
+      .aion-hero { height: 550px; min-height: auto; }
       .main-layout { grid-template-columns: 1fr; }
       .hero-content { padding-bottom: 60px; }
       .hero-content h1 { font-size: 2.2rem; }
@@ -328,6 +329,7 @@
       .aion-logo-img { height: 60px; }
       .ln-img { height: 240px; }
       .aion-menu { display: none; }
+      .quick-links { margin-top: -40px; }
     }
   </style>
 </head>
