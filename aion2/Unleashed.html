@@ -314,7 +314,7 @@
 
 <nav class="aion-nav">
   <a href="/aion2/aion2.html" class="aion-logo">
-    <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
+    <img src="/aion2/images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='images/logo-aion2.png';">
   </a>
   <ul class="aion-menu">
     <li><a href="/aion2/aion2.html#actualites">Actualités</a></li>
@@ -322,7 +322,7 @@
     <li><a href="/aion2/Builds.html">Builds</a></li>
     <li><a href="/aion2/Guides.html">Guides</a></li>
     <li><a href="/aion2/Patchs.html">Patchs</a></li>
-    <li><a href="/aion2/unleashed.html" class="active">UNLEASHED</a></li>
+    <li><a href="/aion2/Unleashed.html" class="active">UNLEASHED</a></li>
     <li>
       <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
         <i class="fab fa-discord"></i> Discord
@@ -347,12 +347,7 @@
     </div>
     
     <div class="twitch-container">
-      <div class="twitch-player">
-        <iframe 
-          src="https://player.twitch.tv/?channel=angryskiz&parent=angryskiz.fr&autoplay=false" 
-          allowfullscreen>
-        </iframe>
-      </div>
+      <div class="twitch-player" id="twitch-embed"></div>
       <div class="live-bar">
         <div class="live-status">
           <span class="pulse-dot"></span>
@@ -430,6 +425,17 @@
   </p>
   <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
 </footer>
+
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+<script type="text/javascript">
+  new Twitch.Embed("twitch-embed", {
+    width: "100%",
+    height: "100%",
+    channel: "angryskiz",
+    parent: [window.location.hostname],
+    autoplay: false
+  });
+</script>
 
 </body>
 </html>
