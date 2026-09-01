@@ -222,24 +222,57 @@
       z-index: 10;
       width: 100%;
     }
+
+    /* Style RPG pour les cartes */
     .quick-card {
-      background: var(--bg-card);
-      border: 1.5px solid var(--border-card);
-      padding: 24px 20px;
-      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(7, 11, 22, 0.9) 100%);
+      border: 1px solid var(--border-card);
+      padding: 22px 18px;
+      border-radius: 8px;
       text-align: center;
       color: white;
       text-decoration: none;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
     }
+
+    .quick-card::before {
+      content: '';
+      position: absolute;
+      top: 0; 
+      left: 0; 
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
+      opacity: 0.6;
+    }
+
     .quick-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-5px);
       border-color: var(--accent-cyan);
-      box-shadow: 0 10px 30px rgba(0, 242, 254, 0.3);
+      box-shadow: 0 8px 25px rgba(0, 242, 254, 0.25), inset 0 0 15px rgba(0, 242, 254, 0.1);
     }
-    .quick-card i { font-size: 2rem; color: var(--accent-cyan); margin-bottom: 10px; }
-    .quick-card h3 { font-size: 1.1rem; font-family: 'Cinzel', serif; }
+
+    .quick-card i {
+      font-size: 1.8rem;
+      color: var(--accent-cyan);
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5));
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .quick-card:hover i {
+      transform: scale(1.15);
+    }
+
+    .quick-card h3 { 
+      font-size: 1.05rem; 
+      font-family: 'Cinzel', serif; 
+      letter-spacing: 0.5px;
+    }
 
     /* Disposition principale */
     .main-layout {
@@ -283,7 +316,7 @@
     }
     .ln-card:hover { transform: translateY(-5px); border-color: var(--accent-cyan); }
     
-    /* Illustrations d'actualités agrandies pour zoomer sur les détails */
+    /* Illustrations d'actualités */
     .ln-img { 
       height: 320px; 
       width: 100%;
@@ -358,8 +391,8 @@
 <body>
 
 <nav class="aion-nav">
-  <a href="index.html" class="aion-logo">
-    <img src="../images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
+  <a href="aion2.html" class="aion-logo">
+    <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
   </a>
   <ul class="aion-menu">
     <li><a href="actualite.html">Actualités</a></li>
@@ -375,10 +408,10 @@
 
 <section class="aion-hero">
   <div class="slider-bg">
-    <div class="slide active" style="background-image: url('../images/fond-aion2bis.jpg');"></div>
-    <div class="slide" style="background-image: url('../images/fondaion2.png');"></div>
-    <div class="slide" style="background-image: url('../images/fondaion3.png');"></div>
-    <div class="slide" style="background-image: url('../images/fondaion4.png');"></div>
+    <div class="slide active" style="background-image: url('images/fond-aion2bis.jpg');"></div>
+    <div class="slide" style="background-image: url('images/fondaion2.png');"></div>
+    <div class="slide" style="background-image: url('images/fondaion3.png');"></div>
+    <div class="slide" style="background-image: url('images/fondaion4.png');"></div>
   </div>
 
   <button class="slider-btn prev" id="prevBtn" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
@@ -393,23 +426,23 @@
 
 <div class="quick-links">
   <a href="guides.html?cat=classes" class="quick-card">
-    <i class="fas fa-shield-halved"></i>
+    <i class="fas fa-swords"></i>
     <h3>Classes & Roles</h3>
   </a>
   <a href="guides.html?cat=builds" class="quick-card">
-    <i class="fas fa-bolt"></i>
+    <i class="fas fa-wand-magic-sparkles"></i>
     <h3>Builds PvP/PvE</h3>
   </a>
   <a href="guides.html?cat=debutant" class="quick-card">
-    <i class="fas fa-book-open"></i>
+    <i class="fas fa-scroll"></i>
     <h3>Guides Débutant</h3>
   </a>
   <a href="actualite.html" class="quick-card">
-    <i class="fas fa-newspaper"></i>
+    <i class="fas fa-bullhorn"></i>
     <h3>Notes de Patch</h3>
   </a>
-  <a href="https://discord.gg/TON_LIEN_DISCORD" target="_blank" class="quick-card">
-    <i class="fab fa-discord" style="color: #5865F2;"></i>
+  <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="quick-card">
+    <i class="fab fa-discord" style="color: #5865F2; filter: drop-shadow(0 0 8px rgba(88, 101, 242, 0.6));"></i>
     <h3>Rejoindre Discord</h3>
   </a>
 </div>
@@ -422,7 +455,7 @@
     </div>
     <div class="ln-grid" id="latest-news-grid">
       <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
-        <div class="ln-img" style="background-image:url('../images/prelancement.jpeg')"></div>
+        <div class="ln-img" style="background-image:url('images/prelancement.jpeg')"></div>
         <div class="ln-body">
           <span class="tag tag-off">Global</span>
           <div class="ln-title">Pré-lancement Aion 2 : Préparez-vous !</div>
@@ -431,7 +464,7 @@
       </a>
 
       <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
-        <div class="ln-img" style="background-image:url('../images/packfondateur.jpeg')"></div>
+        <div class="ln-img" style="background-image:url('images/packfondateur.jpeg')"></div>
         <div class="ln-body">
           <span class="tag tag-off">Global</span>
           <div class="ln-title">Packs Fondateurs disponibles sur Steam</div>
@@ -457,14 +490,14 @@
       </div>
       <div id="sidebar-news-list">
         <a class="news-item" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
-          <div class="news-thumb" style="background-image:url('../images/prelancement.jpeg')"></div>
+          <div class="news-thumb" style="background-image:url('images/prelancement.jpeg')"></div>
           <div>
             <div class="news-title">Pré-lancement Aion 2</div>
             <span class="ln-date">Steam</span>
           </div>
         </a>
         <a class="news-item" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
-          <div class="news-thumb" style="background-image:url('../images/packfondateur.jpeg')"></div>
+          <div class="news-thumb" style="background-image:url('images/packfondateur.jpeg')"></div>
           <div>
             <div class="news-title">Packs Fondateurs</div>
             <span class="ln-date">Steam</span>
@@ -477,7 +510,7 @@
 
 <footer>
   <p style="margin-bottom: 12px;">
-    <a href="https://discord.gg/TON_LIEN_DISCORD" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
+    <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
       <i class="fab fa-discord"></i> Rejoindre la communauté sur Discord
     </a>
   </p>
