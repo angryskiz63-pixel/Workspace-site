@@ -339,10 +339,10 @@
   </a>
   <ul class="aion-menu">
     <li><a href="#actualites">Actualités</a></li>
-    <li><a href="guides.html?cat=classes">Classes</a></li>
-    <li><a href="guides.html?cat=builds">Builds</a></li>
-    <li><a href="guides.html">Guides</a></li>
-    <li><a href="#actualites">Patchs</a></li>
+    <li><a href="Classes.html">Classes</a></li>
+    <li><a href="Builds.html">Builds</a></li>
+    <li><a href="Guides.html">Guides</a></li>
+    <li><a href="Patchs.html">Patchs</a></li>
     <li>
       <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
         <i class="fab fa-discord"></i> Discord
@@ -370,19 +370,19 @@
 </section>
 
 <div class="quick-links">
-  <a href="guides.html?cat=classes" class="quick-card">
+  <a href="Classes.html" class="quick-card">
     <i class="fas fa-shield-halved"></i>
     <h3>Classes</h3>
   </a>
-  <a href="guides.html?cat=builds" class="quick-card">
+  <a href="Builds.html" class="quick-card">
     <i class="fas fa-khanda"></i>
     <h3>Builds</h3>
   </a>
-  <a href="guides.html" class="quick-card">
+  <a href="Guides.html" class="quick-card">
     <i class="fas fa-book-bookmark"></i>
     <h3>Guides</h3>
   </a>
-  <a href="#actualites" class="quick-card">
+  <a href="Patchs.html" class="quick-card">
     <i class="fas fa-newspaper"></i>
     <h3>Patchs</h3>
   </a>
@@ -465,4 +465,46 @@
 <footer>
   <p style="margin-bottom: 12px;">
     <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
-      <i class="
+      <i class="fab fa-discord"></i> Rejoindre la communauté sur Discord
+    </a>
+  </p>
+  <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
+</footer>
+
+<script>
+  // Slider Hero
+  const slides = document.querySelectorAll('.slide');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  let currentSlide = 0;
+  let slideInterval;
+
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+      if (i === index) slide.classList.add('active');
+    });
+  }
+
+  function nextSlide() {
+    currentSlide = (currentSlide + 1) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    showSlide(currentSlide);
+  }
+
+  function startTimer() { slideInterval = setInterval(nextSlide, 3500); }
+  function resetTimer() { clearInterval(slideInterval); startTimer(); }
+
+  nextBtn.addEventListener('click', () => { nextSlide(); resetTimer(); });
+  prevBtn.addEventListener('click', () => { prevSlide(); resetTimer(); });
+  startTimer();
+</script>
+
+<script src="js/player.js?v=2"></script>
+
+</body>
+</html>
