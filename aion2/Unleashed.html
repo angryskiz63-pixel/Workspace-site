@@ -259,4 +259,213 @@
       margin-bottom: 8px;
     }
     .info-card p {
-      font-size:
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Sidebar Boxes & Buttons */
+    .sidebar-section { display: flex; flex-direction: column; gap: 35px; }
+    .side-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 22px;
+    }
+    .join-btn {
+      display: block;
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
+      color: #070b16;
+      font-weight: bold;
+      text-align: center;
+      padding: 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
+    }
+    .join-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
+    }
+
+    .secondary-game-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .secondary-game-btn:hover {
+      background: rgba(0, 242, 254, 0.1);
+      border-color: var(--accent-cyan);
+      color: #fff;
+    }
+
+    footer {
+      margin-top: auto;
+      background: rgba(7, 11, 22, 0.98);
+      border-top: 1px solid var(--border-card);
+      padding: 35px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .guild-hero-content h1 { font-size: 2.3rem; }
+      .aion-menu { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="aion-nav">
+  <a href="/aion2/aion2.html" class="aion-logo">
+    <img src="/aion2/images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='images/logo-aion2.png';">
+  </a>
+  <ul class="aion-menu">
+    <li><a href="/aion2/aion2.html#actualites">Actualités</a></li>
+    <li><a href="/aion2/Classes.html">Classes</a></li>
+    <li><a href="/aion2/Builds.html">Builds</a></li>
+    <li><a href="/aion2/Guides.html">Guides</a></li>
+    <li><a href="/aion2/Patchs.html">Patchs</a></li>
+    <li><a href="/aion2/Unleashed.html" class="active">UNLEASHED</a></li>
+    <li>
+      <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
+        <i class="fab fa-discord"></i> Discord
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<section class="guild-hero">
+  <div class="guild-hero-content">
+    <span class="badge-tw"><i class="fa-solid fa-server"></i> Serveur Taïwan &rarr; Global 30 Septembre</span>
+    <h1>GUILDE UNLEASHED</h1>
+    <p>Structure compétitive et entraide pour l'ouverture globale d'Aion 2. Suivez l'aventure en direct sur Twitch !</p>
+  </div>
+</section>
+
+<main class="main-layout">
+  <section class="content-left">
+    
+    <div class="section-title">
+      <span><i class="fab fa-twitch" style="color:var(--accent-purple);"></i> Le Live en Direct</span>
+    </div>
+    
+    <div class="twitch-container">
+      <div class="twitch-player" id="twitch-embed"></div>
+      <div class="live-bar">
+        <div class="live-status">
+          <span class="pulse-dot"></span>
+          <span>Twitch / AngrySkiz</span>
+        </div>
+        <a href="https://www.twitch.tv/angryskiz" target="_blank" style="color:var(--accent-purple); text-decoration:none; font-weight:bold; font-size:0.9rem;">
+          Ouvrir sur Twitch <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <span><i class="fas fa-shield-halved" style="color:var(--accent-cyan);"></i> À Propos d'UNLEASHED</span>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <i class="fas fa-globe-asia"></i>
+        <h3>Expérience Taïwan</h3>
+        <p>Présents activement sur les serveurs taïwanais pour poncer le jeu, tester les méta-builds et vous fournir les meilleurs guides en amont.</p>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-rocket"></i>
+        <h3>Objectif 30 Septembre</h3>
+        <p>Préparation intensive pour le lancement officiel. Objectif : rush de niveau, contrôle des donjons HL et domination PvP dès le jour 1.</p>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-users-rays"></i>
+        <h3>Entraide & Communauté</h3>
+        <p>Un groupe soudé favorisant le partage de conseils, les sorties en guilde optimisées et une ambiance axée sur la progression collective.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <aside class="sidebar-section">
+    
+    <div class="side-box" style="text-align: center;">
+      <div class="section-title" style="justify-content: center; margin-bottom: 15px;">
+        <span><i class="fas fa-user-plus" style="color:var(--accent-cyan);"></i> Recrutement</span>
+      </div>
+      
+      <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">
+        Vous cherchez une guilde ambitieuse pour l'ouverture du 30 septembre ? Les candidatures pour <strong>UNLEASHED</strong> sont ouvertes !
+      </p>
+
+      <ul style="text-align: left; list-style: none; margin-bottom: 20px; font-size: 0.9rem; color: var(--text-main); display: flex; flex-direction: column; gap: 10px;">
+        <li><i class="fas fa-check" style="color:var(--accent-cyan); margin-right: 8px;"></i> Joueurs actifs & motivés</li>
+        <li><i class="fas fa-check" style="color:var(--accent-cyan); margin-right: 8px;"></i> Présence sur Discord non requise</li>
+        <li><i class="fas fa-check" style="color:var(--accent-cyan); margin-right: 8px;"></i> Esprit d'équipe & PvP/PvE</li>
+      </ul>
+
+      <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="join-btn">
+        <i class="fab fa-discord"></i> Postuler sur Discord
+      </a>
+
+      <div style="margin: 12px 0 8px 0; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">
+        ou
+      </div>
+
+      <a href="steam://rungameid/APP_ID_AION2" class="secondary-game-btn">
+        <i class="fas fa-gamepad"></i> Postuler directement en jeu
+      </a>
+    </div>
+
+    <div class="side-box">
+      <div class="section-title">
+        <span><i class="fas fa-video"></i> Planning Stream</span>
+      </div>
+      <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+        Retrouvez <strong>AngrySkiz</strong> en direct pour des sessions de gameplay sur la version Taïwan et des FAQs en direct sur la préparation d'Aion 2.
+      </p>
+    </div>
+
+  </aside>
+</main>
+
+<footer>
+  <p style="margin-bottom: 12px;">
+    <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
+      <i class="fab fa-discord"></i> Rejoindre la communauté UNLEASHED sur Discord
+    </a>
+  </p>
+  <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
+</footer>
+
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+<script type="text/javascript">
+  new Twitch.Embed("twitch-embed", {
+    width: "100%",
+    height: "100%",
+    channel: "angryskiz",
+    parent: [window.location.hostname],
+    autoplay: false
+  });
+</script>
+
+</body>
+</html>
