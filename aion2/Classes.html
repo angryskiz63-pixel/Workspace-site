@@ -158,23 +158,24 @@
       margin-bottom: 50px;
     }
 
-    /* HEADER DE LA CLASSE (NOM + LOGO) */
+    /* HEADER DE LA CLASSE (NOM + LOGO TRÈS GRAND) */
     .class-header {
       display: flex;
       align-items: center;
-      gap: 18px;
+      gap: 20px;
     }
 
-    /* LOGO AGRANDI ET HARMONISÉ AVEC LE TITRE */
+    /* LOGO AGRANDI x3 (220px) */
     .class-icon {
-      height: 75px;
+      height: 220px;
       width: auto;
-      max-width: 85px;
+      max-width: 250px;
       object-fit: contain;
-      filter: drop-shadow(0 0 12px rgba(0, 210, 255, 0.7));
+      filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.8));
+      transition: src 0.3s ease;
     }
 
-    /* NOM DE CLASSE HARMONISÉ */
+    /* NOM DE CLASSE */
     .class-name {
       font-family: 'Cinzel', serif;
       font-size: 3rem;
@@ -368,6 +369,9 @@
         max-width: 100%;
         margin-bottom: 20px;
       }
+      .class-icon {
+        height: 120px;
+      }
     }
   </style>
 </head>
@@ -419,14 +423,14 @@
 
     <!-- Barre des classes -->
     <nav class="class-selector">
-      <button class="class-btn active" onclick="selectClass('gladiateur', this)">Gladiateur</button>
-      <button class="class-btn" onclick="selectClass('templier', this)">Templier</button>
-      <button class="class-btn" onclick="selectClass('assassin', this)">Assassin</button>
-      <button class="class-btn" onclick="selectClass('rodeur', this)">Rôdeur</button>
-      <button class="class-btn" onclick="selectClass('aede', this)">Aède</button>
-      <button class="class-btn" onclick="selectClass('clerc', this)">Clerc</button>
-      <button class="class-btn" onclick="selectClass('sorcier', this)">Sorcier</button>
-      <button class="class-btn" onclick="selectClass('spiritualiste', this)">Spiritualiste</button>
+      <button class="class-btn active" data-class="gladiateur" onclick="onUserSelectClass('gladiateur', this)">Gladiateur</button>
+      <button class="class-btn" data-class="templier" onclick="onUserSelectClass('templier', this)">Templier</button>
+      <button class="class-btn" data-class="assassin" onclick="onUserSelectClass('assassin', this)">Assassin</button>
+      <button class="class-btn" data-class="rodeur" onclick="onUserSelectClass('rodeur', this)">Rôdeur</button>
+      <button class="class-btn" data-class="aede" onclick="onUserSelectClass('aede', this)">Aède</button>
+      <button class="class-btn" data-class="clerc" onclick="onUserSelectClass('clerc', this)">Clerc</button>
+      <button class="class-btn" data-class="sorcier" onclick="onUserSelectClass('sorcier', this)">Sorcier</button>
+      <button class="class-btn" data-class="spiritualiste" onclick="onUserSelectClass('spiritualiste', this)">Spiritualiste</button>
     </nav>
   </main>
 
@@ -440,6 +444,19 @@
 
   <script>
     let currentVideoId = "ndri5XpnRK4";
+    let autoRotateInterval = null;
+    let currentClassIndex = 0;
+
+    const classKeys = [
+      'gladiateur',
+      'templier',
+      'assassin',
+      'rodeur',
+      'aede',
+      'clerc',
+      'sorcier',
+      'spiritualiste'
+    ];
 
     const classesData = {
       gladiateur: {
@@ -540,13 +557,39 @@
 
         const buttons = document.querySelectorAll('.class-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
+
+        if (!element) {
+          element = document.querySelector(`.class-btn[data-class="${classKey}"]`);
+        }
         if (element) {
           element.classList.add('active');
         }
       }
     }
 
+    function stopAutoRotate() {
+      if (autoRotateInterval) {
+        clearInterval(autoRotateInterval);
+        autoRotateInterval = null;
+      }
+    }
+
+    function onUserSelectClass(classKey, element) {
+      stopAutoRotate();
+      currentClassIndex = classKeys.indexOf(classKey);
+      selectClass(classKey, element);
+    }
+
+    function startAutoRotate() {
+      autoRotateInterval = setInterval(() => {
+        currentClassIndex = (currentClassIndex + 1) % classKeys.length;
+        const nextClassKey = classKeys[currentClassIndex];
+        selectClass(nextClassKey);
+      }, 4000);
+    }
+
     function openVideo() {
+      stopAutoRotate();
       const modal = document.getElementById('video-modal');
       const player = document.getElementById('youtube-player');
       player.src = `https://www.youtube.com/embed/${currentVideoId}?autoplay=1&rel=0`;
@@ -574,6 +617,7 @@
 
     // Initialisation
     updateVideoPreview(currentVideoId);
+    startAutoRotate();
   </script>
 
 </body>
