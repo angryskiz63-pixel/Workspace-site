@@ -1,93 +1,136 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AION 2 | Classes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Noto+Sans:wght@300;400;700&display=swap" rel="stylesheet" />
+  
+  <title>Aion 2 — Classes</title>
+  <meta name="description" content="Découvrez l'ensemble des classes disponibles sur Aion 2 : compétences, aperçu vidéo et descriptions." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --bg-main: #070b16;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --border-card: rgba(0, 242, 254, 0.25);
+      --accent-cyan: #00f2fe;
+      --accent-blue: #4facfe;
+      --accent-gold: #ffb74d;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
     }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: 'Noto Sans', sans-serif;
-      background-color: #080a0f;
-      color: #ffffff;
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      background-image: linear-gradient(to right, rgba(8, 10, 15, 0.85), rgba(8, 10, 15, 0.4)), url('images/fondclasses.jpg');
+      background-image: linear-gradient(to right, rgba(7, 11, 22, 0.85), rgba(7, 11, 22, 0.4)), url('images/fondclasses.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       overflow-x: hidden;
     }
 
-    /* BANDEAU NOIR SUPÉRIEUR */
-    .navbar {
+    /* HEADER IDENTIQUE À LA PAGE D'ACCUEIL */
+    .aion-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 80px;
+      height: 70px;
+      background: linear-gradient(180deg, rgba(7, 11, 22, 0.95) 0%, rgba(7, 11, 22, 0.7) 100%);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0 4%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 50px;
-      background: rgba(8, 10, 15, 0.95);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      position: relative;
       z-index: 100;
     }
-
-    .nav-logo {
+    
+    .aion-logo {
       display: flex;
       align-items: center;
       text-decoration: none;
-      color: #ffffff;
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      font-family: 'Cinzel', serif;
+      height: 100%;
+      position: relative;
+      width: 120px;
     }
-
-    .nav-logo img {
-      height: 40px;
-      margin-right: 12px;
+    
+    .aion-logo-img {
+      height: 100px;
+      width: auto;
+      object-fit: contain;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.9));
+      z-index: 10;
     }
-
-    .nav-links {
-      display: flex;
-      list-style: none;
-      gap: 35px;
+    
+    .aion-logo-img:hover {
+      transform: translateY(-50%) scale(1.05);
     }
-
-    .nav-links a {
-      color: #cccccc;
+    
+    .aion-menu { 
+      display: flex; 
+      gap: 18px; 
+      list-style: none; 
+      margin-left: auto;
+      align-items: center;
+    }
+    .aion-menu a {
+      color: var(--text-main);
       text-decoration: none;
-      font-size: 1rem;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      transition: color 0.3s, text-shadow 0.3s;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
+    .aion-menu a:hover,
+    .aion-menu a.active { color: var(--accent-cyan); }
 
-    .nav-links a:hover,
-    .nav-links a.active {
-      color: #00d2ff;
-      text-shadow: 0 0 10px rgba(0, 210, 255, 0.6);
+    /* Bouton Discord */
+    .aion-discord-btn {
+      background: #5865F2;
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: bold !important;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+      transition: all 0.2s ease !important;
+    }
+    .aion-discord-btn:hover {
+      background: #4752C4;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
     }
 
     /* CONTENEUR PRINCIPAL */
     .classes-container {
       width: 100%;
-      max-width: 1350px;
-      padding: 10px 20px 0 20px;
-      margin: auto;
+      max-width: 1400px;
+      padding: 90px 20px 0 20px;
+      margin: 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -101,18 +144,20 @@
     .section-title {
       font-family: 'Cinzel', serif;
       font-size: 2.8rem;
-      letter-spacing: 0.3em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      font-weight: 700;
-      margin-bottom: 5px;
-      color: #f0f4f8;
-      text-shadow: 0 0 20px rgba(0, 210, 255, 0.5), 0 0 5px rgba(255, 255, 255, 0.8);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      font-weight: 900;
+      margin-bottom: 10px;
+      background: linear-gradient(to right, #ffffff, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+      border-bottom: 1px solid var(--border-card);
       padding-bottom: 5px;
       z-index: 10;
     }
 
-    /* STRUCTURE À 2 COLONNES */
+    /* DISPOSITION À 2 COLONNES */
     .class-display {
       display: flex;
       flex-direction: row;
@@ -121,8 +166,8 @@
       width: 100%;
       gap: 30px;
       flex-grow: 1;
-      height: calc(100vh - 180px);
-      max-height: 600px;
+      height: calc(100vh - 190px);
+      max-height: 620px;
     }
 
     /* COLONNE GAUCHE : Zone Personnage */
@@ -134,7 +179,6 @@
       max-width: 600px;
       height: 100%;
       position: relative;
-      /* Suppression du overflow:hidden pour éviter la bande transparente */
     }
 
     .character-portrait img {
@@ -144,8 +188,6 @@
       object-fit: contain;
       object-position: bottom left;
       filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
-      
-      /* Ancrage fixe en bas à gauche */
       transform-origin: bottom left;
       transition: transform 0.35s ease-out;
     }
@@ -174,7 +216,7 @@
       width: auto;
       max-width: 75px;
       object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.7));
+      filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.7));
       transition: opacity 0.3s ease;
     }
 
@@ -186,16 +228,16 @@
       letter-spacing: 0.08em;
       line-height: 1;
       text-transform: uppercase;
-      text-shadow: 0 0 15px rgba(0, 210, 255, 0.5), 0 2px 5px rgba(0,0,0,0.9);
+      text-shadow: 0 0 15px rgba(0, 242, 254, 0.5), 0 2px 5px rgba(0,0,0,0.9);
     }
 
     .class-description {
       font-size: 1.05rem;
       line-height: 1.6;
       color: #d8e2ec;
-      background: rgba(10, 15, 25, 0.65);
+      background: var(--bg-card);
       padding: 18px 22px;
-      border-left: 3px solid #00d2ff;
+      border-left: 3px solid var(--accent-cyan);
       border-radius: 0 8px 8px 0;
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
@@ -208,7 +250,7 @@
       aspect-ratio: 16/9;
       background-size: cover;
       background-position: center;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      border: 1px solid var(--border-card);
       border-radius: 8px;
       display: flex;
       justify-content: center;
@@ -234,19 +276,19 @@
     .play-btn {
       width: 60px;
       height: 60px;
-      background: rgba(0, 210, 255, 0.85);
+      background: rgba(0, 242, 254, 0.85);
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 2;
       transition: transform 0.2s, background 0.2s;
-      box-shadow: 0 0 15px rgba(0, 210, 255, 0.6);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
     }
 
     .video-box:hover .play-btn {
       transform: scale(1.1);
-      background: #00d2ff;
+      background: var(--accent-cyan);
     }
 
     .play-btn::after {
@@ -256,11 +298,11 @@
       height: 0;
       border-style: solid;
       border-width: 10px 0 10px 18px;
-      border-color: transparent transparent transparent #ffffff;
+      border-color: transparent transparent transparent #070b16;
       margin-left: 4px;
     }
 
-    /* POPUP LECTEUR GRAND ÉCRAN (MODAL) */
+    /* POPUP LECTEUR GRAND ÉCRAN */
     .video-modal {
       display: none;
       position: fixed;
@@ -285,8 +327,8 @@
       max-width: 1000px;
       aspect-ratio: 16/9;
       background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
+      border: 1px solid var(--border-card);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
       border-radius: 8px;
       overflow: hidden;
     }
@@ -309,7 +351,7 @@
     }
 
     .close-modal:hover {
-      color: #00d2ff;
+      color: var(--accent-cyan);
     }
 
     /* SÉLECTEUR DE CLASSES (BAS) */
@@ -321,14 +363,14 @@
       width: 100%;
       overflow-x: auto;
       padding: 15px 0 25px 0;
-      background: linear-gradient(to top, rgba(8, 10, 15, 0.95), transparent);
+      background: linear-gradient(to top, rgba(7, 11, 22, 0.95), transparent);
       z-index: 10;
     }
 
     .class-btn {
       background: transparent;
       border: none;
-      color: #888888;
+      color: var(--text-muted);
       font-family: 'Cinzel', serif;
       font-size: 1.1rem;
       font-weight: 700;
@@ -345,7 +387,7 @@
 
     .class-btn.active {
       color: #ffffff;
-      text-shadow: 0 0 10px #00d2ff;
+      text-shadow: 0 0 10px var(--accent-cyan);
     }
 
     .class-btn.active::after {
@@ -356,15 +398,14 @@
       transform: translateX(-50%);
       width: 8px;
       height: 8px;
-      background-color: #00d2ff;
+      background-color: var(--accent-cyan);
       border-radius: 50%;
-      box-shadow: 0 0 8px #00d2ff;
+      box-shadow: 0 0 8px var(--accent-cyan);
     }
 
     @media (max-width: 900px) {
-      .navbar {
-        padding: 0 20px;
-      }
+      .aion-menu { display: none; }
+      .aion-logo-img { height: 60px; }
       .class-display {
         flex-direction: column;
         align-items: center;
@@ -385,22 +426,24 @@
 </head>
 <body>
 
-  <!-- Navigation Supérieure -->
-  <header class="navbar">
-    <a href="aion2.html" class="nav-logo">
-      <img src="images/logo.png" alt="AION 2 Logo" onerror="this.style.display='none'" />
-      AION 2
+  <nav class="aion-nav">
+    <a href="/aion2/aion2.html" class="aion-logo">
+      <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
     </a>
-    <nav>
-      <ul class="nav-links">
-        <li><a href="aion2.html">Accueil</a></li>
-        <li><a href="#">Actualités</a></li>
-        <li><a href="Classes.html" class="active">Classes</a></li>
-        <li><a href="#">Média</a></li>
-        <li><a href="#">Communauté</a></li>
-      </ul>
-    </nav>
-  </header>
+    <ul class="aion-menu">
+      <li><a href="/aion2/aion2.html#actualites">Actualités</a></li>
+      <li><a href="/aion2/Classes.html" class="active">Classes</a></li>
+      <li><a href="/aion2/Builds.html">Builds</a></li>
+      <li><a href="/aion2/Guides.html">Guides</a></li>
+      <li><a href="/aion2/Patchs.html">Patchs</a></li>
+      <li><a href="/aion2/Unleashed.html">UNLEASHED</a></li>
+      <li>
+        <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
+          <i class="fab fa-discord"></i> Discord
+        </a>
+      </li>
+    </ul>
+  </nav>
 
   <main class="classes-container">
     <h1 class="section-title">Classes</h1>
@@ -410,7 +453,6 @@
         <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
-      <!-- Bloc de droite -->
       <div class="class-content-right">
         <div class="class-header">
           <img id="class-icon" class="class-icon" src="images/logo gladiateur.webp.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
@@ -421,14 +463,12 @@
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
         </p>
 
-        <!-- Aperçu vidéo -->
         <div class="video-box" id="video-preview" onclick="openVideo()">
           <div class="play-btn"></div>
         </div>
       </div>
     </div>
 
-    <!-- Barre des classes -->
     <nav class="class-selector">
       <button class="class-btn active" data-class="gladiateur" onclick="onUserSelectClass('gladiateur', this)">Gladiateur</button>
       <button class="class-btn" data-class="templier" onclick="onUserSelectClass('templier', this)">Templier</button>
@@ -441,7 +481,6 @@
     </nav>
   </main>
 
-  <!-- Modal Lecteur vidéo Grand Écran -->
   <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
     <div class="modal-content">
       <span class="close-modal" onclick="closeVideo()">&times;</span>
@@ -465,7 +504,6 @@
       'spiritualiste'
     ];
 
-    /* Tailles ajustées parfaitement pour éviter d'atteindre le haut tout en gardant une belle prestance */
     const classesData = {
       gladiateur: {
         title: "Gladiateur",
@@ -619,7 +657,6 @@
       }
     });
 
-    // Initialisation
     updateVideoPreview(currentVideoId);
     startAutoRotate();
   </script>
