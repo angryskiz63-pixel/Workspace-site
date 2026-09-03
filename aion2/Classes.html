@@ -103,6 +103,29 @@
     .aion-menu a:hover,
     .aion-menu a.active { color: var(--accent-cyan); }
 
+    /* Bouton Favoris */
+    .aion-fav-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-card);
+      color: var(--accent-gold);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .aion-fav-btn:hover {
+      background: var(--accent-gold);
+      color: #070b16;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 12px rgba(255, 183, 77, 0.5);
+    }
+
     /* Bouton Discord */
     .aion-discord-btn {
       background: #5865F2;
@@ -469,6 +492,11 @@
       <li><a href="/aion2/Patchs.html">Patchs</a></li>
       <li><a href="/aion2/Unleashed.html">UNLEASHED</a></li>
       <li>
+        <button onclick="ajouterFavoris()" class="aion-fav-btn">
+          <i class="fas fa-star"></i> Favoris
+        </button>
+      </li>
+      <li>
         <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
           <i class="fab fa-discord"></i> Discord
         </a>
@@ -709,6 +737,15 @@
       if (event.target.id === 'video-modal') {
         closeVideo();
       }
+    }
+
+    // Fonction Ajout aux Favoris
+    function ajouterFavoris() {
+      const title = document.title;
+      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+      const shortcut = isMac ? 'Cmd + D' : 'Ctrl + D';
+
+      alert(`Appuyez sur ${shortcut} pour ajouter "${title}" à vos favoris !`);
     }
 
     document.addEventListener('keydown', function(event) {
