@@ -76,4 +76,205 @@
       margin-bottom: 15px;
       display: flex;
       align-items: center;
-      gap: 12px
+      gap: 12px;
+    }
+
+    .class-description {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #cccccc;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-left: 3px solid #00d2ff;
+      border-radius: 0 8px 8px 0;
+      backdrop-filter: blur(5px);
+    }
+
+    /* Emplacement Vidéo / Aperçu */
+    .class-media {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .media-box {
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 16/9;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .play-btn {
+      width: 60px;
+      height: 60px;
+      background: rgba(0, 210, 255, 0.8);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.1);
+      background: #00d2ff;
+    }
+
+    .play-btn::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 10px 0 10px 18px;
+      border-color: transparent transparent transparent #ffffff;
+      margin-left: 4px;
+    }
+
+    /* Sélecteur de classes horizontal en bas */
+    .class-selector {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 25px;
+      width: 100%;
+      overflow-x: auto;
+      padding: 20px 0;
+    }
+
+    .class-btn {
+      background: transparent;
+      border: none;
+      color: #888888;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 10px 15px;
+      transition: color 0.3s, text-shadow 0.3s;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .class-btn:hover {
+      color: #ffffff;
+    }
+
+    .class-btn.active {
+      color: #ffffff;
+      text-shadow: 0 0 10px #00d2ff;
+    }
+
+    .class-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 8px;
+      height: 8px;
+      background-color: #00d2ff;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #00d2ff;
+    }
+
+    @media (max-width: 768px) {
+      .class-display {
+        flex-direction: column;
+      }
+      .class-info {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="classes-container">
+    <h1 class="section-title">Classes</h1>
+
+    <div class="class-display">
+      <div class="class-info">
+        <h2 class="class-name" id="class-title">Gladiateur</h2>
+        <p class="class-description" id="class-desc">
+          Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
+        </p>
+      </div>
+
+      <div class="class-media">
+        <div class="media-box">
+          <div class="play-btn"></div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="class-selector">
+      <button class="class-btn active" onclick="selectClass('gladiateur')">Gladiateur</button>
+      <button class="class-btn" onclick="selectClass('templier')">Templier</button>
+      <button class="class-btn" onclick="selectClass('assassin')">Assassin</button>
+      <button class="class-btn" onclick="selectClass('rodeur')">Rôdeur</button>
+      <button class="class-btn" onclick="selectClass('aede')">Aède</button>
+      <button class="class-btn" onclick="selectClass('clerc')">Clerc</button>
+      <button class="class-btn" onclick="selectClass('sorcier')">Sorcier</button>
+      <button class="class-btn" onclick="selectClass('spiritualiste')">Spiritualiste</button>
+    </nav>
+  </main>
+
+  <script>
+    const classesData = {
+      gladiateur: {
+        title: "Gladiateur",
+        desc: "Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête."
+      },
+      templier: {
+        title: "Templier",
+        desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés."
+      },
+      assassin: {
+        title: "Assassin",
+        desc: "Maitre de la discrétion et des attaques rapides dans le dos, éliminant ses cibles avant même d'être repéré."
+      },
+      rodeur: {
+        title: "Rôdeur",
+        desc: "Un archer d'élite capable de frapper à distance tout en posant des pièges mortels sur le terrain."
+      },
+      aede: {
+        title: "Aède",
+        desc: "Un combattant au bâton renforçant le groupe grâce à des mantras puissants et des soins de soutien."
+      },
+      clerc: {
+        title: "Clerc",
+        desc: "Le pilier de soutien par excellence, capable de soigner les blessures graves et d'invoquer la fureur divine."
+      },
+      sorcier: {
+        title: "Sorcier",
+        desc: "Un maître des éléments déchaînant le feu et la glace pour infliger des dégâts magiques dévastateurs."
+      },
+      spiritualiste: {
+        title: "Spiritualiste",
+        desc: "Un invocateur commandant aux esprits élémentaires pour affaiblir et contrôler ses adversaires."
+      }
+    };
+
+    function selectClass(classKey) {
+      // Mise à jour du texte
+      document.getElementById('class-title').innerText = classesData[classKey].title;
+      document.getElementById('class-desc').innerText = classesData[classKey].desc;
+
+      // Gestion des états actifs sur les boutons
+      const buttons = document.querySelectorAll('.class-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
