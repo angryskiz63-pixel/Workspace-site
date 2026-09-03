@@ -29,7 +29,7 @@
       overflow-x: hidden;
     }
 
-    /* BARRE DE NAVIGATION SUPÉRIEURE (BANDEAU NOIR) */
+    /* BANDEAU NOIR SUPÉRIEUR (80px) */
     .navbar {
       width: 100%;
       height: 80px;
@@ -100,7 +100,7 @@
     /* TITRE DE SECTION */
     .section-title {
       font-family: 'Cinzel', serif;
-      font-size: 3rem;
+      font-size: 2.8rem;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       font-weight: 700;
@@ -121,11 +121,11 @@
       width: 100%;
       gap: 30px;
       flex-grow: 1;
-      height: calc(100vh - 170px);
-      max-height: 700px;
+      height: calc(100vh - 180px);
+      max-height: 620px;
     }
 
-    /* COLONNE GAUCHE : Personnage au sol */
+    /* COLONNE GAUCHE : Zone Personnage (Imposante & Ancrée au sol) */
     .character-portrait {
       flex: 1.1;
       display: flex;
@@ -134,27 +134,23 @@
       max-width: 600px;
       height: 100%;
       position: relative;
+      /* Masque tout ce qui remonterait trop haut vers la navbar */
+      overflow: hidden; 
     }
 
     .character-portrait img {
       width: auto;
       height: 100%;
-      max-height: 650px; /* Augmenté pour laisser monter la tête */
+      max-height: 100%;
       object-fit: contain;
       object-position: bottom left;
       filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
-      margin-bottom: 0;
       
-      /* Ancrage strict en bas à gauche pour garder les pieds au sol */
+      /* Ancrage fixe en bas à gauche */
       transform-origin: bottom left;
-      /* Taille augmentée et décalage à gauche */
-      transform: scale(1.35) translateX(-30px);
+      /* Valeur par défaut ajustée dynamiquement via le JS */
+      transform: scale(1.15) translateX(-25px);
       transition: transform 0.35s ease-out;
-    }
-
-    /* Ajustement spécifique pour les modèles plus petits */
-    .character-portrait img.scaled-up {
-      transform: scale(1.48) translateX(-30px);
     }
 
     /* COLONNE DROITE : Textes + Vidéo */
@@ -165,7 +161,7 @@
       justify-content: center;
       gap: 20px;
       max-width: 580px;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       z-index: 2;
     }
 
@@ -378,7 +374,7 @@
         height: auto;
       }
       .character-portrait img {
-        transform: scale(1) translateX(0);
+        transform: scale(1) translateX(0) !important;
       }
       .class-content-right {
         max-width: 100%;
@@ -413,7 +409,7 @@
     <h1 class="section-title">Classes</h1>
 
     <div class="class-display">
-      <!-- Personnage agrandi avec tête montant juste sous le bandeau -->
+      <!-- Zone Personnage à hauteur ajustée -->
       <div class="character-portrait">
         <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
@@ -473,6 +469,7 @@
       'spiritualiste'
     ];
 
+    /* Échelle sur-mesure (customScale) pour chaque personnage afin de stopper leur tête pile sous la navbar */
     const classesData = {
       gladiateur: {
         title: "Gladiateur",
@@ -480,7 +477,7 @@
         img: "images/gladiateur.webp",
         icon: "images/logo gladiateur.webp.png",
         youtubeId: "ndri5XpnRK4",
-        scaleUp: false
+        customScale: 1.18
       },
       templier: {
         title: "Templier",
@@ -488,7 +485,7 @@
         img: "images/Templier.webp",
         icon: "images/Templarlogo.png",
         youtubeId: "Zs6HnL2N5Hk",
-        scaleUp: false
+        customScale: 1.15
       },
       assassin: {
         title: "Assassin",
@@ -496,7 +493,7 @@
         img: "images/Assassin.webp",
         icon: "images/logo Assassin.webp.png",
         youtubeId: "jUW24SLKK3I",
-        scaleUp: false
+        customScale: 1.15
       },
       rodeur: {
         title: "Rôdeur",
@@ -504,7 +501,7 @@
         img: "images/Rodeur.webp",
         icon: "images/logo rodeur.webp.png",
         youtubeId: "C6INRqEqv3Y",
-        scaleUp: true
+        customScale: 1.25
       },
       aede: {
         title: "Aède",
@@ -512,7 +509,7 @@
         img: "images/Chanter.webp",
         icon: "images/logo Aede.png",
         youtubeId: "rtOt3KvmYCI",
-        scaleUp: true
+        customScale: 1.22
       },
       clerc: {
         title: "Clerc",
@@ -520,7 +517,7 @@
         img: "images/Cleric.webp",
         icon: "images/logo Clerc.png",
         youtubeId: "RU-4yiNNnY0",
-        scaleUp: false
+        customScale: 1.15
       },
       sorcier: {
         title: "Sorcier",
@@ -528,7 +525,7 @@
         img: "images/Sorcerer.webp",
         icon: "images/logo Sorcier.webp.png",
         youtubeId: "jh1ydFq6FI0",
-        scaleUp: false
+        customScale: 1.08  /* Réduit spécifiquement pour la Sorcière */
       },
       spiritualiste: {
         title: "Spiritualiste",
@@ -536,7 +533,7 @@
         img: "images/Spiritualist.webp",
         icon: "images/logo Spiritualiste.png",
         youtubeId: "LJq1QGRJSLI",
-        scaleUp: false
+        customScale: 1.15
       }
     };
 
@@ -557,15 +554,13 @@
         imgElement.src = data.img;
         imgElement.alt = data.title;
 
+        /* Applique le scale sur-mesure propre à la classe */
+        const scaleVal = data.customScale || 1.15;
+        imgElement.style.transform = `scale(${scaleVal}) translateX(-25px)`;
+
         iconElement.src = data.icon;
         iconElement.alt = "Logo " + data.title;
         iconElement.style.display = 'inline-block';
-
-        if (data.scaleUp) {
-          imgElement.classList.add('scaled-up');
-        } else {
-          imgElement.classList.remove('scaled-up');
-        }
 
         updateVideoPreview(data.youtubeId);
 
