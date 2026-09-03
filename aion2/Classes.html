@@ -124,6 +124,7 @@
       align-items: flex-end;
       max-width: 550px;
       height: 100%;
+      overflow: hidden;
     }
 
     .character-portrait img {
@@ -134,6 +135,13 @@
       object-position: bottom;
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
       margin-bottom: -5px; /* Aligné sur le sol */
+      transform-origin: bottom center;
+      transition: transform 0.3s ease;
+    }
+
+    /* Classe utilitaire pour agrandir l'Aède et le Rôdeur */
+    .character-portrait img.scaled-up {
+      transform: scale(1.15);
     }
 
     /* COLONNE DROITE : Textes + Vidéo */
@@ -341,7 +349,6 @@
 </head>
 <body>
 
-  <!-- Header de Navigation -->
   <header class="navbar">
     <a href="aion2.html" class="nav-logo">
       <img src="images/logo.png" alt="AION 2 Logo" onerror="this.style.display='none'" />
@@ -362,12 +369,10 @@
     <h1 class="section-title">Classes</h1>
 
     <div class="class-display">
-      <!-- Personnage au sol -->
       <div class="character-portrait">
         <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
-      <!-- Bloc de droite -->
       <div class="class-content-right">
         <h2 class="class-name" id="class-title">Gladiateur</h2>
         
@@ -375,14 +380,12 @@
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
         </p>
 
-        <!-- Aperçu vidéo -->
         <div class="video-box" id="video-preview" onclick="openVideo()">
           <div class="play-btn"></div>
         </div>
       </div>
     </div>
 
-    <!-- Barre des classes -->
     <nav class="class-selector">
       <button class="class-btn active" onclick="selectClass('gladiateur', this)">Gladiateur</button>
       <button class="class-btn" onclick="selectClass('templier', this)">Templier</button>
@@ -395,7 +398,6 @@
     </nav>
   </main>
 
-  <!-- Modal Lecteur vidéo Grand Écran -->
   <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
     <div class="modal-content">
       <span class="close-modal" onclick="closeVideo()">&times;</span>
@@ -411,49 +413,57 @@
         title: "Gladiateur",
         desc: "Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.",
         img: "images/gladiateur.webp",
-        youtubeId: "ndri5XpnRK4"
+        youtubeId: "ndri5XpnRK4",
+        scaleUp: false
       },
       templier: {
         title: "Templier",
         desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés.",
         img: "images/Templier.webp",
-        youtubeId: "Zs6HnL2N5Hk"
+        youtubeId: "Zs6HnL2N5Hk",
+        scaleUp: false
       },
       assassin: {
         title: "Assassin",
         desc: "Maître de la discrétion et des attaques rapides dans le dos, éliminant ses cibles avant même d'être repéré.",
         img: "images/Assassin.webp",
-        youtubeId: "jUW24SLKK3I"
+        youtubeId: "jUW24SLKK3I",
+        scaleUp: false
       },
       rodeur: {
         title: "Rôdeur",
         desc: "Un archer d'élite capable de frapper à distance tout en posant des pièges mortels sur le terrain.",
         img: "images/Rodeur.webp",
-        youtubeId: "C6INRqEqv3Y"
+        youtubeId: "C6INRqEqv3Y",
+        scaleUp: true // Agrandissement spécifique
       },
       aede: {
         title: "Aède",
         desc: "Un combattant au bâton renforçant le groupe grâce à des mantras puissants et des soins de soutien.",
         img: "images/Chanter.webp",
-        youtubeId: "rtOt3KvmYCI"
+        youtubeId: "rtOt3KvmYCI",
+        scaleUp: true // Agrandissement spécifique
       },
       clerc: {
         title: "Clerc",
         desc: "Le pilier de soutien par excellence, capable de soigner les blessures graves et d'invoquer la fureur divine.",
         img: "images/Cleric.webp",
-        youtubeId: "RU-4yiNNnY0"
+        youtubeId: "RU-4yiNNnY0",
+        scaleUp: false
       },
       sorcier: {
         title: "Sorcier",
         desc: "Un maître des éléments déchaînant le feu et la glace pour infliger des dégâts magiques dévastateurs.",
         img: "images/Sorcerer.webp",
-        youtubeId: "b_1eMSoC1a4"
+        youtubeId: "KoTYxGmnp7c",
+        scaleUp: false
       },
       spiritualiste: {
         title: "Spiritualiste",
         desc: "Un invocateur commandant aux esprits élémentaires pour affaiblir et contrôler ses adversaires.",
         img: "images/Spiritualist.webp",
-        youtubeId: "0yD80tZasvM"
+        youtubeId: "E506FH5bIio",
+        scaleUp: false
       }
     };
 
@@ -466,10 +476,19 @@
     function selectClass(classKey, element) {
       if (classesData[classKey]) {
         const data = classesData[classKey];
+        const imgElement = document.getElementById('class-img');
+
         document.getElementById('class-title').innerText = data.title;
         document.getElementById('class-desc').innerText = data.desc;
-        document.getElementById('class-img').src = data.img;
-        document.getElementById('class-img').alt = data.title;
+        imgElement.src = data.img;
+        imgElement.alt = data.title;
+
+        // Ajustement automatique de l'échelle pour Rôdeur et Aède
+        if (data.scaleUp) {
+          imgElement.classList.add('scaled-up');
+        } else {
+          imgElement.classList.remove('scaled-up');
+        }
 
         updateVideoPreview(data.youtubeId);
 
