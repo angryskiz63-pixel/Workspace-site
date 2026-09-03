@@ -158,14 +158,13 @@
       margin-bottom: 50px;
     }
 
-    /* HEADER DE LA CLASSE (NOM + LOGO TRÈS GRAND) */
+    /* HEADER DE LA CLASSE */
     .class-header {
       display: flex;
       align-items: center;
       gap: 20px;
     }
 
-    /* LOGO AGRANDI x3 (220px) */
     .class-icon {
       height: 220px;
       width: auto;
@@ -377,7 +376,6 @@
 </head>
 <body>
 
-  <!-- Header de Navigation -->
   <header class="navbar">
     <a href="aion2.html" class="nav-logo">
       <img src="images/logo.png" alt="AION 2 Logo" onerror="this.style.display='none'" />
@@ -398,12 +396,10 @@
     <h1 class="section-title">Classes</h1>
 
     <div class="class-display">
-      <!-- Personnage au sol -->
       <div class="character-portrait">
         <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
-      <!-- Bloc de droite -->
       <div class="class-content-right">
         <div class="class-header">
           <img id="class-icon" class="class-icon" src="images/logo gladiateur.webp.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
@@ -414,14 +410,12 @@
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
         </p>
 
-        <!-- Aperçu vidéo -->
         <div class="video-box" id="video-preview" onclick="openVideo()">
           <div class="play-btn"></div>
         </div>
       </div>
     </div>
 
-    <!-- Barre des classes -->
     <nav class="class-selector">
       <button class="class-btn active" data-class="gladiateur" onclick="onUserSelectClass('gladiateur', this)">Gladiateur</button>
       <button class="class-btn" data-class="templier" onclick="onUserSelectClass('templier', this)">Templier</button>
@@ -434,7 +428,6 @@
     </nav>
   </main>
 
-  <!-- Modal Lecteur vidéo Grand Écran -->
   <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
     <div class="modal-content">
       <span class="close-modal" onclick="closeVideo()">&times;</span>
@@ -471,7 +464,7 @@
         title: "Templier",
         desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés.",
         img: "images/Templier.webp",
-        icon: "images/logo templier.webp.png",
+        icon: "images/Templarlogo.png",
         youtubeId: "Zs6HnL2N5Hk",
         scaleUp: false
       },
