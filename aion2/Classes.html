@@ -22,7 +22,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      /* Image de fond */
+      /* Background d'arrière-plan */
       background-image: linear-gradient(to right, rgba(8, 10, 15, 0.85), rgba(8, 10, 15, 0.4)), url('images/fondclasses.jpg');
       background-size: cover;
       background-position: center;
@@ -30,7 +30,7 @@
       overflow-x: hidden;
     }
 
-    /* Container principal */
+    /* Conteneur principal */
     .classes-container {
       width: 100%;
       max-width: 1200px;
@@ -41,7 +41,7 @@
       align-items: center;
     }
 
-    /* Titre de section */
+    /* Titre principal */
     .section-title {
       font-size: 3rem;
       letter-spacing: 0.25em;
@@ -53,7 +53,7 @@
       padding-bottom: 10px;
     }
 
-    /* Zone de contenu de la classe active */
+    /* Zone centrale d'affichage */
     .class-display {
       display: flex;
       flex-direction: row;
@@ -83,14 +83,14 @@
       font-size: 1.05rem;
       line-height: 1.6;
       color: #cccccc;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       padding: 20px;
       border-left: 3px solid #00d2ff;
       border-radius: 0 8px 8px 0;
       backdrop-filter: blur(5px);
     }
 
-    /* Emplacement Vidéo / Aperçu */
+    /* Emplacement de l'image de la classe */
     .class-media {
       flex: 1;
       display: flex;
@@ -105,42 +105,18 @@
       background: rgba(0, 0, 0, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
     }
 
-    .play-btn {
-      width: 60px;
-      height: 60px;
-      background: rgba(0, 210, 255, 0.8);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .play-btn:hover {
-      transform: scale(1.1);
-      background: #00d2ff;
-    }
-
-    .play-btn::after {
-      content: '';
+    .media-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 10px 0 10px 18px;
-      border-color: transparent transparent transparent #ffffff;
-      margin-left: 4px;
     }
 
-    /* Sélecteur de classes horizontal en bas */
+    /* Sélecteur de classes */
     .class-selector {
       display: flex;
       justify-content: center;
@@ -211,20 +187,20 @@
 
       <div class="class-media">
         <div class="media-box">
-          <div class="play-btn"></div>
+          <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur Aion 2" />
         </div>
       </div>
     </div>
 
     <nav class="class-selector">
-      <button class="class-btn active" onclick="selectClass('gladiateur')">Gladiateur</button>
-      <button class="class-btn" onclick="selectClass('templier')">Templier</button>
-      <button class="class-btn" onclick="selectClass('assassin')">Assassin</button>
-      <button class="class-btn" onclick="selectClass('rodeur')">Rôdeur</button>
-      <button class="class-btn" onclick="selectClass('aede')">Aède</button>
-      <button class="class-btn" onclick="selectClass('clerc')">Clerc</button>
-      <button class="class-btn" onclick="selectClass('sorcier')">Sorcier</button>
-      <button class="class-btn" onclick="selectClass('spiritualiste')">Spiritualiste</button>
+      <button class="class-btn active" onclick="selectClass('gladiateur', this)">Gladiateur</button>
+      <button class="class-btn" onclick="selectClass('templier', this)">Templier</button>
+      <button class="class-btn" onclick="selectClass('assassin', this)">Assassin</button>
+      <button class="class-btn" onclick="selectClass('rodeur', this)">Rôdeur</button>
+      <button class="class-btn" onclick="selectClass('aede', this)">Aède</button>
+      <button class="class-btn" onclick="selectClass('clerc', this)">Clerc</button>
+      <button class="class-btn" onclick="selectClass('sorcier', this)">Sorcier</button>
+      <button class="class-btn" onclick="selectClass('spiritualiste', this)">Spiritualiste</button>
     </nav>
   </main>
 
@@ -232,47 +208,59 @@
     const classesData = {
       gladiateur: {
         title: "Gladiateur",
-        desc: "Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête."
+        desc: "Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.",
+        img: "images/gladiateur.webp"
       },
       templier: {
         title: "Templier",
-        desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés."
+        desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés.",
+        img: "images/templier.webp"
       },
       assassin: {
         title: "Assassin",
-        desc: "Maitre de la discrétion et des attaques rapides dans le dos, éliminant ses cibles avant même d'être repéré."
+        desc: "Maître de la discrétion et des attaques rapides dans le dos, éliminant ses cibles avant même d'être repéré.",
+        img: "images/assassin.webp"
       },
       rodeur: {
         title: "Rôdeur",
-        desc: "Un archer d'élite capable de frapper à distance tout en posant des pièges mortels sur le terrain."
+        desc: "Un archer d'élite capable de frapper à distance tout en posant des pièges mortels sur le terrain.",
+        img: "images/rodeur.webp"
       },
       aede: {
         title: "Aède",
-        desc: "Un combattant au bâton renforçant le groupe grâce à des mantras puissants et des soins de soutien."
+        desc: "Un combattant au bâton renforçant le groupe grâce à des mantras puissants et des soins de soutien.",
+        img: "images/aede.webp"
       },
       clerc: {
         title: "Clerc",
-        desc: "Le pilier de soutien par excellence, capable de soigner les blessures graves et d'invoquer la fureur divine."
+        desc: "Le pilier de soutien par excellence, capable de soigner les blessures graves et d'invoquer la fureur divine.",
+        img: "images/clerc.webp"
       },
       sorcier: {
         title: "Sorcier",
-        desc: "Un maître des éléments déchaînant le feu et la glace pour infliger des dégâts magiques dévastateurs."
+        desc: "Un maître des éléments déchaînant le feu et la glace pour infliger des dégâts magiques dévastateurs.",
+        img: "images/sorcier.webp"
       },
       spiritualiste: {
         title: "Spiritualiste",
-        desc: "Un invocateur commandant aux esprits élémentaires pour affaiblir et contrôler ses adversaires."
+        desc: "Un invocateur commandant aux esprits élémentaires pour affaiblir et contrôler ses adversaires.",
+        img: "images/spiritualiste.webp"
       }
     };
 
-    function selectClass(classKey) {
-      // Mise à jour du texte
-      document.getElementById('class-title').innerText = classesData[classKey].title;
-      document.getElementById('class-desc').innerText = classesData[classKey].desc;
+    function selectClass(classKey, element) {
+      if (classesData[classKey]) {
+        document.getElementById('class-title').innerText = classesData[classKey].title;
+        document.getElementById('class-desc').innerText = classesData[classKey].desc;
+        document.getElementById('class-img').src = classesData[classKey].img;
+        document.getElementById('class-img').alt = classesData[classKey].title + " Aion 2";
 
-      // Gestion des états actifs sur les boutons
-      const buttons = document.querySelectorAll('.class-btn');
-      buttons.forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+        const buttons = document.querySelectorAll('.class-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        if (element) {
+          element.classList.add('active');
+        }
+      }
     }
   </script>
 
