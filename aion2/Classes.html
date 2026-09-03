@@ -185,15 +185,15 @@
       width: 100%;
       gap: 30px;
       flex-grow: 1;
-      max-height: 520px;
+      max-height: 580px;
     }
 
     .character-portrait {
-      flex: 1.1;
+      flex: 1.2;
       display: flex;
       justify-content: flex-start;
       align-items: flex-end;
-      max-width: 600px;
+      max-width: 650px;
       height: 100%;
       position: relative;
     }
@@ -207,16 +207,20 @@
       filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
       transform-origin: bottom left;
       transition: transform 0.35s ease-out;
+      position: absolute;
+      bottom: 0;
+      left: 0;
     }
 
+    /* ANIMATION : Conserve l'agrandissement `--current-scale` jusqu'à la fin de l'animation */
     @keyframes fadeSlideRight {
       0% {
         opacity: 0;
-        transform: translateX(-40px) scale(var(--current-scale, 1.15));
+        transform: translateX(-40px) scale(var(--current-scale, 1.25));
       }
       100% {
         opacity: 1;
-        transform: translateX(-20px) scale(var(--current-scale, 1.15));
+        transform: translateX(-10px) scale(var(--current-scale, 1.25));
       }
     }
 
@@ -455,6 +459,7 @@
         max-height: none;
       }
       .character-portrait img {
+        position: relative;
         transform: scale(1) translateX(0) !important;
       }
       .class-content-right {
@@ -552,6 +557,7 @@
       'spiritualiste'
     ];
 
+    /* Agrandissement des échelles (customScale) pour un rendu imposant qui touche le bas */
     const classesData = {
       gladiateur: {
         title: "Gladiateur",
@@ -559,7 +565,7 @@
         img: "images/gladiateur.webp",
         icon: "images/gladiateurlogo.png",
         youtubeId: "ndri5XpnRK4",
-        customScale: 1.18
+        customScale: 1.28
       },
       templier: {
         title: "Templier",
@@ -567,7 +573,7 @@
         img: "images/Templier.webp",
         icon: "images/Templarlogo.png",
         youtubeId: "Zs6HnL2N5Hk",
-        customScale: 1.13
+        customScale: 1.22
       },
       assassin: {
         title: "Assassin",
@@ -575,7 +581,7 @@
         img: "images/Assassin.webp",
         icon: "images/assassinlogo.png",
         youtubeId: "jUW24SLKK3I",
-        customScale: 1.16
+        customScale: 1.25
       },
       rodeur: {
         title: "Rôdeur",
@@ -583,7 +589,7 @@
         img: "images/Rodeur.webp",
         icon: "images/archerlogo.png",
         youtubeId: "C6INRqEqv3Y",
-        customScale: 1.15
+        customScale: 1.24
       },
       aede: {
         title: "Aède",
@@ -591,7 +597,7 @@
         img: "images/Chanter.webp",
         icon: "images/aedelogo.png",
         youtubeId: "rtOt3KvmYCI",
-        customScale: 1.14
+        customScale: 1.23
       },
       clerc: {
         title: "Clerc",
@@ -599,7 +605,7 @@
         img: "images/Cleric.webp",
         icon: "images/clerclogo.png",
         youtubeId: "RU-4yiNNnY0",
-        customScale: 1.12
+        customScale: 1.20
       },
       sorcier: {
         title: "Sorcier",
@@ -607,7 +613,7 @@
         img: "images/Sorcerer.webp",
         icon: "images/sorcierlogo.png",
         youtubeId: "jh1ydFq6FI0",
-        customScale: 1.11
+        customScale: 1.20
       },
       spiritualiste: {
         title: "Spiritualiste",
@@ -615,7 +621,7 @@
         img: "images/Spiritualist.webp",
         icon: "images/spiritlogo.png",
         youtubeId: "LJq1QGRJSLI",
-        customScale: 1.16
+        customScale: 1.25
       }
     };
 
@@ -664,7 +670,7 @@
         imgElement.src = data.img;
         imgElement.alt = data.title;
 
-        const scaleVal = data.customScale || 1.15;
+        const scaleVal = data.customScale || 1.25;
         imgElement.style.setProperty('--current-scale', scaleVal);
 
         iconElement.src = data.icon;
