@@ -129,7 +129,7 @@
     .classes-container {
       width: 100%;
       max-width: 1400px;
-      padding: 90px 20px 0 20px;
+      padding: 80px 20px 0 20px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -138,6 +138,7 @@
       justify-content: space-between;
       position: relative;
       z-index: 1;
+      height: 100vh;
     }
 
     /* TITRE DE SECTION */
@@ -147,7 +148,7 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       font-weight: 900;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
       background: linear-gradient(to right, #ffffff, var(--accent-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -166,8 +167,7 @@
       width: 100%;
       gap: 30px;
       flex-grow: 1;
-      height: calc(100vh - 190px);
-      max-height: 600px;
+      max-height: 520px;
     }
 
     /* COLONNE GAUCHE : Zone Personnage */
@@ -229,9 +229,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 20px;
+      gap: 15px;
       max-width: 580px;
-      margin-bottom: 25px;
       z-index: 2;
     }
 
@@ -263,16 +262,16 @@
     }
 
     .class-description {
-      font-size: 1.05rem;
-      line-height: 1.6;
+      font-size: 1rem;
+      line-height: 1.5;
       color: #d8e2ec;
       background: var(--bg-card);
-      padding: 18px 22px;
+      padding: 15px 20px;
       border-left: 3px solid var(--accent-cyan);
       border-radius: 0 8px 8px 0;
       backdrop-filter: blur(8px);
       box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      min-height: 85px;
+      min-height: 75px;
     }
 
     /* VIGNETTE DE LA VIDÉO */
@@ -393,8 +392,8 @@
       gap: 20px;
       width: 100%;
       overflow-x: auto;
-      padding: 15px 0 25px 0;
-      background: linear-gradient(to top, rgba(7, 11, 22, 0.95), transparent);
+      padding: 15px 0 20px 0;
+      background: transparent;
       z-index: 10;
     }
 
@@ -406,7 +405,7 @@
       font-size: 1.1rem;
       font-weight: 700;
       cursor: pointer;
-      padding: 10px 12px;
+      padding: 8px 12px;
       transition: color 0.3s, text-shadow 0.3s;
       position: relative;
       white-space: nowrap;
@@ -424,11 +423,11 @@
     .class-btn.active::after {
       content: '';
       position: absolute;
-      bottom: 0;
+      bottom: -2px;
       left: 50%;
       transform: translateX(-50%);
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       background-color: var(--accent-cyan);
       border-radius: 50%;
       box-shadow: 0 0 8px var(--accent-cyan);
@@ -437,10 +436,12 @@
     @media (max-width: 900px) {
       .aion-menu { display: none; }
       .aion-logo-img { height: 60px; }
+      .classes-container { height: auto; }
       .class-display {
         flex-direction: column;
         align-items: center;
         height: auto;
+        max-height: none;
       }
       .character-portrait img {
         transform: scale(1) translateX(0) !important;
@@ -457,6 +458,7 @@
 </head>
 <body>
 
+  <!-- Navigation Supérieure -->
   <nav class="aion-nav">
     <a href="/aion2/aion2.html" class="aion-logo">
       <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
@@ -484,6 +486,7 @@
         <img id="class-img" class="fade-right" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
+      <!-- Bloc de droite -->
       <div class="class-content-right fade-left" id="class-content-right">
         <div class="class-header">
           <img id="class-icon" class="class-icon" src="images/logo gladiateur.webp.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
@@ -494,12 +497,14 @@
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
         </p>
 
+        <!-- Aperçu vidéo -->
         <div class="video-box" id="video-preview" onclick="openVideo()">
           <div class="play-btn"></div>
         </div>
       </div>
     </div>
 
+    <!-- Barre des classes -->
     <nav class="class-selector">
       <button class="class-btn active" data-class="gladiateur" onclick="onUserSelectClass('gladiateur', this)">Gladiateur</button>
       <button class="class-btn" data-class="templier" onclick="onUserSelectClass('templier', this)">Templier</button>
@@ -512,6 +517,7 @@
     </nav>
   </main>
 
+  <!-- Modal Lecteur vidéo Grand Écran -->
   <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
     <div class="modal-content">
       <span class="close-modal" onclick="closeVideo()">&times;</span>
@@ -602,7 +608,6 @@
       }
     };
 
-    /* Charge automatiquement l'aperçu YouTube en Qualité HD (maxresdefault) */
     function updateVideoPreview(youtubeId) {
       currentVideoId = youtubeId;
       const previewBox = document.getElementById('video-preview');
