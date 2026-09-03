@@ -41,7 +41,7 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
       position: relative;
-      z-index: 100; /* Le bandeau reste au-dessus au besoin */
+      z-index: 100;
     }
 
     .nav-logo {
@@ -122,7 +122,7 @@
       gap: 30px;
       flex-grow: 1;
       height: calc(100vh - 170px);
-      max-height: 650px;
+      max-height: 700px;
     }
 
     /* COLONNE GAUCHE : Personnage au sol */
@@ -139,7 +139,7 @@
     .character-portrait img {
       width: auto;
       height: 100%;
-      max-height: 560px;
+      max-height: 650px; /* Augmenté pour laisser monter la tête */
       object-fit: contain;
       object-position: bottom left;
       filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
@@ -147,14 +147,14 @@
       
       /* Ancrage strict en bas à gauche pour garder les pieds au sol */
       transform-origin: bottom left;
-      /* Taille ajustée pour que le haut de la tête s'arrête juste en dessous du bandeau noir */
-      transform: scale(1.15) translateX(-20px);
+      /* Taille augmentée et décalage à gauche */
+      transform: scale(1.35) translateX(-30px);
       transition: transform 0.35s ease-out;
     }
 
     /* Ajustement spécifique pour les modèles plus petits */
     .character-portrait img.scaled-up {
-      transform: scale(1.25) translateX(-20px);
+      transform: scale(1.48) translateX(-30px);
     }
 
     /* COLONNE DROITE : Textes + Vidéo */
@@ -392,6 +392,7 @@
 </head>
 <body>
 
+  <!-- Navigation Supérieure (Bandeau Noir) -->
   <header class="navbar">
     <a href="aion2.html" class="nav-logo">
       <img src="images/logo.png" alt="AION 2 Logo" onerror="this.style.display='none'" />
@@ -412,10 +413,12 @@
     <h1 class="section-title">Classes</h1>
 
     <div class="class-display">
+      <!-- Personnage agrandi avec tête montant juste sous le bandeau -->
       <div class="character-portrait">
         <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
+      <!-- Bloc de droite -->
       <div class="class-content-right">
         <div class="class-header">
           <img id="class-icon" class="class-icon" src="images/logo gladiateur.webp.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
@@ -426,12 +429,14 @@
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
         </p>
 
+        <!-- Aperçu vidéo -->
         <div class="video-box" id="video-preview" onclick="openVideo()">
           <div class="play-btn"></div>
         </div>
       </div>
     </div>
 
+    <!-- Barre des classes (Bas) -->
     <nav class="class-selector">
       <button class="class-btn active" data-class="gladiateur" onclick="onUserSelectClass('gladiateur', this)">Gladiateur</button>
       <button class="class-btn" data-class="templier" onclick="onUserSelectClass('templier', this)">Templier</button>
@@ -444,6 +449,7 @@
     </nav>
   </main>
 
+  <!-- Modal Lecteur vidéo Grand Écran -->
   <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
     <div class="modal-content">
       <span class="close-modal" onclick="closeVideo()">&times;</span>
