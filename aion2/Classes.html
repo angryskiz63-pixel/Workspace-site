@@ -189,7 +189,37 @@
       object-position: bottom left;
       filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
       transform-origin: bottom left;
-      transition: transform 0.35s ease-out;
+    }
+
+    /* ANIMATIONS DE FONDU GLISSÉ */
+    @keyframes fadeSlideRight {
+      0% {
+        opacity: 0;
+        transform: translateX(-40px) scale(var(--current-scale, 1.08));
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(-20px) scale(var(--current-scale, 1.08));
+      }
+    }
+
+    @keyframes fadeSlideLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .fade-right {
+      animation: fadeSlideRight 0.45s ease-out forwards;
+    }
+
+    .fade-left {
+      animation: fadeSlideLeft 0.45s ease-out forwards;
     }
 
     /* COLONNE DROITE : Textes + Vidéo */
@@ -450,10 +480,10 @@
 
     <div class="class-display">
       <div class="character-portrait">
-        <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
+        <img id="class-img" class="fade-right" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
-      <div class="class-content-right">
+      <div class="class-content-right fade-left" id="class-content-right">
         <div class="class-header">
           <img id="class-icon" class="class-icon" src="images/logo gladiateur.webp.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
           <h2 class="class-name" id="class-title">Gladiateur</h2>
@@ -577,6 +607,23 @@
       previewBox.style.backgroundImage = `url('https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg')`;
     }
 
+    function triggerFadeAnimation() {
+      const imgElement = document.getElementById('class-img');
+      const rightContent = document.getElementById('class-content-right');
+
+      // Réinitialisation des classes d'animation
+      imgElement.classList.remove('fade-right');
+      rightContent.classList.remove('fade-left');
+
+      // Astuce JS pour forcer le rechargement des animations CSS
+      void imgElement.offsetWidth;
+      void rightContent.offsetWidth;
+
+      // Réapplication des animations de fondu
+      imgElement.classList.add('fade-right');
+      rightContent.classList.add('fade-left');
+    }
+
     function selectClass(classKey, element) {
       if (classesData[classKey]) {
         const data = classesData[classKey];
@@ -589,13 +636,16 @@
         imgElement.alt = data.title;
 
         const scaleVal = data.customScale || 1.08;
-        imgElement.style.transform = `scale(${scaleVal}) translateX(-20px)`;
+        imgElement.style.setProperty('--current-scale', scaleVal);
 
         iconElement.src = data.icon;
         iconElement.alt = "Logo " + data.title;
         iconElement.style.display = 'inline-block';
 
         updateVideoPreview(data.youtubeId);
+
+        // Déclenche l'effet de fondu glissé
+        triggerFadeAnimation();
 
         const buttons = document.querySelectorAll('.class-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
