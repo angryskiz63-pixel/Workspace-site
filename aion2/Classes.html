@@ -108,14 +108,15 @@
     .class-display {
       display: flex;
       flex-direction: row;
-      align-items: flex-end; /* Ancre le personnage au sol */
+      align-items: flex-end; /* Alignement strict au sol */
       justify-content: center;
       width: 100%;
       gap: 40px;
       flex-grow: 1;
+      height: 650px;
     }
 
-    /* COLONNE GAUCHE : Personnage agrandi et posé au sol */
+    /* COLONNE GAUCHE : Personnage au sol */
     .character-portrait {
       flex: 1;
       display: flex;
@@ -127,14 +128,15 @@
 
     .character-portrait img {
       width: 100%;
-      max-height: 680px;
+      height: 100%;
+      max-height: 650px;
       object-fit: contain;
       object-position: bottom;
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
-      margin-bottom: -10px; /* Aligne le bas de l'image sur le sol */
+      margin-bottom: -5px; /* Aligné sur le sol */
     }
 
-    /* COLONNE DROITE : Description + Vidéo */
+    /* COLONNE DROITE : Textes + Vidéo */
     .class-content-right {
       flex: 1.2;
       display: flex;
@@ -142,7 +144,7 @@
       justify-content: center;
       gap: 20px;
       max-width: 600px;
-      margin-bottom: 40px;
+      margin-bottom: 50px;
     }
 
     .class-name {
@@ -161,13 +163,15 @@
       border-left: 3px solid #00d2ff;
       border-radius: 0 8px 8px 0;
       backdrop-filter: blur(5px);
+      min-height: 90px;
     }
 
-    /* Cadre vidéo */
+    /* VIGNETTE DE LA VIDÉO */
     .video-box {
       width: 100%;
       aspect-ratio: 16/9;
-      background: rgba(0, 0, 0, 0.7);
+      background-size: cover;
+      background-position: center;
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 8px;
       display: flex;
@@ -175,6 +179,20 @@
       align-items: center;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .video-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      transition: background 0.3s;
+    }
+
+    .video-box:hover::before {
+      background: rgba(0, 0, 0, 0.1);
     }
 
     .play-btn {
@@ -185,12 +203,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      cursor: pointer;
+      z-index: 2;
       transition: transform 0.2s, background 0.2s;
       box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
     }
 
-    .play-btn:hover {
+    .video-box:hover .play-btn {
       transform: scale(1.1);
       background: #00d2ff;
     }
@@ -206,12 +224,64 @@
       margin-left: 4px;
     }
 
+    /* POPUP LECTEUR GRAND ÉCRAN (MODAL) */
+    .video-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .video-modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 80%;
+      max-width: 1000px;
+      aspect-ratio: 16/9;
+      background: #000;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 30px rgba(0, 210, 255, 0.3);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .modal-content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: -45px;
+      right: 0;
+      color: #ffffff;
+      font-size: 2rem;
+      cursor: pointer;
+      font-weight: 300;
+      transition: color 0.2s;
+    }
+
+    .close-modal:hover {
+      color: #00d2ff;
+    }
+
     /* SÉLECTEUR DE CLASSES (BAS) */
     .class-selector {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 25px;
+      gap: 20px;
       width: 100%;
       overflow-x: auto;
       padding: 15px 0 25px 0;
@@ -225,7 +295,7 @@
       font-size: 1.1rem;
       font-weight: 600;
       cursor: pointer;
-      padding: 10px 15px;
+      padding: 10px 12px;
       transition: color 0.3s, text-shadow 0.3s;
       position: relative;
       white-space: nowrap;
@@ -260,9 +330,11 @@
       .class-display {
         flex-direction: column;
         align-items: center;
+        height: auto;
       }
       .class-content-right {
         max-width: 100%;
+        margin-bottom: 20px;
       }
     }
   </style>
@@ -290,7 +362,7 @@
     <h1 class="section-title">Classes</h1>
 
     <div class="class-display">
-      <!-- Personnage agrandi et aligné en bas -->
+      <!-- Personnage au sol -->
       <div class="character-portrait">
         <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
@@ -303,7 +375,8 @@
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
         </p>
 
-        <div class="video-box">
+        <!-- Aperçu vidéo -->
+        <div class="video-box" id="video-preview" onclick="openVideo()">
           <div class="play-btn"></div>
         </div>
       </div>
@@ -322,56 +395,83 @@
     </nav>
   </main>
 
+  <!-- Modal Lecteur vidéo Grand Écran -->
+  <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeVideo()">&times;</span>
+      <iframe id="youtube-player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
   <script>
+    let currentVideoId = "ndri5XpnRK4";
+
     const classesData = {
       gladiateur: {
         title: "Gladiateur",
         desc: "Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.",
-        img: "images/gladiateur.webp"
+        img: "images/gladiateur.webp",
+        youtubeId: "ndri5XpnRK4"
       },
       templier: {
         title: "Templier",
         desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés.",
-        img: "images/templier.webp"
+        img: "images/Templier.webp",
+        youtubeId: "Zs6HnL2N5Hk"
       },
       assassin: {
         title: "Assassin",
         desc: "Maître de la discrétion et des attaques rapides dans le dos, éliminant ses cibles avant même d'être repéré.",
-        img: "images/assassin.webp"
+        img: "images/Assassin.webp",
+        youtubeId: "jUW24SLKK3I"
       },
       rodeur: {
         title: "Rôdeur",
         desc: "Un archer d'élite capable de frapper à distance tout en posant des pièges mortels sur le terrain.",
-        img: "images/rodeur.webp"
+        img: "images/Rodeur.webp",
+        youtubeId: "C6INRqEqv3Y"
       },
       aede: {
         title: "Aède",
         desc: "Un combattant au bâton renforçant le groupe grâce à des mantras puissants et des soins de soutien.",
-        img: "images/aede.webp"
+        img: "images/Chanter.webp",
+        youtubeId: "rtOt3KvmYCI"
       },
       clerc: {
         title: "Clerc",
         desc: "Le pilier de soutien par excellence, capable de soigner les blessures graves et d'invoquer la fureur divine.",
-        img: "images/clerc.webp"
+        img: "images/Cleric.webp",
+        youtubeId: "RU-4yiNNnY0"
       },
       sorcier: {
         title: "Sorcier",
         desc: "Un maître des éléments déchaînant le feu et la glace pour infliger des dégâts magiques dévastateurs.",
-        img: "images/sorcier.webp"
+        img: "images/Sorcerer.webp",
+        youtubeId: "b_1eMSoC1a4"
       },
       spiritualiste: {
         title: "Spiritualiste",
         desc: "Un invocateur commandant aux esprits élémentaires pour affaiblir et contrôler ses adversaires.",
-        img: "images/spiritualiste.webp"
+        img: "images/Spiritualist.webp",
+        youtubeId: "0yD80tZasvM"
       }
     };
 
+    function updateVideoPreview(youtubeId) {
+      currentVideoId = youtubeId;
+      const previewBox = document.getElementById('video-preview');
+      previewBox.style.backgroundImage = `url('https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg')`;
+    }
+
     function selectClass(classKey, element) {
       if (classesData[classKey]) {
-        document.getElementById('class-title').innerText = classesData[classKey].title;
-        document.getElementById('class-desc').innerText = classesData[classKey].desc;
-        document.getElementById('class-img').src = classesData[classKey].img;
-        document.getElementById('class-img').alt = classesData[classKey].title;
+        const data = classesData[classKey];
+        document.getElementById('class-title').innerText = data.title;
+        document.getElementById('class-desc').innerText = data.desc;
+        document.getElementById('class-img').src = data.img;
+        document.getElementById('class-img').alt = data.title;
+
+        updateVideoPreview(data.youtubeId);
 
         const buttons = document.querySelectorAll('.class-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
@@ -380,6 +480,35 @@
         }
       }
     }
+
+    function openVideo() {
+      const modal = document.getElementById('video-modal');
+      const player = document.getElementById('youtube-player');
+      player.src = `https://www.youtube.com/embed/${currentVideoId}?autoplay=1&rel=0`;
+      modal.classList.add('active');
+    }
+
+    function closeVideo() {
+      const modal = document.getElementById('video-modal');
+      const player = document.getElementById('youtube-player');
+      player.src = '';
+      modal.classList.remove('active');
+    }
+
+    function closeVideoOnBg(event) {
+      if (event.target.id === 'video-modal') {
+        closeVideo();
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeVideo();
+      }
+    });
+
+    // Initialisation
+    updateVideoPreview(currentVideoId);
   </script>
 
 </body>
