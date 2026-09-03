@@ -167,7 +167,7 @@
       gap: 30px;
       flex-grow: 1;
       height: calc(100vh - 190px);
-      max-height: 620px;
+      max-height: 600px;
     }
 
     /* COLONNE GAUCHE : Zone Personnage */
@@ -189,17 +189,18 @@
       object-position: bottom left;
       filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
       transform-origin: bottom left;
+      transition: transform 0.35s ease-out;
     }
 
     /* ANIMATIONS DE FONDU GLISSÉ */
     @keyframes fadeSlideRight {
       0% {
         opacity: 0;
-        transform: translateX(-40px) scale(var(--current-scale, 1.08));
+        transform: translateX(-40px) scale(var(--current-scale, 1.15));
       }
       100% {
         opacity: 1;
-        transform: translateX(-20px) scale(var(--current-scale, 1.08));
+        transform: translateX(-20px) scale(var(--current-scale, 1.15));
       }
     }
 
@@ -541,7 +542,7 @@
         img: "images/gladiateur.webp",
         icon: "images/logo gladiateur.webp.png",
         youtubeId: "ndri5XpnRK4",
-        customScale: 1.10
+        customScale: 1.18
       },
       templier: {
         title: "Templier",
@@ -549,7 +550,7 @@
         img: "images/Templier.webp",
         icon: "images/Templarlogo.png",
         youtubeId: "Zs6HnL2N5Hk",
-        customScale: 1.05
+        customScale: 1.13
       },
       assassin: {
         title: "Assassin",
@@ -557,7 +558,7 @@
         img: "images/Assassin.webp",
         icon: "images/logo Assassin.webp.png",
         youtubeId: "jUW24SLKK3I",
-        customScale: 1.08
+        customScale: 1.16
       },
       rodeur: {
         title: "Rôdeur",
@@ -573,7 +574,7 @@
         img: "images/Chanter.webp",
         icon: "images/logo Aede.png",
         youtubeId: "rtOt3KvmYCI",
-        customScale: 1.12
+        customScale: 1.14
       },
       clerc: {
         title: "Clerc",
@@ -581,7 +582,7 @@
         img: "images/Cleric.webp",
         icon: "images/logo Clerc.png",
         youtubeId: "RU-4yiNNnY0",
-        customScale: 1.05
+        customScale: 1.12
       },
       sorcier: {
         title: "Sorcier",
@@ -589,7 +590,7 @@
         img: "images/Sorcerer.webp",
         icon: "images/logo Sorcier.webp.png",
         youtubeId: "jh1ydFq6FI0",
-        customScale: 1.02
+        customScale: 1.11
       },
       spiritualiste: {
         title: "Spiritualiste",
@@ -597,29 +598,41 @@
         img: "images/Spiritualist.webp",
         icon: "images/logo Spiritualiste.png",
         youtubeId: "LJq1QGRJSLI",
-        customScale: 1.08
+        customScale: 1.16
       }
     };
 
+    /* Charge automatiquement l'aperçu YouTube en Qualité HD (maxresdefault) */
     function updateVideoPreview(youtubeId) {
       currentVideoId = youtubeId;
       const previewBox = document.getElementById('video-preview');
-      previewBox.style.backgroundImage = `url('https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg')`;
+      const maxResUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
+      const hqUrl = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+
+      const img = new Image();
+      img.src = maxResUrl;
+      img.onload = function() {
+        if (this.width > 120) {
+          previewBox.style.backgroundImage = `url('${maxResUrl}')`;
+        } else {
+          previewBox.style.backgroundImage = `url('${hqUrl}')`;
+        }
+      };
+      img.onerror = function() {
+        previewBox.style.backgroundImage = `url('${hqUrl}')`;
+      };
     }
 
     function triggerFadeAnimation() {
       const imgElement = document.getElementById('class-img');
       const rightContent = document.getElementById('class-content-right');
 
-      // Réinitialisation des classes d'animation
       imgElement.classList.remove('fade-right');
       rightContent.classList.remove('fade-left');
 
-      // Astuce JS pour forcer le rechargement des animations CSS
       void imgElement.offsetWidth;
       void rightContent.offsetWidth;
 
-      // Réapplication des animations de fondu
       imgElement.classList.add('fade-right');
       rightContent.classList.add('fade-left');
     }
@@ -635,7 +648,7 @@
         imgElement.src = data.img;
         imgElement.alt = data.title;
 
-        const scaleVal = data.customScale || 1.08;
+        const scaleVal = data.customScale || 1.15;
         imgElement.style.setProperty('--current-scale', scaleVal);
 
         iconElement.src = data.icon;
@@ -643,8 +656,6 @@
         iconElement.style.display = 'inline-block';
 
         updateVideoPreview(data.youtubeId);
-
-        // Déclenche l'effet de fondu glissé
         triggerFadeAnimation();
 
         const buttons = document.querySelectorAll('.class-btn');
@@ -707,7 +718,7 @@
       }
     });
 
-    updateVideoPreview(currentVideoId);
+    selectClass('gladiateur'); 
     startAutoRotate();
   </script>
 
