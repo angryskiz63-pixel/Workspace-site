@@ -29,7 +29,7 @@
       overflow-x: hidden;
     }
 
-    /* BANDEAU NOIR SUPÉRIEUR (80px) */
+    /* BANDEAU NOIR SUPÉRIEUR */
     .navbar {
       width: 100%;
       height: 80px;
@@ -122,10 +122,10 @@
       gap: 30px;
       flex-grow: 1;
       height: calc(100vh - 180px);
-      max-height: 620px;
+      max-height: 600px;
     }
 
-    /* COLONNE GAUCHE : Zone Personnage (Imposante & Ancrée au sol) */
+    /* COLONNE GAUCHE : Zone Personnage */
     .character-portrait {
       flex: 1.1;
       display: flex;
@@ -134,8 +134,7 @@
       max-width: 600px;
       height: 100%;
       position: relative;
-      /* Masque tout ce qui remonterait trop haut vers la navbar */
-      overflow: hidden; 
+      /* Suppression du overflow:hidden pour éviter la bande transparente */
     }
 
     .character-portrait img {
@@ -148,8 +147,6 @@
       
       /* Ancrage fixe en bas à gauche */
       transform-origin: bottom left;
-      /* Valeur par défaut ajustée dynamiquement via le JS */
-      transform: scale(1.15) translateX(-25px);
       transition: transform 0.35s ease-out;
     }
 
@@ -165,7 +162,7 @@
       z-index: 2;
     }
 
-    /* HEADER DE LA CLASSE (Logo réduit + Nom) */
+    /* HEADER DE LA CLASSE */
     .class-header {
       display: flex;
       align-items: center;
@@ -388,7 +385,7 @@
 </head>
 <body>
 
-  <!-- Navigation Supérieure (Bandeau Noir) -->
+  <!-- Navigation Supérieure -->
   <header class="navbar">
     <a href="aion2.html" class="nav-logo">
       <img src="images/logo.png" alt="AION 2 Logo" onerror="this.style.display='none'" />
@@ -409,7 +406,6 @@
     <h1 class="section-title">Classes</h1>
 
     <div class="class-display">
-      <!-- Zone Personnage à hauteur ajustée -->
       <div class="character-portrait">
         <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
@@ -432,7 +428,7 @@
       </div>
     </div>
 
-    <!-- Barre des classes (Bas) -->
+    <!-- Barre des classes -->
     <nav class="class-selector">
       <button class="class-btn active" data-class="gladiateur" onclick="onUserSelectClass('gladiateur', this)">Gladiateur</button>
       <button class="class-btn" data-class="templier" onclick="onUserSelectClass('templier', this)">Templier</button>
@@ -469,7 +465,7 @@
       'spiritualiste'
     ];
 
-    /* Échelle sur-mesure (customScale) pour chaque personnage afin de stopper leur tête pile sous la navbar */
+    /* Tailles ajustées parfaitement pour éviter d'atteindre le haut tout en gardant une belle prestance */
     const classesData = {
       gladiateur: {
         title: "Gladiateur",
@@ -477,7 +473,7 @@
         img: "images/gladiateur.webp",
         icon: "images/logo gladiateur.webp.png",
         youtubeId: "ndri5XpnRK4",
-        customScale: 1.18
+        customScale: 1.10
       },
       templier: {
         title: "Templier",
@@ -485,7 +481,7 @@
         img: "images/Templier.webp",
         icon: "images/Templarlogo.png",
         youtubeId: "Zs6HnL2N5Hk",
-        customScale: 1.15
+        customScale: 1.05
       },
       assassin: {
         title: "Assassin",
@@ -493,7 +489,7 @@
         img: "images/Assassin.webp",
         icon: "images/logo Assassin.webp.png",
         youtubeId: "jUW24SLKK3I",
-        customScale: 1.15
+        customScale: 1.08
       },
       rodeur: {
         title: "Rôdeur",
@@ -501,7 +497,7 @@
         img: "images/Rodeur.webp",
         icon: "images/logo rodeur.webp.png",
         youtubeId: "C6INRqEqv3Y",
-        customScale: 1.25
+        customScale: 1.15
       },
       aede: {
         title: "Aède",
@@ -509,7 +505,7 @@
         img: "images/Chanter.webp",
         icon: "images/logo Aede.png",
         youtubeId: "rtOt3KvmYCI",
-        customScale: 1.22
+        customScale: 1.12
       },
       clerc: {
         title: "Clerc",
@@ -517,7 +513,7 @@
         img: "images/Cleric.webp",
         icon: "images/logo Clerc.png",
         youtubeId: "RU-4yiNNnY0",
-        customScale: 1.15
+        customScale: 1.05
       },
       sorcier: {
         title: "Sorcier",
@@ -525,7 +521,7 @@
         img: "images/Sorcerer.webp",
         icon: "images/logo Sorcier.webp.png",
         youtubeId: "jh1ydFq6FI0",
-        customScale: 1.08  /* Réduit spécifiquement pour la Sorcière */
+        customScale: 1.02
       },
       spiritualiste: {
         title: "Spiritualiste",
@@ -533,7 +529,7 @@
         img: "images/Spiritualist.webp",
         icon: "images/logo Spiritualiste.png",
         youtubeId: "LJq1QGRJSLI",
-        customScale: 1.15
+        customScale: 1.08
       }
     };
 
@@ -554,9 +550,8 @@
         imgElement.src = data.img;
         imgElement.alt = data.title;
 
-        /* Applique le scale sur-mesure propre à la classe */
-        const scaleVal = data.customScale || 1.15;
-        imgElement.style.transform = `scale(${scaleVal}) translateX(-25px)`;
+        const scaleVal = data.customScale || 1.08;
+        imgElement.style.transform = `scale(${scaleVal}) translateX(-20px)`;
 
         iconElement.src = data.icon;
         iconElement.alt = "Logo " + data.title;
