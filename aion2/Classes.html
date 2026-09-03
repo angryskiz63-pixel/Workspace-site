@@ -43,7 +43,7 @@
       overflow-x: hidden;
     }
 
-    /* HEADER */
+    /* HEADER FIXÉ AVEC LOGO */
     .aion-nav {
       position: fixed;
       top: 0;
@@ -69,20 +69,15 @@
     }
     
     .aion-logo-img {
-      height: 100px;
+      height: 75px;
       width: auto;
       object-fit: contain;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
       transition: transform 0.3s ease;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.9));
-      z-index: 10;
     }
     
     .aion-logo-img:hover {
-      transform: translateY(-50%) scale(1.05);
+      transform: scale(1.05);
     }
     
     .aion-menu { 
@@ -149,7 +144,7 @@
     .classes-container {
       width: 100%;
       max-width: 1400px;
-      padding: 80px 20px 0 20px;
+      padding: 75px 20px 0 20px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -167,13 +162,13 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       font-weight: 900;
-      margin-bottom: 5px;
+      margin-bottom: 0px;
       background: linear-gradient(to right, #ffffff, var(--accent-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
       border-bottom: 1px solid var(--border-card);
-      padding-bottom: 5px;
+      padding-bottom: 2px;
       z-index: 10;
     }
 
@@ -185,42 +180,56 @@
       width: 100%;
       gap: 30px;
       flex-grow: 1;
-      max-height: 580px;
+      position: relative;
+      padding-bottom: 0;
     }
 
+    /* PORTRAIT ET OMBRE D'ANCRAGE AU SOL */
     .character-portrait {
-      flex: 1.2;
+      flex: 1.3;
       display: flex;
       justify-content: flex-start;
       align-items: flex-end;
-      max-width: 650px;
+      max-width: 700px;
       height: 100%;
       position: relative;
     }
 
+    .character-portrait::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 5%;
+      width: 80%;
+      height: 35px;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 75%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
     .character-portrait img {
       width: auto;
-      height: 100%;
-      max-height: 100%;
+      height: 110%;
+      max-height: none;
       object-fit: contain;
       object-position: bottom left;
-      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.95));
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.9));
       transform-origin: bottom left;
       transition: transform 0.35s ease-out;
       position: absolute;
       bottom: 0;
       left: 0;
+      z-index: 2;
     }
 
-    /* ANIMATION : Conserve l'agrandissement `--current-scale` jusqu'à la fin de l'animation */
     @keyframes fadeSlideRight {
       0% {
         opacity: 0;
-        transform: translateX(-40px) scale(var(--current-scale, 1.25));
+        transform: translateX(-30px) scale(var(--current-scale, 1.35));
       }
       100% {
         opacity: 1;
-        transform: translateX(-10px) scale(var(--current-scale, 1.25));
+        transform: translateX(0) scale(var(--current-scale, 1.35));
       }
     }
 
@@ -251,6 +260,7 @@
       gap: 15px;
       max-width: 580px;
       z-index: 2;
+      margin-bottom: 20px;
     }
 
     .class-header {
@@ -407,7 +417,7 @@
       gap: 20px;
       width: 100%;
       overflow-x: auto;
-      padding: 15px 0 20px 0;
+      padding: 10px 0 15px 0;
       background: transparent;
       z-index: 10;
     }
@@ -450,13 +460,12 @@
 
     @media (max-width: 900px) {
       .aion-menu { display: none; }
-      .aion-logo-img { height: 60px; }
+      .aion-logo-img { height: 50px; }
       .classes-container { height: auto; }
       .class-display {
         flex-direction: column;
         align-items: center;
         height: auto;
-        max-height: none;
       }
       .character-portrait img {
         position: relative;
@@ -466,9 +475,6 @@
         max-width: 100%;
         margin-bottom: 20px;
       }
-      .class-icon {
-        height: 50px;
-      }
     }
   </style>
 </head>
@@ -476,7 +482,7 @@
 
   <nav class="aion-nav">
     <a href="aion2.html" class="aion-logo">
-      <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
+      <img src="images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img">
     </a>
     <ul class="aion-menu">
       <li><a href="aion2.html#actualites">Actualités</a></li>
@@ -557,7 +563,7 @@
       'spiritualiste'
     ];
 
-    /* Agrandissement des échelles (customScale) pour un rendu imposant qui touche le bas */
+    /* Échelles harmonisées (customScale) pour faire correspondre toutes les tailles à celle du Rôdeur */
     const classesData = {
       gladiateur: {
         title: "Gladiateur",
@@ -565,7 +571,7 @@
         img: "images/gladiateur.webp",
         icon: "images/gladiateurlogo.png",
         youtubeId: "ndri5XpnRK4",
-        customScale: 1.28
+        customScale: 1.35
       },
       templier: {
         title: "Templier",
@@ -573,7 +579,7 @@
         img: "images/Templier.webp",
         icon: "images/Templarlogo.png",
         youtubeId: "Zs6HnL2N5Hk",
-        customScale: 1.22
+        customScale: 1.30
       },
       assassin: {
         title: "Assassin",
@@ -581,7 +587,7 @@
         img: "images/Assassin.webp",
         icon: "images/assassinlogo.png",
         youtubeId: "jUW24SLKK3I",
-        customScale: 1.25
+        customScale: 1.32
       },
       rodeur: {
         title: "Rôdeur",
@@ -589,7 +595,7 @@
         img: "images/Rodeur.webp",
         icon: "images/archerlogo.png",
         youtubeId: "C6INRqEqv3Y",
-        customScale: 1.24
+        customScale: 1.32
       },
       aede: {
         title: "Aède",
@@ -597,7 +603,7 @@
         img: "images/Chanter.webp",
         icon: "images/aedelogo.png",
         youtubeId: "rtOt3KvmYCI",
-        customScale: 1.23
+        customScale: 1.30
       },
       clerc: {
         title: "Clerc",
@@ -605,7 +611,7 @@
         img: "images/Cleric.webp",
         icon: "images/clerclogo.png",
         youtubeId: "RU-4yiNNnY0",
-        customScale: 1.20
+        customScale: 1.28
       },
       sorcier: {
         title: "Sorcier",
@@ -613,7 +619,7 @@
         img: "images/Sorcerer.webp",
         icon: "images/sorcierlogo.png",
         youtubeId: "jh1ydFq6FI0",
-        customScale: 1.20
+        customScale: 1.28
       },
       spiritualiste: {
         title: "Spiritualiste",
@@ -621,7 +627,7 @@
         img: "images/Spiritualist.webp",
         icon: "images/spiritlogo.png",
         youtubeId: "LJq1QGRJSLI",
-        customScale: 1.25
+        customScale: 1.35
       }
     };
 
@@ -670,7 +676,7 @@
         imgElement.src = data.img;
         imgElement.alt = data.title;
 
-        const scaleVal = data.customScale || 1.25;
+        const scaleVal = data.customScale || 1.32;
         imgElement.style.setProperty('--current-scale', scaleVal);
 
         iconElement.src = data.icon;
