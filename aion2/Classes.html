@@ -162,14 +162,16 @@
     .class-header {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 18px;
     }
 
+    /* LOGO AGRANDI ET HARMONISÉ AVEC LE TITRE */
     .class-icon {
-      width: 55px;
-      height: 55px;
+      height: 75px;
+      width: auto;
+      max-width: 85px;
       object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.6));
+      filter: drop-shadow(0 0 12px rgba(0, 210, 255, 0.7));
     }
 
     /* NOM DE CLASSE HARMONISÉ */
@@ -179,6 +181,7 @@
       font-weight: 700;
       color: #ffffff;
       letter-spacing: 0.05em;
+      line-height: 1;
       text-shadow: 0 0 15px rgba(0, 210, 255, 0.4), 0 2px 4px rgba(0,0,0,0.8);
     }
 
@@ -370,6 +373,7 @@
 </head>
 <body>
 
+  <!-- Header de Navigation -->
   <header class="navbar">
     <a href="aion2.html" class="nav-logo">
       <img src="images/logo.png" alt="AION 2 Logo" onerror="this.style.display='none'" />
@@ -390,10 +394,12 @@
     <h1 class="section-title">Classes</h1>
 
     <div class="class-display">
+      <!-- Personnage au sol -->
       <div class="character-portrait">
         <img id="class-img" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
+      <!-- Bloc de droite -->
       <div class="class-content-right">
         <div class="class-header">
           <img id="class-icon" class="class-icon" src="images/logo gladiateur.webp.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
@@ -404,12 +410,14 @@
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
         </p>
 
+        <!-- Aperçu vidéo -->
         <div class="video-box" id="video-preview" onclick="openVideo()">
           <div class="play-btn"></div>
         </div>
       </div>
     </div>
 
+    <!-- Barre des classes -->
     <nav class="class-selector">
       <button class="class-btn active" onclick="selectClass('gladiateur', this)">Gladiateur</button>
       <button class="class-btn" onclick="selectClass('templier', this)">Templier</button>
@@ -422,6 +430,7 @@
     </nav>
   </main>
 
+  <!-- Modal Lecteur vidéo Grand Écran -->
   <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
     <div class="modal-content">
       <span class="close-modal" onclick="closeVideo()">&times;</span>
