@@ -43,7 +43,7 @@
       overflow-x: hidden;
     }
 
-    /* HEADER EXTACTEMENT IDENTIQUE À LA PAGE D'ACCUEIL */
+    /* HEADER */
     .aion-nav {
       position: fixed;
       top: 0;
@@ -103,7 +103,6 @@
     .aion-menu a:hover,
     .aion-menu a.active { color: var(--accent-cyan); }
 
-    /* Bouton Favoris */
     .aion-fav-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-card);
@@ -126,7 +125,6 @@
       box-shadow: 0 0 12px rgba(255, 183, 77, 0.5);
     }
 
-    /* Bouton Discord */
     .aion-discord-btn {
       background: #5865F2;
       color: #fff !important;
@@ -163,7 +161,6 @@
       height: 100vh;
     }
 
-    /* TITRE DE SECTION */
     .section-title {
       font-family: 'Cinzel', serif;
       font-size: 2.8rem;
@@ -180,7 +177,6 @@
       z-index: 10;
     }
 
-    /* DISPOSITION À 2 COLONNES */
     .class-display {
       display: flex;
       flex-direction: row;
@@ -192,7 +188,6 @@
       max-height: 520px;
     }
 
-    /* COLONNE GAUCHE : Zone Personnage */
     .character-portrait {
       flex: 1.1;
       display: flex;
@@ -214,7 +209,6 @@
       transition: transform 0.35s ease-out;
     }
 
-    /* ANIMATIONS DE FONDU GLISSÉ */
     @keyframes fadeSlideRight {
       0% {
         opacity: 0;
@@ -245,7 +239,6 @@
       animation: fadeSlideLeft 0.45s ease-out forwards;
     }
 
-    /* COLONNE DROITE : Textes + Vidéo */
     .class-content-right {
       flex: 1;
       display: flex;
@@ -256,7 +249,6 @@
       z-index: 2;
     }
 
-    /* HEADER DE LA CLASSE */
     .class-header {
       display: flex;
       align-items: center;
@@ -296,7 +288,6 @@
       min-height: 75px;
     }
 
-    /* VIGNETTE DE LA VIDÉO */
     .video-box {
       width: 100%;
       aspect-ratio: 16/9;
@@ -354,7 +345,6 @@
       margin-left: 4px;
     }
 
-    /* POPUP LECTEUR GRAND ÉCRAN */
     .video-modal {
       display: none;
       position: fixed;
@@ -406,7 +396,6 @@
       color: var(--accent-cyan);
     }
 
-    /* SÉLECTEUR DE CLASSES (BAS) */
     .class-selector {
       display: flex;
       justify-content: center;
@@ -739,7 +728,6 @@
       }
     }
 
-    // Fonction Ajout aux Favoris
     function ajouterFavoris() {
       const title = document.title;
       const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
