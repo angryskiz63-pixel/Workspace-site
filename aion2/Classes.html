@@ -43,7 +43,7 @@
       overflow-x: hidden;
     }
 
-    /* HEADER IDENTIQUE À LA PAGE D'ACCUEIL */
+    /* HEADER EXTACTEMENT IDENTIQUE À LA PAGE D'ACCUEIL */
     .aion-nav {
       position: fixed;
       top: 0;
@@ -66,7 +66,6 @@
       text-decoration: none;
       height: 100%;
       position: relative;
-      width: 120px;
     }
     
     .aion-logo-img {
@@ -458,13 +457,12 @@
 </head>
 <body>
 
-  <!-- Navigation Supérieure -->
   <nav class="aion-nav">
     <a href="/aion2/aion2.html" class="aion-logo">
       <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
     </a>
     <ul class="aion-menu">
-      <li><a href="/aion2.html#actualites">Actualités</a></li>
+      <li><a href="/aion2/aion2.html#actualites">Actualités</a></li>
       <li><a href="/aion2/Classes.html" class="active">Classes</a></li>
       <li><a href="/aion2/Builds.html">Builds</a></li>
       <li><a href="/aion2/Guides.html">Guides</a></li>
@@ -486,7 +484,6 @@
         <img id="class-img" class="fade-right" src="images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
-      <!-- Bloc de droite -->
       <div class="class-content-right fade-left" id="class-content-right">
         <div class="class-header">
           <img id="class-icon" class="class-icon" src="images/logo gladiateur.webp.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
@@ -497,14 +494,12 @@
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
         </p>
 
-        <!-- Aperçu vidéo -->
         <div class="video-box" id="video-preview" onclick="openVideo()">
           <div class="play-btn"></div>
         </div>
       </div>
     </div>
 
-    <!-- Barre des classes -->
     <nav class="class-selector">
       <button class="class-btn active" data-class="gladiateur" onclick="onUserSelectClass('gladiateur', this)">Gladiateur</button>
       <button class="class-btn" data-class="templier" onclick="onUserSelectClass('templier', this)">Templier</button>
@@ -517,7 +512,6 @@
     </nav>
   </main>
 
-  <!-- Modal Lecteur vidéo Grand Écran -->
   <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
     <div class="modal-content">
       <span class="close-modal" onclick="closeVideo()">&times;</span>
