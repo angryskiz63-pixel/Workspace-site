@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AION 2 | Classes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Noto+Sans:wght@300;400;700&display=swap" rel="stylesheet" />
 
   <style>
     * {
@@ -51,6 +51,7 @@
       font-size: 1.8rem;
       font-weight: 700;
       letter-spacing: 0.1em;
+      font-family: 'Cinzel', serif;
     }
 
     .nav-logo img {
@@ -93,13 +94,16 @@
       justify-content: space-between;
     }
 
+    /* TITRE DE SECTION */
     .section-title {
-      font-size: 2.8rem;
-      letter-spacing: 0.25em;
+      font-family: 'Cinzel', serif;
+      font-size: 3.2rem;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
-      font-weight: 300;
+      font-weight: 700;
       margin-bottom: 20px;
-      text-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+      color: #f0f4f8;
+      text-shadow: 0 0 20px rgba(0, 210, 255, 0.5), 0 0 5px rgba(255, 255, 255, 0.8);
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       padding-bottom: 8px;
     }
@@ -108,7 +112,7 @@
     .class-display {
       display: flex;
       flex-direction: row;
-      align-items: flex-end; /* Alignement strict au sol */
+      align-items: flex-end;
       justify-content: center;
       width: 100%;
       gap: 40px;
@@ -134,12 +138,11 @@
       object-fit: contain;
       object-position: bottom;
       filter: drop-shadow(0 15px 25px rgba(0,0,0,0.9));
-      margin-bottom: -5px; /* Aligné sur le sol */
+      margin-bottom: -5px;
       transform-origin: bottom center;
       transition: transform 0.3s ease;
     }
 
-    /* Classe utilitaire pour agrandir l'Aède et le Rôdeur */
     .character-portrait img.scaled-up {
       transform: scale(1.15);
     }
@@ -155,11 +158,28 @@
       margin-bottom: 50px;
     }
 
+    /* HEADER DE LA CLASSE (NOM + LOGO) */
+    .class-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .class-icon {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(0, 210, 255, 0.6));
+    }
+
+    /* NOM DE CLASSE HARMONISÉ */
     .class-name {
-      font-size: 2.8rem;
+      font-family: 'Cinzel', serif;
+      font-size: 3rem;
       font-weight: 700;
       color: #ffffff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.05em;
+      text-shadow: 0 0 15px rgba(0, 210, 255, 0.4), 0 2px 4px rgba(0,0,0,0.8);
     }
 
     .class-description {
@@ -300,8 +320,9 @@
       background: transparent;
       border: none;
       color: #888888;
+      font-family: 'Cinzel', serif;
       font-size: 1.1rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       padding: 10px 12px;
       transition: color 0.3s, text-shadow 0.3s;
@@ -374,7 +395,10 @@
       </div>
 
       <div class="class-content-right">
-        <h2 class="class-name" id="class-title">Gladiateur</h2>
+        <div class="class-header">
+          <img id="class-icon" class="class-icon" src="images/logo gladiateur.webp.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
+          <h2 class="class-name" id="class-title">Gladiateur</h2>
+        </div>
         
         <p class="class-description" id="class-desc">
           Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
@@ -413,6 +437,7 @@
         title: "Gladiateur",
         desc: "Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.",
         img: "images/gladiateur.webp",
+        icon: "images/logo gladiateur.webp.png",
         youtubeId: "ndri5XpnRK4",
         scaleUp: false
       },
@@ -420,6 +445,7 @@
         title: "Templier",
         desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés.",
         img: "images/Templier.webp",
+        icon: "images/logo templier.webp.png",
         youtubeId: "Zs6HnL2N5Hk",
         scaleUp: false
       },
@@ -427,6 +453,7 @@
         title: "Assassin",
         desc: "Maître de la discrétion et des attaques rapides dans le dos, éliminant ses cibles avant même d'être repéré.",
         img: "images/Assassin.webp",
+        icon: "images/logo Assassin.webp.png",
         youtubeId: "jUW24SLKK3I",
         scaleUp: false
       },
@@ -434,20 +461,23 @@
         title: "Rôdeur",
         desc: "Un archer d'élite capable de frapper à distance tout en posant des pièges mortels sur le terrain.",
         img: "images/Rodeur.webp",
+        icon: "images/logo rodeur.webp.png",
         youtubeId: "C6INRqEqv3Y",
-        scaleUp: true // Agrandissement spécifique
+        scaleUp: true
       },
       aede: {
         title: "Aède",
         desc: "Un combattant au bâton renforçant le groupe grâce à des mantras puissants et des soins de soutien.",
         img: "images/Chanter.webp",
+        icon: "images/logo Aede.png",
         youtubeId: "rtOt3KvmYCI",
-        scaleUp: true // Agrandissement spécifique
+        scaleUp: true
       },
       clerc: {
         title: "Clerc",
         desc: "Le pilier de soutien par excellence, capable de soigner les blessures graves et d'invoquer la fureur divine.",
         img: "images/Cleric.webp",
+        icon: "images/logo Clerc.png",
         youtubeId: "RU-4yiNNnY0",
         scaleUp: false
       },
@@ -455,14 +485,16 @@
         title: "Sorcier",
         desc: "Un maître des éléments déchaînant le feu et la glace pour infliger des dégâts magiques dévastateurs.",
         img: "images/Sorcerer.webp",
-        youtubeId: "KoTYxGmnp7c",
+        icon: "images/logo Sorcier.webp.png",
+        youtubeId: "jh1ydFq6FI0",
         scaleUp: false
       },
       spiritualiste: {
         title: "Spiritualiste",
         desc: "Un invocateur commandant aux esprits élémentaires pour affaiblir et contrôler ses adversaires.",
         img: "images/Spiritualist.webp",
-        youtubeId: "E506FH5bIio",
+        icon: "images/logo Spiritualiste.png",
+        youtubeId: "LJq1QGRJSLI",
         scaleUp: false
       }
     };
@@ -477,13 +509,18 @@
       if (classesData[classKey]) {
         const data = classesData[classKey];
         const imgElement = document.getElementById('class-img');
+        const iconElement = document.getElementById('class-icon');
 
         document.getElementById('class-title').innerText = data.title;
         document.getElementById('class-desc').innerText = data.desc;
         imgElement.src = data.img;
         imgElement.alt = data.title;
 
-        // Ajustement automatique de l'échelle pour Rôdeur et Aède
+        // Mise à jour du logo de classe
+        iconElement.src = data.icon;
+        iconElement.alt = "Logo " + data.title;
+        iconElement.style.display = 'inline-block';
+
         if (data.scaleUp) {
           imgElement.classList.add('scaled-up');
         } else {
