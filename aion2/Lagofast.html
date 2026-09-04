@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="images/logo-aion2bis.png" />
-  <link rel="shortcut icon" type="image/png" href="images/logo-aion2bis.png" />
+  <link rel="icon" type="image/png" href="../images/logo-aion2bis.png" />
+  <link rel="shortcut icon" type="image/png" href="../images/logo-aion2bis.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>LagoFast — Aion 2 | Angryskiz Hub</title>
@@ -37,7 +37,7 @@
 
     body {
       font-family: 'Outfit', sans-serif;
-      background: var(--bg-dark) url('images/lagofastfond.webp') no-repeat center right / cover;
+      background: var(--bg-dark) url('../images/lagofastfond.webp') no-repeat center right / cover;
       color: var(--text-main);
       display: flex;
       flex-direction: column;
@@ -157,12 +157,12 @@
       flex-grow: 1;
       display: flex;
       align-items: center;
-      justify-content: flex-start; /* Alignement sur la gauche */
+      justify-content: flex-start;
     }
 
     .lagofast-card {
       width: 100%;
-      max-width: 580px; /* Largeur réduite pour ne pas recouvrir l'astronaute à droite */
+      max-width: 580px;
       background: var(--card-bg);
       border: 1px solid var(--border-card);
       border-radius: 20px;
@@ -233,7 +233,7 @@
       font-weight: 600;
     }
 
-    /* BLOCS D'INFORMATIONS (1 COLONNE POUR S'ADAPTER À LA GAUCHE) */
+    /* BLOCS D'INFORMATIONS */
     .info-grid {
       display: flex;
       flex-direction: column;
@@ -353,8 +353,8 @@
 
   <!-- HEADER D'ORIGINE IDENTIQUE À LA PAGE CLASSES -->
   <nav class="aion-nav">
-    <a href="aion2.html" class="aion-logo">
-      <img src="images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='../images/logo-aion2.png';">
+    <a href="../aion2.html" class="aion-logo">
+      <img src="../images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img">
     </a>
     <ul class="aion-menu">
       <li><a href="https://www.angryskiz.fr/aion2.html#actualites">Actualités</a></li>
@@ -387,7 +387,7 @@
       </div>
 
       <div class="lagofast-header">
-        <img src="images/logo-lagofast.png" alt="LagoFast Logo" class="lagofast-logo" onerror="this.onerror=null; this.src='../images/logo-lagofast.png';">
+        <img src="../images/logo-lagofast.png" alt="LagoFast Logo" class="lagofast-logo">
         <h2 class="lagofast-title">Jouez à Aion 2 Sans Frontières ni Lag</h2>
         <p class="lagofast-subtitle">L'outil indispensable pour les joueurs d'Aion 2 en Europe & Belgique</p>
       </div>
@@ -452,7 +452,7 @@
   <div id="twitch-widget"></div>
 
   <!-- SCRIPT DU PLAYER TWITCH -->
-  <script src="js/player.js?v=2" onerror="this.onerror=null; this.src='../js/player.js?v=2';"></script>
+  <script src="../js/player.js?v=2"></script>
 
   <script>
     function ajouterFavoris() {
