@@ -28,37 +28,28 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html, body {
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden; /* Empêche le scroll */
+    }
+
     body {
       font-family: 'Outfit', sans-serif;
       background-color: var(--bg-dark);
       color: var(--text-main);
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      overflow-x: hidden;
       position: relative;
     }
 
-    /* CANVAS DE FOND ANIMÉ */
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* HEADER FIXÉ (IDENTIQUE À LA PAGE CLASSES) */
+    /* HEADER FIXÉ */
     .aion-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
+      position: relative;
       width: 100%;
-      height: 70px;
+      height: clamp(55px, 7vh, 70px);
       background: linear-gradient(180deg, rgba(7, 11, 22, 0.95) 0%, rgba(7, 11, 22, 0.7) 100%);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -67,6 +58,7 @@
       justify-content: space-between;
       align-items: center;
       z-index: 100;
+      flex-shrink: 0;
     }
     
     .aion-logo {
@@ -79,7 +71,7 @@
     }
     
     .aion-logo-img {
-      height: 100px;
+      height: clamp(60px, 8vh, 100px);
       width: auto;
       object-fit: contain;
       position: absolute;
@@ -94,31 +86,10 @@
     .aion-logo-img:hover {
       transform: translateY(-50%) scale(1.05);
     }
-
-    /* LOGO LAGOFAST DANS LE BANDEAU */
-    .nav-lagofast-logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      margin: 0 20px;
-      transition: transform 0.3s ease;
-    }
-
-    .nav-lagofast-logo img {
-      height: 38px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.4));
-    }
-
-    .nav-lagofast-logo:hover {
-      transform: scale(1.05);
-    }
     
     .aion-menu { 
       display: flex; 
-      gap: 18px; 
+      gap: clamp(10px, 1.2vw, 18px); 
       list-style: none; 
       margin-left: auto;
       align-items: center;
@@ -127,7 +98,7 @@
       color: var(--text-main);
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: clamp(0.8rem, 0.9vw, 0.95rem);
       transition: 0.2s;
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
@@ -138,11 +109,11 @@
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-card);
       color: var(--accent-gold);
-      padding: 7px 14px;
+      padding: 5px 12px;
       border-radius: 20px;
       font-family: 'Outfit', sans-serif;
       font-weight: 600;
-      font-size: 0.85rem;
+      font-size: clamp(0.75rem, 0.8vw, 0.85rem);
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -159,13 +130,14 @@
     .aion-discord-btn {
       background: #5865F2;
       color: #fff !important;
-      padding: 8px 18px;
+      padding: 6px 16px;
       border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       font-weight: bold !important;
+      font-size: clamp(0.8rem, 0.85vw, 0.9rem);
       text-decoration: none;
       box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
       transition: all 0.2s ease !important;
@@ -176,63 +148,70 @@
       box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
     }
 
-    /* CONTENEUR PRINCIPAL LAGOFAST */
+    /* CONTENEUR PRINCIPAL LAGOFAST (AJUSTÉ 1080P) */
     .main-container {
       width: 100%;
-      max-width: 1000px;
-      padding: 110px 20px 40px 20px;
+      max-width: 1050px;
+      padding: 10px 20px;
       z-index: 10;
-      margin: auto 0;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .lagofast-card {
+      width: 100%;
       background: var(--card-bg);
       border: 1px solid var(--border-card);
       border-radius: 20px;
-      padding: 40px;
+      padding: clamp(20px, 2.5vh, 35px);
       backdrop-filter: blur(12px);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .lagofast-header {
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: clamp(15px, 2vh, 25px);
     }
 
     .lagofast-logo {
-      height: 75px;
+      height: clamp(45px, 6vh, 65px);
       width: auto;
       object-fit: contain;
       filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.7));
-      margin-bottom: 15px;
+      margin-bottom: 8px;
     }
 
     .lagofast-title {
-      font-size: 2.2rem;
+      font-size: clamp(1.4rem, 2vw, 1.9rem);
       font-weight: 800;
       color: #fff;
-      margin-bottom: 10px;
+      margin-bottom: 4px;
     }
 
     .lagofast-subtitle {
       color: var(--accent-aion);
-      font-size: 1.1rem;
+      font-size: clamp(0.9rem, 1vw, 1rem);
       font-weight: 600;
     }
 
     /* BLOCS D'INFORMATIONS */
     .info-grid {
       display: grid;
-      grid-template-columns: repeat( auto-fit, minmax(280px, 1fr) );
-      gap: 25px;
-      margin-bottom: 35px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(12px, 1.5vw, 20px);
+      margin-bottom: clamp(15px, 2vh, 25px);
     }
 
     .info-box {
       background: rgba(9, 13, 22, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      padding: 25px;
+      padding: clamp(12px, 1.5vh, 20px);
       transition: all 0.3s ease;
     }
 
@@ -245,47 +224,46 @@
     .info-box-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 15px;
+      gap: 10px;
+      margin-bottom: 10px;
     }
 
     .info-box-header i {
-      font-size: 1.5rem;
+      font-size: clamp(1.1rem, 1.3vw, 1.3rem);
       color: var(--accent-aion);
     }
 
     .info-box-header h3 {
-      font-size: 1.2rem;
+      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
       font-weight: 700;
       color: #fff;
     }
 
     .info-box p {
       color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.6;
+      font-size: clamp(0.8rem, 0.85vw, 0.9rem);
+      line-height: 1.45;
     }
 
     .flag-icon {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       vertical-align: middle;
     }
 
     /* BOUTON D'ACTION / TÉLÉCHARGEMENT */
     .cta-container {
       text-align: center;
-      margin-top: 30px;
     }
 
     .cta-button {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       background: linear-gradient(135deg, var(--accent-aion) 0%, #00a8ff 100%);
       color: var(--bg-dark);
-      font-size: 1.1rem;
+      font-size: clamp(0.95rem, 1vw, 1.05rem);
       font-weight: 800;
-      padding: 16px 36px;
+      padding: clamp(10px, 1.2vh, 14px) clamp(24px, 2vw, 32px);
       border-radius: 50px;
       text-decoration: none;
       transition: all 0.3s ease;
@@ -298,50 +276,41 @@
       color: #000;
     }
 
-    /* FOOTER */
+    /* FOOTER (AJUSTÉ FIT SCREEN) */
     footer {
       width: 100%;
-      padding: 20px;
+      padding: 10px 20px;
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: clamp(0.75rem, 0.8vw, 0.85rem);
       text-align: center;
       z-index: 10;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
       background: rgba(7, 11, 22, 0.8);
+      flex-shrink: 0;
     }
 
     /* CONTENEUR FIXE DE LECTEUR TWITCH */
     #twitch-widget {
       position: fixed;
-      bottom: 25px;
-      right: 25px;
+      bottom: 20px;
+      right: 20px;
       z-index: 9999;
     }
 
     @media (max-width: 900px) {
+      body { overflow-y: auto; }
       .aion-menu { display: none; }
-      .aion-logo-img { height: 60px; }
-      .lagofast-card { padding: 25px 20px; }
-      .lagofast-title { font-size: 1.7rem; }
+      .info-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- CANVAS ARRIÈRE-PLAN ANIMÉ -->
-  <canvas id="bg-canvas"></canvas>
-
-  <!-- HEADER IDENTIQUE À LA PAGE CLASSES -->
+  <!-- HEADER D'ORIGINE IDENTIQUE À LA PAGE CLASSES -->
   <nav class="aion-nav">
     <a href="aion2.html" class="aion-logo">
       <img src="images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='../images/logo-aion2.png';">
     </a>
-
-    <!-- LOGO LAGOFAST CENTRAL DANS LA BARRE -->
-    <a href="Lagofast.html" class="nav-lagofast-logo">
-      <img src="images/logo-lagofast.png" alt="LagoFast Logo" onerror="this.onerror=null; this.src='../images/logo-lagofast.png';">
-    </a>
-
     <ul class="aion-menu">
       <li><a href="https://www.angryskiz.fr/aion2.html#actualites">Actualités</a></li>
       <li><a href="Classes.html">Classes</a></li>
@@ -435,75 +404,7 @@
   <!-- SCRIPT DU PLAYER TWITCH -->
   <script src="js/player.js?v=2" onerror="this.onerror=null; this.src='../js/player.js?v=2';"></script>
 
-  <!-- SCRIPT DU CANVAS ANIMÉ (PARTICULES & NÉONS) -->
   <script>
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    const particles = [];
-    const particleCount = 70;
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 2 + 0.5,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe'
-      });
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-      grad.addColorStop(0, '#070b16');
-      grad.addColorStop(1, '#04060a');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < particleCount; i++) {
-        let p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = p.color;
-        ctx.fill();
-
-        for (let j = i + 1; j < particleCount; j++) {
-          let p2 = particles[j];
-          let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (dist < 130) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = p.color;
-            ctx.globalAlpha = (1 - dist / 130) * 0.2;
-            ctx.lineWidth = 0.6;
-            ctx.stroke();
-            ctx.globalAlpha = 1;
-          }
-        }
-      }
-      requestAnimationFrame(animate);
-    }
-    animate();
-
     function ajouterFavoris() {
       const title = document.title;
       const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
