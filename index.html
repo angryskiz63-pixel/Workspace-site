@@ -52,28 +52,12 @@
       pointer-events: none;
     }
 
-    /* HEADER EN-TÊTE ET LOGO */
+    /* HEADER EN-TÊTE */
     header {
       width: 100%;
       padding: 30px 20px 10px 20px;
       text-align: center;
       z-index: 10;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .brand-logo-img {
-      height: 90px;
-      width: auto;
-      object-fit: contain;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 4px 15px rgba(0, 242, 254, 0.3));
-      transition: transform 0.3s ease;
-    }
-
-    .brand-logo-img:hover {
-      transform: scale(1.05);
     }
 
     .brand-title {
@@ -277,17 +261,16 @@
       .hub-container { grid-template-columns: 1fr; }
       .hub-card { height: 320px; }
       .brand-title { font-size: 2.2rem; }
-      .brand-logo-img { height: 70px; }
       #twitch-widget { bottom: 15px; right: 15px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- CANVAS ARRIÈRE-PLAN ANIMÉ -->
   <canvas id="bg-canvas"></canvas>
 
   <header>
-    <img src="images/logo-angryskiz.png" alt="Logo Angryskiz" class="brand-logo-img" />
     <h1 class="brand-title">Angryskiz</h1>
     <p class="brand-subtitle">Créateur de contenu & Expertise High-Tech</p>
     
@@ -305,6 +288,7 @@
 
   <main class="hub-container">
     
+    <!-- PORTE 1 : AION 2 -->
     <a href="/aion2.html" class="hub-card card-aion">
       <div class="card-content">
         <span class="badge badge-aion">Communauté</span>
@@ -314,6 +298,7 @@
       </div>
     </a>
 
+    <!-- PORTE 2 : STREAMING & TWITCH -->
     <a href="https://twitch.tv/angryskiz" target="_blank" class="hub-card card-stream">
       <div class="card-content">
         <span class="badge badge-stream"><i class="fas fa-circle" style="font-size:0.6rem; vertical-align:middle;"></i> Live Stream</span>
@@ -323,6 +308,7 @@
       </div>
     </a>
 
+    <!-- PORTE 3 : SKIZTECH -->
     <a href="#skiztech" class="hub-card card-tech">
       <div class="card-content">
         <span class="badge badge-tech">Service Pro</span>
@@ -338,10 +324,13 @@
     <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
   </footer>
 
+  <!-- LECTEUR TWITCH FLOTTANT EN BAS À DROITE -->
   <div id="twitch-widget"></div>
 
+  <!-- SCRIPT DU PLAYER TWITCH -->
   <script src="js/player.js?v=2"></script>
 
+  <!-- SCRIPT DU CANVAS ANIMÉ (PARTICULES & NÉONS) -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
