@@ -84,6 +84,7 @@
       text-decoration: none;
       font-size: 1.2rem;
       transition: all 0.3s ease;
+      overflow: hidden;
     }
 
     .social-bar a:hover {
@@ -93,10 +94,22 @@
       box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
     }
 
+    /* STYLE SPECIFIQUE LINKTREE IMAGE */
+    .social-bar a.linktree-btn img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      transition: filter 0.3s ease;
+    }
+
     .social-bar a.linktree-btn:hover {
       background: var(--accent-linktree);
-      color: #000;
       box-shadow: 0 5px 15px rgba(67, 230, 96, 0.4);
+    }
+
+    .social-bar a.linktree-btn:hover img {
+      filter: brightness(0);
     }
 
     /* GRILLE DES 3 UNIVERS */
@@ -146,7 +159,7 @@
       background: linear-gradient(180deg, rgba(9, 13, 22, 0.1) 0%, rgba(9, 13, 22, 0.9) 85%);
     }
 
-    /* CARTE FOND SPÉCIFIQUE (IMAGE AION CORRIGÉE) */
+    /* CARTE FOND SPÉCIFIQUE */
     .card-aion {
       background-image: url('images/fond-aion2bis.jpg');
     }
@@ -233,7 +246,9 @@
     <p class="brand-subtitle">Créateur de contenu & Expertise High-Tech</p>
     
     <div class="social-bar">
-      <a href="https://linktr.ee/Angryskiz" target="_blank" title="Linktree" class="linktree-btn"><i class="fas fa-tree"></i></a>
+      <a href="https://linktr.ee/Angryskiz" target="_blank" title="Linktree" class="linktree-btn">
+        <img src="images/linktree.webp" alt="Linktree" />
+      </a>
       <a href="https://twitch.tv" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
       <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
       <a href="https://youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
