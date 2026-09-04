@@ -83,6 +83,31 @@
     .aion-logo-img:hover {
       transform: translateY(-50%) scale(1.05);
     }
+
+    /* Logo Lagofast centré dans le bandeau haut */
+    .aion-lagofast {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 15;
+    }
+    
+    .aion-lagofast-img {
+      height: 42px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
+      transition: all 0.3s ease;
+    }
+
+    .aion-lagofast-img:hover {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.8));
+    }
     
     .aion-menu { 
       display: flex; 
@@ -354,6 +379,7 @@
       .ln-img { height: 240px; }
       .aion-menu { display: none; }
       .quick-links { margin-top: -40px; }
+      .aion-lagofast { display: none; } /* Masqué sur mobile pour garder la barre propre */
     }
   </style>
 </head>
@@ -363,6 +389,11 @@
   <a href="/aion2/aion2.html" class="aion-logo">
     <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
   </a>
+
+  <a href="#" target="_blank" class="aion-lagofast">
+    <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
+  </a>
+
   <ul class="aion-menu">
     <li><a href="#actualites">Actualités</a></li>
     <li><a href="/aion2/Classes.html">Classes</a></li>
