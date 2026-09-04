@@ -148,26 +148,26 @@
       width: 100%;
     }
 
-    /* LOGO LAGOFAST CENTRÉ AU-DESSUS DE LA CARTE AION */
+    /* LOGO LAGOFAST CENTRÉ ET PLUS GRAND AU-DESSUS DE LA CARTE AION */
     .card-lagofast-top {
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 15px;
       text-decoration: none;
     }
 
     .card-lagofast-top img {
-      height: 52px;
+      height: 75px; /* Augmenté de 52px à 75px */
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.6));
+      filter: drop-shadow(0 0 14px rgba(0, 242, 254, 0.65));
       transition: all 0.3s ease;
     }
 
     .card-lagofast-top:hover img {
       transform: scale(1.08);
-      filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.95));
+      filter: drop-shadow(0 0 22px rgba(0, 242, 254, 0.95));
     }
 
     .hub-card {
@@ -298,6 +298,7 @@
 </head>
 <body>
 
+  <!-- CANVAS ARRIÈRE-PLAN ANIMÉ -->
   <canvas id="bg-canvas"></canvas>
 
   <header>
@@ -318,6 +319,7 @@
 
   <main class="hub-container">
     
+    <!-- PORTE 1 : AION 2 + LOGO LAGOFAST AU-DESSUS -->
     <div class="card-wrapper">
       <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="card-lagofast-top">
         <img src="images/logo-lagofast.png" alt="LagoFast">
@@ -332,6 +334,7 @@
       </a>
     </div>
 
+    <!-- PORTE 2 : STREAMING & TWITCH -->
     <div class="card-wrapper" style="justify-content: flex-end;">
       <a href="https://twitch.tv/angryskiz" target="_blank" class="hub-card card-stream">
         <div class="card-content">
@@ -343,6 +346,7 @@
       </a>
     </div>
 
+    <!-- PORTE 3 : SKIZTECH -->
     <div class="card-wrapper" style="justify-content: flex-end;">
       <a href="https://angryskiz.fr/skiztech/index.html" class="hub-card card-tech">
         <div class="card-content">
@@ -360,10 +364,13 @@
     <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
   </footer>
 
+  <!-- LECTEUR TWITCH FLOTTANT EN BAS À DROITE -->
   <div id="twitch-widget"></div>
 
+  <!-- SCRIPT DU PLAYER TWITCH -->
   <script src="js/player.js?v=2"></script>
 
+  <!-- SCRIPT DU CANVAS ANIMÉ (PARTICULES & NÉONS) -->
   <script>
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
