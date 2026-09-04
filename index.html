@@ -241,6 +241,28 @@
       gap: 15px;
     }
 
+    /* LOGO LAGOFAST DANS LA CARTE AION */
+    .card-lagofast-link {
+      display: inline-block;
+      margin-bottom: 15px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .card-lagofast-img {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.6));
+      transition: all 0.3s ease;
+      display: block;
+    }
+
+    .card-lagofast-link:hover .card-lagofast-img {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.95));
+    }
+
     footer {
       padding: 20px;
       color: var(--text-muted);
@@ -292,6 +314,14 @@
     <a href="/aion2.html" class="hub-card card-aion">
       <div class="card-content">
         <span class="badge badge-aion">Communauté</span>
+
+        <!-- Logo LagoFast au-dessus du titre -->
+        <div>
+          <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="card-lagofast-link" onclick="event.stopPropagation();">
+            <img src="images/logo-lagofast.png" alt="LagoFast" class="card-lagofast-img">
+          </a>
+        </div>
+
         <h2 class="card-title">Portail Aion 2</h2>
         <p class="card-desc">Guides, actualités, builds et présentations complètes des classes d'Aion 2.</p>
         <div class="card-btn">Découvrir le portail <i class="fas fa-arrow-right"></i></div>
@@ -343,7 +373,7 @@
     resize();
 
     const particles = [];
-    const particleCount = 70; // Ajustable selon l'intensité désirée
+    const particleCount = 70;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -352,21 +382,19 @@
         radius: Math.random() * 2 + 0.5,
         vx: (Math.random() - 0.5) * 0.4,
         vy: (Math.random() - 0.5) * 0.4,
-        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe' // Violet Twitch / Cyan Aion
+        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe'
       });
     }
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Fond dégradé très sombre
       let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
       grad.addColorStop(0, '#090d16');
       grad.addColorStop(1, '#04060a');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Dessin des particules et des liens
       for (let i = 0; i < particleCount; i++) {
         let p = particles[i];
         p.x += p.vx;
@@ -382,7 +410,6 @@
         ctx.shadowColor = p.color;
         ctx.fill();
 
-        // Connexions entre particules proches
         for (let j = i + 1; j < particleCount; j++) {
           let p2 = particles[j];
           let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
