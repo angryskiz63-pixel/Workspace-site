@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="../images/logo-angryskiz.png" />
+  <link rel="shortcut icon" href="../images/logo-angryskiz.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>LagoFast — Aion 2 | Angryskiz Hub</title>
+  <meta name="description" content="Découvrez comment jouer à Aion 2 depuis la Belgique et réduire votre ping grâce à LagoFast." />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --accent-aion: #00f2fe;
+      --accent-stream: #9146FF;
+      --accent-tech: #ff3366;
+      --accent-linktree: #43E660;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* CANVAS DE FOND ANIMÉ */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* HEADER & NAVIGATION BANDEAU */
+    header {
+      width: 100%;
+      padding: 25px 20px 15px 20px;
+      text-align: center;
+      z-index: 10;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 242, 254, 0.2);
+    }
+
+    .brand-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 0%, var(--accent-aion) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+      text-shadow: 0 5px 15px rgba(0,242,254,0.3);
+    }
+
+    .brand-subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 15px;
+    }
+
+    /* BARRE DE NAVIGATION/ONGLETS */
+    .nav-bar {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .nav-link {
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: var(--accent-aion);
+      color: var(--bg-dark);
+      border-color: var(--accent-aion);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+      transform: translateY(-2px);
+    }
+
+    /* CONTENUR PRINCIPAL DU SPEECH LAGOFAST */
+    .main-container {
+      width: 100%;
+      max-width: 1000px;
+      padding: 40px 20px;
+      z-index: 10;
+      margin: auto 0;
+    }
+
+    .lagofast-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .lagofast-header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .lagofast-logo {
+      height: 75px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.7));
+      margin-bottom: 15px;
+    }
+
+    .lagofast-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .lagofast-subtitle {
+      color: var(--accent-aion);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* BLOCS D'INFORMATIONS */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat( auto-fit, minmax(280px, 1fr) );
+      gap: 25px;
+      margin-bottom: 35px;
+    }
+
+    .info-box {
+      background: rgba(9, 13, 22, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .info-box:hover {
+      border-color: var(--accent-aion);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 242, 254, 0.15);
+    }
+
+    .info-box-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .info-box-header i {
+      font-size: 1.5rem;
+      color: var(--accent-aion);
+    }
+
+    .info-box-header h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .info-box p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .flag-icon {
+      font-size: 1.4rem;
+      vertical-align: middle;
+    }
+
+    /* BOUTON D'ACTION / TÉLÉCHARGEMENT */
+    .cta-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--accent-aion) 0%, #00a8ff 100%);
+      color: var(--bg-dark);
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 16px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.8);
+      color: #000;
+    }
+
+    /* FOOTER */
+    footer {
+      width: 100%;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+      z-index: 10;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(9, 13, 22, 0.8);
+    }
+
+    /* CONTENEUR FIXE DE LECTEUR TWITCH */
+    #twitch-widget {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 9999;
+    }
+
+    @media (max-width: 768px) {
+      .lagofast-card { padding: 25px 20px; }
+      .brand-title { font-size: 2.2rem; }
+      .lagofast-title { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CANVAS ARRIÈRE-PLAN ANIMÉ -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- BANDEAU HAUT DE PAGE / HEADER D'AION 2 -->
+  <header>
+    <h1 class="brand-title">Portail Aion 2</h1>
+    <p class="brand-subtitle">Communauté, Guides, Classes & Optimisation Network</p>
+    
+    <nav class="nav-bar">
+      <a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Accueil Hub</a>
+      <a href="aion2.html" class="nav-link"><i class="fas fa-dragon"></i> Portail Aion 2</a>
+      <a href="Classes.html" class="nav-link"><i class="fas fa-shield-alt"></i> Classes</a>
+      <a href="Lagofast.html" class="nav-link active"><i class="fas fa-bolt"></i> LagoFast VPN</a>
+      <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="nav-link"><i class="fab fa-discord"></i> Discord</a>
+    </nav>
+  </header>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="main-container">
+    
+    <div class="lagofast-card">
+      
+      <div class="lagofast-header">
+        <img src="../images/logo-lagofast.png" alt="LagoFast Logo" class="lagofast-logo">
+        <h2 class="lagofast-title">Jouez à Aion 2 Sans Frontières ni Lag</h2>
+        <p class="lagofast-subtitle">L'outil indispensable pour les joueurs d'Aion 2 en Europe & Belgique</p>
+      </div>
+
+      <div class="info-grid">
+        
+        <!-- BLOC BELGIQUE -->
+        <div class="info-box">
+          <div class="info-box-header">
+            <span class="flag-icon">🇧🇪</span>
+            <h3>Bypass Restrictions Belgique</h3>
+          </div>
+          <p>
+            En raison des réglementations locales sur les loot boxes et jeux en ligne, **Aion 2 est restreint et interdit d'accès en Belgique**. 
+            Grâce à <strong>LagoFast</strong>, vous pouvez contourner cette restriction géographique facilement, sécuriser votre connexion et rejoindre l'aventure comme n'importe quel joueur européen sans aucun blocage.
+          </p>
+        </div>
+
+        <!-- BLOC TAÏWAN & FR -->
+        <div class="info-box">
+          <div class="info-box-header">
+            <i class="fas fa-globe-asia"></i>
+            <h3>Accès Taïwan & TRADUCTION FR</h3>
+          </div>
+          <p>
+            Vous n'avez pas envie d'attendre ? Testez **Aion 2 dès maintenant sur les serveurs Taïwan** ! 
+            LagoFast ne réduit pas seulement votre ping sur les serveurs asiatiques, il propose également un module d'optimisation et d'intégration pour **traduire le jeu en Français** afin de profiter pleinement de l'expérience dès aujourd'hui.
+          </p>
+        </div>
+
+        <!-- BLOC GLOBAL & PING -->
+        <div class="info-box">
+          <div class="info-box-header">
+            <i class="fas fa-tachometer-alt"></i>
+            <h3>Boost de Ping pour la Global</h3>
+          </div>
+          <p>
+            Dès le lancement officiel des serveurs Global/Europe, LagoFast vous garantit les meilleures routes de routage réseaux. 
+            Évitez les pertes de paquets, éliminez les micro-freezes et profitez d'un **ping ultra-stable** pour dominer le PvP et réussir vos Raids sans lag.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- BOUTON D'ACTION -->
+      <div class="cta-container">
+        <a href="https://www.lagofast.com" target="_blank" class="cta-button">
+          <i class="fas fa-download"></i> Télécharger LagoFast & Profiter de l'offre
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- FOOTER DU SITE -->
+  <footer>
+    <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
+  </footer>
+
+  <!-- LECTEUR TWITCH FLOTTANT EN BAS À DROITE -->
+  <div id="twitch-widget"></div>
+
+  <!-- SCRIPT DU PLAYER TWITCH -->
+  <script src="../js/player.js?v=2"></script>
+
+  <!-- SCRIPT DU CANVAS ANIMÉ (PARTICULES & NÉONS) -->
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const particles = [];
+    const particleCount = 70;
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe'
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      grad.addColorStop(0, '#090d16');
+      grad.addColorStop(1, '#04060a');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let i = 0; i < particleCount; i++) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+
+        for (let j = i + 1; j < particleCount; j++) {
+          let p2 = particles[j];
+          let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 130) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = p.color;
+            ctx.globalAlpha = (1 - dist / 130) * 0.2;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+
+</body>
+</html>
