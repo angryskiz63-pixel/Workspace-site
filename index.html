@@ -36,10 +36,19 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      background-image: radial-gradient(circle at 50% 20%, rgba(145, 70, 255, 0.12), transparent 40%),
-                        radial-gradient(circle at 80% 80%, rgba(0, 242, 254, 0.08), transparent 40%);
       overflow-x: hidden;
       position: relative;
+    }
+
+    /* CANVAS DE FOND ANIMÉ */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
     }
 
     /* HEADER EN-TÊTE */
@@ -59,6 +68,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 5px;
+      text-shadow: 0 10px 20px rgba(0,0,0,0.5);
     }
 
     .brand-subtitle {
@@ -79,7 +89,8 @@
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--text-main);
       display: flex;
@@ -133,7 +144,7 @@
       height: 480px;
       border-radius: 16px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.12);
       background-size: cover;
       background-position: center;
       display: flex;
@@ -141,6 +152,7 @@
       justify-content: flex-end;
       padding: 30px;
       text-decoration: none;
+      backdrop-filter: blur(4px);
       transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
 
@@ -254,6 +266,9 @@
 </head>
 <body>
 
+  <!-- CANVAS ARRIÈRE-PLAN ANIMÉ -->
+  <canvas id="bg-canvas"></canvas>
+
   <header>
     <h1 class="brand-title">Angryskiz</h1>
     <p class="brand-subtitle">Créateur de contenu & Expertise High-Tech</p>
@@ -272,7 +287,8 @@
 
   <main class="hub-container">
     
-    <a href="/aion2.html" class="hub-card card-aion">
+    <!-- PORTE 1 : AION 2 -->
+    <a href="/aion2/aion2.html" class="hub-card card-aion">
       <div class="card-content">
         <span class="badge badge-aion">Communauté</span>
         <h2 class="card-title">Portail Aion 2</h2>
@@ -281,6 +297,7 @@
       </div>
     </a>
 
+    <!-- PORTE 2 : STREAMING & TWITCH -->
     <a href="https://twitch.tv/angryskiz" target="_blank" class="hub-card card-stream">
       <div class="card-content">
         <span class="badge badge-stream"><i class="fas fa-circle" style="font-size:0.6rem; vertical-align:middle;"></i> Live Stream</span>
@@ -290,7 +307,8 @@
       </div>
     </a>
 
-    <a href="https://www.angryskiz.fr/skiztech/index.html" class="hub-card card-tech">
+    <!-- PORTE 3 : SKIZTECH -->
+    <a href="#skiztech" class="hub-card card-tech">
       <div class="card-content">
         <span class="badge badge-tech">Service Pro</span>
         <h2 class="card-title">SkizTech</h2>
@@ -305,9 +323,84 @@
     <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
   </footer>
 
+  <!-- LECTEUR TWITCH FLOTTANT EN BAS À DROITE -->
   <div id="twitch-widget"></div>
 
+  <!-- SCRIPT DU PLAYER TWITCH -->
   <script src="js/player.js?v=2"></script>
+
+  <!-- SCRIPT DU CANVAS ANIMÉ (PARTICULES & NÉONS) -->
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const particles = [];
+    const particleCount = 70; // Ajustable selon l'intensité désirée
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe' // Violet Twitch / Cyan Aion
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Fond dégradé très sombre
+      let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      grad.addColorStop(0, '#090d16');
+      grad.addColorStop(1, '#04060a');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Dessin des particules et des liens
+      for (let i = 0; i < particleCount; i++) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.fill();
+
+        // Connexions entre particules proches
+        for (let j = i + 1; j < particleCount; j++) {
+          let p2 = particles[j];
+          let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 130) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = p.color;
+            ctx.globalAlpha = (1 - dist / 130) * 0.2;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
 
 </body>
 </html>
