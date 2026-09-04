@@ -2,27 +2,27 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="images/logo-aion2bis.png" />
-  <link rel="shortcut icon" type="image/png" href="images/logo-aion2bis.png" />
+  <link rel="icon" type="image/png" href="../images/logo-angryskiz.png" />
+  <link rel="shortcut icon" href="../images/logo-angryskiz.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Aion 2 | Classes</title>
-  <meta name="description" content="Découvrez l'ensemble des classes disponibles sur Aion 2 : compétences, aperçu vidéo et descriptions." />
+  <title>LagoFast — Aion 2 | Angryskiz Hub</title>
+  <meta name="description" content="Découvrez comment jouer à Aion 2 depuis la Belgique et réduire votre ping grâce à LagoFast." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     :root {
-      --bg-main: #070b16;
-      --bg-card: rgba(15, 23, 42, 0.85);
-      --border-card: rgba(0, 242, 254, 0.25);
-      --accent-cyan: #00f2fe;
-      --accent-blue: #4facfe;
-      --accent-gold: #ffb74d;
-      --text-main: #f1f5f9;
+      --bg-dark: #090d16;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --accent-aion: #00f2fe;
+      --accent-stream: #9146FF;
+      --accent-tech: #ff3366;
+      --accent-linktree: #43E660;
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
     }
 
@@ -30,765 +30,400 @@
 
     body {
       font-family: 'Outfit', sans-serif;
-      background-color: var(--bg-main);
+      background-color: var(--bg-dark);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      background-image: linear-gradient(to right, rgba(7, 11, 22, 0.85), rgba(7, 11, 22, 0.4)), url('images/fondclasses.jpg');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
       overflow-x: hidden;
-    }
-
-    /* HEADER FIXÉ UNIFIÉ */
-    .aion-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 70px;
-      background: linear-gradient(180deg, rgba(7, 11, 22, 0.95) 0%, rgba(7, 11, 22, 0.7) 100%);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0 4%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-    }
-    
-    .aion-logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      height: 100%;
-      position: relative;
-      width: 120px;
-    }
-    
-    .aion-logo-img {
-      height: 100px;
-      width: auto;
-      object-fit: contain;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      transition: transform 0.3s ease;
-      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
-      z-index: 10;
-    }
-    
-    .aion-logo-img:hover {
-      transform: translateY(-50%) scale(1.05);
-    }
-    
-    .aion-menu { 
-      display: flex; 
-      gap: 16px; 
-      list-style: none; 
-      margin-left: auto;
-      align-items: center;
-    }
-    .aion-menu a {
-      color: var(--text-main);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: 0.2s;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    }
-    .aion-menu a:hover,
-    .aion-menu a.active { color: var(--accent-cyan); }
-
-    .aion-fav-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-card);
-      color: var(--accent-gold);
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-    .aion-fav-btn:hover {
-      background: var(--accent-gold);
-      color: #070b16;
-      border-color: var(--accent-gold);
-      box-shadow: 0 0 12px rgba(255, 183, 77, 0.5);
-    }
-
-    .aion-discord-btn {
-      background: #5865F2;
-      color: #fff !important;
-      padding: 8px 18px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: bold !important;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
-      transition: all 0.2s ease !important;
-    }
-    .aion-discord-btn:hover {
-      background: #4752C4;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
-    }
-
-    /* BOUTON TÉLÉCHARGER ICI */
-    .aion-download-btn {
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-      color: #070b16 !important;
-      padding: 8px 18px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 700 !important;
-      text-decoration: none;
-      text-shadow: none !important;
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
-      transition: all 0.2s ease !important;
-    }
-    .aion-download-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.8);
-      filter: brightness(1.1);
-    }
-
-    /* CONTENEUR PRINCIPAL */
-    .classes-container {
-      width: 100%;
-      max-width: 1400px;
-      padding: 75px 20px 0 20px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex-grow: 1;
-      justify-content: space-between;
-      position: relative;
-      z-index: 1;
-      height: 100vh;
-    }
-
-    .section-title {
-      font-family: 'Cinzel', serif;
-      font-size: 2.8rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      font-weight: 900;
-      margin-bottom: 0px;
-      background: linear-gradient(to right, #ffffff, var(--accent-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
-      border-bottom: 1px solid var(--border-card);
-      padding-bottom: 2px;
-      z-index: 10;
-    }
-
-    .class-display {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-end;
-      justify-content: space-between;
-      width: 100%;
-      gap: 30px;
-      flex-grow: 1;
-      position: relative;
-      padding-bottom: 0;
-    }
-
-    /* PORTRAIT ET OMBRE D'ANCRAGE AU SOL */
-    .character-portrait {
-      flex: 1.3;
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-end;
-      max-width: 700px;
-      height: 100%;
       position: relative;
     }
 
-    .character-portrait::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 5%;
-      width: 80%;
-      height: 35px;
-      background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0) 75%);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .character-portrait img {
-      width: auto;
-      height: 110%;
-      max-height: none;
-      object-fit: contain;
-      object-position: bottom left;
-      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.9));
-      transform-origin: bottom left;
-      transition: transform 0.35s ease-out;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      z-index: 2;
-    }
-
-    @keyframes fadeSlideRight {
-      0% {
-        opacity: 0;
-        transform: translateX(-30px) scale(var(--current-scale, 1.35));
-      }
-      100% {
-        opacity: 1;
-        transform: translateX(0) scale(var(--current-scale, 1.35));
-      }
-    }
-
-    @keyframes fadeSlideLeft {
-      0% {
-        opacity: 0;
-        transform: translateX(40px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    .fade-right {
-      animation: fadeSlideRight 0.45s ease-out forwards;
-    }
-
-    .fade-left {
-      animation: fadeSlideLeft 0.45s ease-out forwards;
-    }
-
-    .class-content-right {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 15px;
-      max-width: 580px;
-      z-index: 2;
-      margin-bottom: 20px;
-    }
-
-    .class-header {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .class-icon {
-      height: 65px;
-      width: auto;
-      max-width: 75px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.7));
-      transition: opacity 0.3s ease;
-    }
-
-    .class-name {
-      font-family: 'Cinzel', serif;
-      font-size: 2.8rem;
-      font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 0.08em;
-      line-height: 1;
-      text-transform: uppercase;
-      text-shadow: 0 0 15px rgba(0, 242, 254, 0.5), 0 2px 5px rgba(0,0,0,0.9);
-    }
-
-    .class-description {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: #d8e2ec;
-      background: var(--bg-card);
-      padding: 15px 20px;
-      border-left: 3px solid var(--accent-cyan);
-      border-radius: 0 8px 8px 0;
-      backdrop-filter: blur(8px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      min-height: 75px;
-    }
-
-    .video-box {
-      width: 100%;
-      aspect-ratio: 16/9;
-      background-size: cover;
-      background-position: center;
-      border: 1px solid var(--border-card);
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-      position: relative;
-      cursor: pointer;
-      overflow: hidden;
-    }
-
-    .video-box::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.35);
-      transition: background 0.3s;
-    }
-
-    .video-box:hover::before {
-      background: rgba(0, 0, 0, 0.15);
-    }
-
-    .play-btn {
-      width: 60px;
-      height: 60px;
-      background: rgba(0, 242, 254, 0.85);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2;
-      transition: transform 0.2s, background 0.2s;
-      box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
-    }
-
-    .video-box:hover .play-btn {
-      transform: scale(1.1);
-      background: var(--accent-cyan);
-    }
-
-    .play-btn::after {
-      content: '';
-      display: block;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 10px 0 10px 18px;
-      border-color: transparent transparent transparent #070b16;
-      margin-left: 4px;
-    }
-
-    .video-modal {
-      display: none;
+    /* CANVAS DE FOND ANIMÉ */
+    #bg-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      z-index: 1000;
-      justify-content: center;
-      align-items: center;
+      z-index: 0;
+      pointer-events: none;
     }
 
-    .video-modal.active {
-      display: flex;
-    }
-
-    .modal-content {
-      position: relative;
-      width: 80%;
-      max-width: 1000px;
-      aspect-ratio: 16/9;
-      background: #000;
-      border: 1px solid var(--border-card);
-      box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    .modal-content iframe {
+    /* HEADER & NAVIGATION BANDEAU */
+    header {
       width: 100%;
-      height: 100%;
-      border: none;
-    }
-
-    .close-modal {
-      position: absolute;
-      top: -45px;
-      right: 0;
-      color: #ffffff;
-      font-size: 2rem;
-      cursor: pointer;
-      font-weight: 300;
-      transition: color 0.2s;
-    }
-
-    .close-modal:hover {
-      color: var(--accent-cyan);
-    }
-
-    .class-selector {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      width: 100%;
-      overflow-x: auto;
-      padding: 10px 0 15px 0;
-      background: transparent;
+      padding: 25px 20px 15px 20px;
+      text-align: center;
       z-index: 10;
+      background: rgba(9, 13, 22, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 242, 254, 0.2);
     }
 
-    .class-btn {
-      background: transparent;
-      border: none;
+    .brand-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 0%, var(--accent-aion) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+      text-shadow: 0 5px 15px rgba(0,242,254,0.3);
+    }
+
+    .brand-subtitle {
       color: var(--text-muted);
-      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 15px;
+    }
+
+    /* BARRE DE NAVIGATION/ONGLETS */
+    .nav-bar {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .nav-link {
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background: var(--accent-aion);
+      color: var(--bg-dark);
+      border-color: var(--accent-aion);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+      transform: translateY(-2px);
+    }
+
+    /* CONTENEUR PRINCIPAL LAGOFAST */
+    .main-container {
+      width: 100%;
+      max-width: 1000px;
+      padding: 40px 20px;
+      z-index: 10;
+      margin: auto 0;
+    }
+
+    .lagofast-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
+
+    .lagofast-header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .lagofast-logo {
+      height: 75px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.7));
+      margin-bottom: 15px;
+    }
+
+    .lagofast-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .lagofast-subtitle {
+      color: var(--accent-aion);
       font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* BLOCS D'INFORMATIONS */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat( auto-fit, minmax(280px, 1fr) );
+      gap: 25px;
+      margin-bottom: 35px;
+    }
+
+    .info-box {
+      background: rgba(9, 13, 22, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 25px;
+      transition: all 0.3s ease;
+    }
+
+    .info-box:hover {
+      border-color: var(--accent-aion);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 242, 254, 0.15);
+    }
+
+    .info-box-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .info-box-header i {
+      font-size: 1.5rem;
+      color: var(--accent-aion);
+    }
+
+    .info-box-header h3 {
+      font-size: 1.2rem;
       font-weight: 700;
-      cursor: pointer;
-      padding: 8px 12px;
-      transition: color 0.3s, text-shadow 0.3s;
-      position: relative;
-      white-space: nowrap;
+      color: #fff;
     }
 
-    .class-btn:hover {
-      color: #ffffff;
+    .info-box p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
     }
 
-    .class-btn.active {
-      color: #ffffff;
-      text-shadow: 0 0 10px var(--accent-cyan);
+    .flag-icon {
+      font-size: 1.4rem;
+      vertical-align: middle;
     }
 
-    .class-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 6px;
-      height: 6px;
-      background-color: var(--accent-cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--accent-cyan);
+    /* BOUTON D'ACTION / TÉLÉCHARGEMENT */
+    .cta-container {
+      text-align: center;
+      margin-top: 30px;
     }
 
-    @media (max-width: 900px) {
-      .aion-menu { display: none; }
-      .aion-logo-img { height: 60px; }
-      .classes-container { height: auto; }
-      .class-display {
-        flex-direction: column;
-        align-items: center;
-        height: auto;
-      }
-      .character-portrait img {
-        position: relative;
-        transform: scale(1) translateX(0) !important;
-      }
-      .class-content-right {
-        max-width: 100%;
-        margin-bottom: 20px;
-      }
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(135deg, var(--accent-aion) 0%, #00a8ff 100%);
+      color: var(--bg-dark);
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 16px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.8);
+      color: #000;
+    }
+
+    /* FOOTER */
+    footer {
+      width: 100%;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-align: center;
+      z-index: 10;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(9, 13, 22, 0.8);
+    }
+
+    /* CONTENEUR FIXE DE LECTEUR TWITCH */
+    #twitch-widget {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 9999;
+    }
+
+    @media (max-width: 768px) {
+      .lagofast-card { padding: 25px 20px; }
+      .brand-title { font-size: 2.2rem; }
+      .lagofast-title { font-size: 1.7rem; }
     }
   </style>
 </head>
 <body>
 
-  <nav class="aion-nav">
-    <a href="aion2.html" class="aion-logo">
-      <img src="images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='../images/logo-aion2.png';">
-    </a>
-    <ul class="aion-menu">
-      <li><a href="https://www.angryskiz.fr/aion2.html#actualites">Actualités</a></li>
-      <li><a href="Classes.html" class="active">Classes</a></li>
-      <li><a href="Builds.html">Builds</a></li>
-      <li><a href="Guides.html">Guides</a></li>
-      <li><a href="Patchs.html">Patchs</a></li>
-      <li><a href="Unleashed.html">UNLEASHED</a></li>
-      <li>
-        <button onclick="ajouterFavoris()" class="aion-fav-btn">
-          <i class="fas fa-star"></i> Favoris
-        </button>
-      </li>
-      <li>
-        <a href="https://www.lagofast.com/fr/" target="_blank" class="aion-download-btn">
-          <i class="fas fa-download"></i> Télécharger ici
-        </a>
-      </li>
-      <li>
-        <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
-          <i class="fab fa-discord"></i> Discord
-        </a>
-      </li>
-    </ul>
-  </nav>
+  <!-- CANVAS ARRIÈRE-PLAN ANIMÉ -->
+  <canvas id="bg-canvas"></canvas>
 
-  <main class="classes-container">
-    <h1 class="section-title">Classes</h1>
+  <!-- BANDEAU HAUT DE PAGE / HEADER D'AION 2 -->
+  <header>
+    <h1 class="brand-title">Portail Aion 2</h1>
+    <p class="brand-subtitle">Communauté, Guides, Classes & Optimisation Network</p>
+    
+    <nav class="nav-bar">
+      <a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Accueil Hub</a>
+      <a href="aion2.html" class="nav-link"><i class="fas fa-dragon"></i> Portail Aion 2</a>
+      <a href="Classes.html" class="nav-link"><i class="fas fa-shield-alt"></i> Classes</a>
+      <a href="Lagofast.html" class="nav-link active"><i class="fas fa-bolt"></i> LagoFast VPN</a>
+      <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="nav-link"><i class="fab fa-discord"></i> Discord</a>
+    </nav>
+  </header>
 
-    <div class="class-display">
-      <div class="character-portrait">
-        <img id="class-img" class="fade-right" src="images/gladiateur.webp" alt="Gladiateur" />
+  <!-- CONTENU PRINCIPAL -->
+  <main class="main-container">
+    
+    <div class="lagofast-card">
+      
+      <div class="lagofast-header">
+        <img src="../images/logo-lagofast.png" alt="LagoFast Logo" class="lagofast-logo">
+        <h2 class="lagofast-title">Jouez à Aion 2 Sans Frontières ni Lag</h2>
+        <p class="lagofast-subtitle">L'outil indispensable pour les joueurs d'Aion 2 en Europe & Belgique</p>
       </div>
 
-      <div class="class-content-right fade-left" id="class-content-right">
-        <div class="class-header">
-          <img id="class-icon" class="class-icon" src="images/gladiateurlogo.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
-          <h2 class="class-name" id="class-title">Gladiateur</h2>
-        </div>
+      <div class="info-grid">
         
-        <p class="class-description" id="class-desc">
-          Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.
-        </p>
-
-        <div class="video-box" id="video-preview" onclick="openVideo()">
-          <div class="play-btn"></div>
+        <!-- BLOC BELGIQUE -->
+        <div class="info-box">
+          <div class="info-box-header">
+            <span class="flag-icon">🇧🇪</span>
+            <h3>Bypass Restrictions Belgique</h3>
+          </div>
+          <p>
+            En raison des réglementations locales sur les loot boxes et jeux en ligne, <strong>Aion 2 est restreint d'accès en Belgique</strong>. 
+            Grâce à <strong>LagoFast</strong>, vous pouvez contourner cette restriction géographique facilement, sécuriser votre connexion et rejoindre l'aventure comme n'importe quel joueur européen.
+          </p>
         </div>
+
+        <!-- BLOC TAÏWAN & FR -->
+        <div class="info-box">
+          <div class="info-box-header">
+            <i class="fas fa-globe-asia"></i>
+            <h3>Accès Taïwan & TRADUCTION FR</h3>
+          </div>
+          <p>
+            Vous souhaitez tester <strong>Aion 2 sur les serveurs Taïwan</strong> ? 
+            LagoFast réduit votre ping sur les serveurs asiatiques et intègre un module d'optimisation pour la **traduction en Français** afin d'en profiter immédiatement.
+          </p>
+        </div>
+
+        <!-- BLOC GLOBAL & PING -->
+        <div class="info-box">
+          <div class="info-box-header">
+            <i class="fas fa-tachometer-alt"></i>
+            <h3>Boost de Ping pour la Global</h3>
+          </div>
+          <p>
+            Dès le lancement officiel des serveurs Global/Europe, LagoFast vous garantit les meilleures routes de routage réseau. 
+            Évitez les pertes de paquets, éliminez les micro-freezes et profitez d'un **ping ultra-stable** en PvP et lors de vos Raids.
+          </p>
+        </div>
+
       </div>
+
+      <!-- BOUTON D'ACTION -->
+      <div class="cta-container">
+        <a href="https://www.lagofast.com" target="_blank" class="cta-button">
+          <i class="fas fa-download"></i> Télécharger LagoFast & Profiter de l'offre
+        </a>
+      </div>
+
     </div>
 
-    <nav class="class-selector">
-      <button class="class-btn active" data-class="gladiateur" onclick="onUserSelectClass('gladiateur', this)">Gladiateur</button>
-      <button class="class-btn" data-class="templier" onclick="onUserSelectClass('templier', this)">Templier</button>
-      <button class="class-btn" data-class="assassin" onclick="onUserSelectClass('assassin', this)">Assassin</button>
-      <button class="class-btn" data-class="rodeur" onclick="onUserSelectClass('rodeur', this)">Rôdeur</button>
-      <button class="class-btn" data-class="aede" onclick="onUserSelectClass('aede', this)">Aède</button>
-      <button class="class-btn" data-class="clerc" onclick="onUserSelectClass('clerc', this)">Clerc</button>
-      <button class="class-btn" data-class="sorcier" onclick="onUserSelectClass('sorcier', this)">Sorcier</button>
-      <button class="class-btn" data-class="spiritualiste" onclick="onUserSelectClass('spiritualiste', this)">Spiritualiste</button>
-    </nav>
   </main>
 
-  <div class="video-modal" id="video-modal" onclick="closeVideoOnBg(event)">
-    <div class="modal-content">
-      <span class="close-modal" onclick="closeVideo()">&times;</span>
-      <iframe id="youtube-player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    </div>
-  </div>
+  <!-- FOOTER DU SITE -->
+  <footer>
+    <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
+  </footer>
 
+  <!-- LECTEUR TWITCH FLOTTANT EN BAS À DROITE -->
+  <div id="twitch-widget"></div>
+
+  <!-- SCRIPT DU PLAYER TWITCH -->
+  <script src="../js/player.js?v=2"></script>
+
+  <!-- SCRIPT DU CANVAS ANIMÉ (PARTICULES & NÉONS) -->
   <script>
-    let currentVideoId = "ndri5XpnRK4";
-    let autoRotateInterval = null;
-    let currentClassIndex = 0;
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
 
-    const classKeys = [
-      'gladiateur',
-      'templier',
-      'assassin',
-      'rodeur',
-      'aede',
-      'clerc',
-      'sorcier',
-      'spiritualiste'
-    ];
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
-    const classesData = {
-      gladiateur: {
-        title: "Gladiateur",
-        desc: "Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.",
-        img: "images/gladiateur.webp",
-        icon: "images/gladiateurlogo.png",
-        youtubeId: "ndri5XpnRK4",
-        customScale: 1.35
-      },
-      templier: {
-        title: "Templier",
-        desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés.",
-        img: "images/Templier.webp",
-        icon: "images/Templarlogo.png",
-        youtubeId: "Zs6HnL2N5Hk",
-        customScale: 1.30
-      },
-      assassin: {
-        title: "Assassin",
-        desc: "Maître de la discrétion et des attaques rapides dans le dos, éliminant ses cibles avant même d'être repéré.",
-        img: "images/Assassin.webp",
-        icon: "images/assassinlogo.png",
-        youtubeId: "jUW24SLKK3I",
-        customScale: 1.32
-      },
-      rodeur: {
-        title: "Rôdeur",
-        desc: "Un archer d'élite capable de frapper à distance tout en posant des pièges mortels sur le terrain.",
-        img: "images/Rodeur.webp",
-        icon: "images/archerlogo.png",
-        youtubeId: "C6INRqEqv3Y",
-        customScale: 1.32
-      },
-      aede: {
-        title: "Aède",
-        desc: "Un combattant au bâton renforçant le groupe grâce à des mantras puissants et des soins de soutien.",
-        img: "images/Chanter.webp",
-        icon: "images/aedelogo.png",
-        youtubeId: "rtOt3KvmYCI",
-        customScale: 1.30
-      },
-      clerc: {
-        title: "Clerc",
-        desc: "Le pilier de soutien par excellence, capable de soigner les blessures graves et d'invoquer la fureur divine.",
-        img: "images/Cleric.webp",
-        icon: "images/clerclogo.png",
-        youtubeId: "RU-4yiNNnY0",
-        customScale: 1.28
-      },
-      sorcier: {
-        title: "Sorcier",
-        desc: "Un maître des éléments déchaînant le feu et la glace pour infliger des dégâts magiques dévastateurs.",
-        img: "images/Sorcerer.webp",
-        icon: "images/sorcierlogo.png",
-        youtubeId: "jh1ydFq6FI0",
-        customScale: 1.28
-      },
-      spiritualiste: {
-        title: "Spiritualiste",
-        desc: "Un invocateur commandant aux esprits élémentaires pour affaiblir et contrôler ses adversaires.",
-        img: "images/Spiritualist.webp",
-        icon: "images/spiritlogo.png",
-        youtubeId: "LJq1QGRJSLI",
-        customScale: 1.35
-      }
-    };
+    const particles = [];
+    const particleCount = 70;
 
-    function updateVideoPreview(youtubeId) {
-      currentVideoId = youtubeId;
-      const previewBox = document.getElementById('video-preview');
-      const maxResUrl = `https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`;
-      const hqUrl = `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
-
-      const img = new Image();
-      img.src = maxResUrl;
-      img.onload = function() {
-        if (this.width > 120) {
-          previewBox.style.backgroundImage = `url('${maxResUrl}')`;
-        } else {
-          previewBox.style.backgroundImage = `url('${hqUrl}')`;
-        }
-      };
-      img.onerror = function() {
-        previewBox.style.backgroundImage = `url('${hqUrl}')`;
-      };
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe'
+      });
     }
 
-    function triggerFadeAnimation() {
-      const imgElement = document.getElementById('class-img');
-      const rightContent = document.getElementById('class-content-right');
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      grad.addColorStop(0, '#090d16');
+      grad.addColorStop(1, '#04060a');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      imgElement.classList.remove('fade-right');
-      rightContent.classList.remove('fade-left');
+      for (let i = 0; i < particleCount; i++) {
+        let p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
 
-      void imgElement.offsetWidth;
-      void rightContent.offsetWidth;
+        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-      imgElement.classList.add('fade-right');
-      rightContent.classList.add('fade-left');
-    }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.fill();
 
-    function selectClass(classKey, element) {
-      if (classesData[classKey]) {
-        const data = classesData[classKey];
-        const imgElement = document.getElementById('class-img');
-        const iconElement = document.getElementById('class-icon');
-
-        document.getElementById('class-title').innerText = data.title;
-        document.getElementById('class-desc').innerText = data.desc;
-        imgElement.src = data.img;
-        imgElement.alt = data.title;
-
-        const scaleVal = data.customScale || 1.32;
-        imgElement.style.setProperty('--current-scale', scaleVal);
-
-        iconElement.src = data.icon;
-        iconElement.alt = "Logo " + data.title;
-        iconElement.style.display = 'inline-block';
-
-        updateVideoPreview(data.youtubeId);
-        triggerFadeAnimation();
-
-        const buttons = document.querySelectorAll('.class-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-
-        if (!element) {
-          element = document.querySelector(`.class-btn[data-class="${classKey}"]`);
-        }
-        if (element) {
-          element.classList.add('active');
+        for (let j = i + 1; j < particleCount; j++) {
+          let p2 = particles[j];
+          let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 130) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = p.color;
+            ctx.globalAlpha = (1 - dist / 130) * 0.2;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+          }
         }
       }
+      requestAnimationFrame(animate);
     }
-
-    function stopAutoRotate() {
-      if (autoRotateInterval) {
-        clearInterval(autoRotateInterval);
-        autoRotateInterval = null;
-      }
-    }
-
-    function onUserSelectClass(classKey, element) {
-      stopAutoRotate();
-      currentClassIndex = classKeys.indexOf(classKey);
-      selectClass(classKey, element);
-    }
-
-    function startAutoRotate() {
-      autoRotateInterval = setInterval(() => {
-        currentClassIndex = (currentClassIndex + 1) % classKeys.length;
-        const nextClassKey = classKeys[currentClassIndex];
-        selectClass(nextClassKey);
-      }, 4000);
-    }
-
-    function openVideo() {
-      stopAutoRotate();
-      const modal = document.getElementById('video-modal');
-      const player = document.getElementById('youtube-player');
-      player.src = `https://www.youtube.com/embed/${currentVideoId}?autoplay=1&rel=0`;
-      modal.classList.add('active');
-    }
-
-    function closeVideo() {
-      const modal = document.getElementById('video-modal');
-      const player = document.getElementById('youtube-player');
-      player.src = '';
-      modal.classList.remove('active');
-    }
-
-    function closeVideoOnBg(event) {
-      if (event.target.id === 'video-modal') {
-        closeVideo();
-      }
-    }
-
-    function ajouterFavoris() {
-      const title = document.title;
-      const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-      const shortcut = isMac ? 'Cmd + D' : 'Ctrl + D';
-
-      alert(`Appuyez sur ${shortcut} pour ajouter "${title}" à vos favoris !`);
-    }
-
-    document.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        closeVideo();
-      }
-    });
-
-    selectClass('gladiateur'); 
-    startAutoRotate();
+    animate();
   </script>
 
 </body>
