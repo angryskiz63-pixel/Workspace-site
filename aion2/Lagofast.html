@@ -22,6 +22,7 @@
       --accent-aion: #00f2fe;
       --accent-cyan: #00f2fe;
       --accent-gold: #ffb74d;
+      --promo-red: #ff3366;
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
     }
@@ -31,7 +32,7 @@
     html, body {
       height: 100vh;
       width: 100vw;
-      overflow: hidden; /* Empêche le scroll */
+      overflow: hidden;
     }
 
     body {
@@ -148,7 +149,7 @@
       box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
     }
 
-    /* CONTENEUR PRINCIPAL LAGOFAST (AJUSTÉ 1080P) */
+    /* CONTENEUR PRINCIPAL LAGOFAST */
     .main-container {
       width: 100%;
       max-width: 1050px;
@@ -165,29 +166,63 @@
       background: var(--card-bg);
       border: 1px solid var(--border-card);
       border-radius: 20px;
-      padding: clamp(20px, 2.5vh, 35px);
+      padding: clamp(20px, 2.2vh, 32px);
       backdrop-filter: blur(12px);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: relative;
+    }
+
+    /* BANNIÈRE VOYANTE PROMO */
+    .promo-badge {
+      align-self: center;
+      background: linear-gradient(135deg, #ff3366 0%, #ff6b35 100%);
+      color: #fff;
+      font-weight: 900;
+      font-size: clamp(0.9rem, 1.1vw, 1.2rem);
+      padding: 6px 20px;
+      border-radius: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.6);
+      margin-bottom: 12px;
+      animation: pulse-promo 2s infinite;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .promo-badge span {
+      background: #fff;
+      color: #ff3366;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-weight: 900;
+    }
+
+    @keyframes pulse-promo {
+      0% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 51, 102, 0.5); }
+      50% { transform: scale(1.04); box-shadow: 0 0 25px rgba(255, 51, 102, 0.9); }
+      100% { transform: scale(1); box-shadow: 0 0 15px rgba(255, 51, 102, 0.5); }
     }
 
     .lagofast-header {
       text-align: center;
-      margin-bottom: clamp(15px, 2vh, 25px);
+      margin-bottom: clamp(12px, 1.8vh, 20px);
     }
 
     .lagofast-logo {
-      height: clamp(45px, 6vh, 65px);
+      height: clamp(40px, 5.5vh, 60px);
       width: auto;
       object-fit: contain;
       filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.7));
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .lagofast-title {
-      font-size: clamp(1.4rem, 2vw, 1.9rem);
+      font-size: clamp(1.3rem, 1.8vw, 1.8rem);
       font-weight: 800;
       color: #fff;
       margin-bottom: 4px;
@@ -195,7 +230,7 @@
 
     .lagofast-subtitle {
       color: var(--accent-aion);
-      font-size: clamp(0.9rem, 1vw, 1rem);
+      font-size: clamp(0.85rem, 0.95vw, 1rem);
       font-weight: 600;
     }
 
@@ -204,14 +239,14 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: clamp(12px, 1.5vw, 20px);
-      margin-bottom: clamp(15px, 2vh, 25px);
+      margin-bottom: clamp(12px, 1.8vh, 22px);
     }
 
     .info-box {
       background: rgba(9, 13, 22, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      padding: clamp(12px, 1.5vh, 20px);
+      padding: clamp(12px, 1.4vh, 18px);
       transition: all 0.3s ease;
     }
 
@@ -225,24 +260,24 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .info-box-header i {
-      font-size: clamp(1.1rem, 1.3vw, 1.3rem);
+      font-size: clamp(1.1rem, 1.2vw, 1.25rem);
       color: var(--accent-aion);
     }
 
     .info-box-header h3 {
-      font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+      font-size: clamp(0.9rem, 1vw, 1.05rem);
       font-weight: 700;
       color: #fff;
     }
 
     .info-box p {
       color: var(--text-muted);
-      font-size: clamp(0.8rem, 0.85vw, 0.9rem);
-      line-height: 1.45;
+      font-size: clamp(0.78rem, 0.82vw, 0.88rem);
+      line-height: 1.4;
     }
 
     .flag-icon {
@@ -261,13 +296,20 @@
       gap: 10px;
       background: linear-gradient(135deg, var(--accent-aion) 0%, #00a8ff 100%);
       color: var(--bg-dark);
-      font-size: clamp(0.95rem, 1vw, 1.05rem);
+      font-size: clamp(0.9rem, 1vw, 1.05rem);
       font-weight: 800;
-      padding: clamp(10px, 1.2vh, 14px) clamp(24px, 2vw, 32px);
+      padding: clamp(10px, 1.2vh, 14px) clamp(20px, 1.8vw, 28px);
       border-radius: 50px;
       text-decoration: none;
       transition: all 0.3s ease;
       box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+    }
+
+    .cta-button strong {
+      color: #ff3366;
+      background: rgba(0,0,0,0.15);
+      padding: 2px 8px;
+      border-radius: 6px;
     }
 
     .cta-button:hover {
@@ -276,7 +318,7 @@
       color: #000;
     }
 
-    /* FOOTER (AJUSTÉ FIT SCREEN) */
+    /* FOOTER */
     footer {
       width: 100%;
       padding: 10px 20px;
@@ -306,7 +348,6 @@
 </head>
 <body>
 
-  <!-- HEADER D'ORIGINE IDENTIQUE À LA PAGE CLASSES -->
   <nav class="aion-nav">
     <a href="aion2.html" class="aion-logo">
       <img src="images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='../images/logo-aion2.png';">
@@ -331,11 +372,14 @@
     </ul>
   </nav>
 
-  <!-- CONTENU PRINCIPAL LAGOFAST -->
   <main class="main-container">
     
     <div class="lagofast-card">
       
+      <div class="promo-badge">
+        <i class="fas fa-tag"></i> OFFRE SPÉCIALE : -30% CODE PROMO <span>ANGRYSKIZ</span>
+      </div>
+
       <div class="lagofast-header">
         <img src="images/logo-lagofast.png" alt="LagoFast Logo" class="lagofast-logo" onerror="this.onerror=null; this.src='../images/logo-lagofast.png';">
         <h2 class="lagofast-title">Jouez à Aion 2 Sans Frontières ni Lag</h2>
@@ -344,7 +388,6 @@
 
       <div class="info-grid">
         
-        <!-- BLOC BELGIQUE -->
         <div class="info-box">
           <div class="info-box-header">
             <span class="flag-icon">🇧🇪</span>
@@ -356,7 +399,6 @@
           </p>
         </div>
 
-        <!-- BLOC TAÏWAN & FR -->
         <div class="info-box">
           <div class="info-box-header">
             <i class="fas fa-globe-asia"></i>
@@ -368,7 +410,6 @@
           </p>
         </div>
 
-        <!-- BLOC GLOBAL & PING -->
         <div class="info-box">
           <div class="info-box-header">
             <i class="fas fa-tachometer-alt"></i>
@@ -382,10 +423,9 @@
 
       </div>
 
-      <!-- BOUTON D'ACTION -->
       <div class="cta-container">
         <a href="https://www.lagofast.com" target="_blank" class="cta-button">
-          <i class="fas fa-download"></i> Télécharger LagoFast & Profiter de l'offre
+          <i class="fas fa-download"></i> Télécharger LagoFast (-30% avec le code <strong>ANGRYSKIZ</strong>)
         </a>
       </div>
 
@@ -393,15 +433,12 @@
 
   </main>
 
-  <!-- FOOTER DU SITE -->
   <footer>
     <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
   </footer>
 
-  <!-- LECTEUR TWITCH FLOTTANT EN BAS À DROITE -->
   <div id="twitch-widget"></div>
 
-  <!-- SCRIPT DU PLAYER TWITCH -->
   <script src="js/player.js?v=2" onerror="this.onerror=null; this.src='../js/player.js?v=2';"></script>
 
   <script>
