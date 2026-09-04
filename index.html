@@ -2,8 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <title>Angryskiz — Hub Officiel</title>
+  <meta name="description" content="Hub officiel Angryskiz : Portail Aion 2, Live Streaming Twitch et services SkizTech." />
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,6 +39,7 @@
       background-image: radial-gradient(circle at 50% 20%, rgba(145, 70, 255, 0.12), transparent 40%),
                         radial-gradient(circle at 80% 80%, rgba(0, 242, 254, 0.08), transparent 40%);
       overflow-x: hidden;
+      position: relative;
     }
 
     /* HEADER EN-TÊTE */
@@ -232,10 +236,19 @@
       z-index: 10;
     }
 
+    /* CONTENEUR FIXE DE LECTEUR TWITCH EN BAS À DROITE */
+    #twitch-widget {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 9999;
+    }
+
     @media (max-width: 960px) {
       .hub-container { grid-template-columns: 1fr; }
       .hub-card { height: 320px; }
       .brand-title { font-size: 2.2rem; }
+      #twitch-widget { bottom: 15px; right: 15px; }
     }
   </style>
 </head>
@@ -249,7 +262,7 @@
       <a href="https://linktr.ee/Angryskiz" target="_blank" title="Linktree" class="linktree-btn">
         <img src="images/linktree.webp" alt="Linktree" />
       </a>
-      <a href="https://twitch.tv" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
+      <a href="https://twitch.tv/angryskiz" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
       <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
       <a href="https://youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
       <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
@@ -291,6 +304,10 @@
   <footer>
     <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
   </footer>
+
+  <div id="twitch-widget"></div>
+
+  <script src="js/player.js?v=2"></script>
 
 </body>
 </html>
