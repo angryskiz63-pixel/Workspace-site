@@ -1,813 +1,437 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-
 <head>
-
   <meta charset="UTF-8" />
-
   <link rel="icon" type="image/png" href="images/logo-angryskiz.png" />
-
   <link rel="shortcut icon" href="images/logo-angryskiz.png" type="image/png" />
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   
-
   <title>Angryskiz — Hub Officiel</title>
-
   <meta name="description" content="Hub officiel Angryskiz : Portail Aion 2, Live Streaming Twitch et services SkizTech." />
-
   
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
-
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-
-
   <style>
-
     :root {
-
       --bg-dark: #090d16;
-
       --card-bg: rgba(15, 23, 42, 0.75);
-
       --accent-aion: #00f2fe;
-
       --accent-stream: #9146FF;
-
       --accent-tech: #ff3366;
-
       --accent-linktree: #43E660;
-
       --text-main: #f8fafc;
-
       --text-muted: #94a3b8;
-
     }
-
-
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-
-
     body {
-
       font-family: 'Outfit', sans-serif;
-
       background-color: var(--bg-dark);
-
       color: var(--text-main);
-
       min-height: 100vh;
-
       display: flex;
-
       flex-direction: column;
-
       justify-content: space-between;
-
       align-items: center;
-
       overflow-x: hidden;
-
       position: relative;
-
     }
-
-
 
     /* CANVAS DE FOND ANIMÉ */
-
     #bg-canvas {
-
       position: fixed;
-
       top: 0;
-
       left: 0;
-
       width: 100vw;
-
       height: 100vh;
-
       z-index: 0;
-
       pointer-events: none;
-
     }
-
-
 
     /* HEADER EN-TÊTE */
-
     header {
-
       width: 100%;
-
       padding: 30px 20px 10px 20px;
-
       text-align: center;
-
       z-index: 10;
-
     }
-
-
 
     .brand-title {
-
       font-size: 3rem;
-
       font-weight: 900;
-
       letter-spacing: 0.1em;
-
       text-transform: uppercase;
-
       background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-
       -webkit-background-clip: text;
-
       -webkit-text-fill-color: transparent;
-
       margin-bottom: 5px;
-
       text-shadow: 0 10px 20px rgba(0,0,0,0.5);
-
     }
-
-
 
     .brand-subtitle {
-
       color: var(--text-muted);
-
       font-size: 1.1rem;
-
       font-weight: 400;
-
     }
-
-
 
     /* RESEAUX SOCIAUX EN HAUT */
-
     .social-bar {
-
       display: flex;
-
       gap: 15px;
-
       justify-content: center;
-
       margin-top: 15px;
-
     }
-
-
 
     .social-bar a {
-
       width: 42px;
-
       height: 42px;
-
       border-radius: 50%;
-
       background: rgba(15, 23, 42, 0.6);
-
       backdrop-filter: blur(8px);
-
       border: 1px solid rgba(255, 255, 255, 0.1);
-
       color: var(--text-main);
-
       display: flex;
-
       align-items: center;
-
       justify-content: center;
-
       text-decoration: none;
-
       font-size: 1.2rem;
-
       transition: all 0.3s ease;
-
       overflow: hidden;
-
     }
-
-
 
     .social-bar a:hover {
-
       transform: translateY(-3px);
-
       background: var(--text-main);
-
       color: var(--bg-dark);
-
       box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
-
     }
-
-
 
     /* STYLE SPECIFIQUE LINKTREE IMAGE */
-
     .social-bar a.linktree-btn img {
-
       width: 20px;
-
       height: 20px;
-
       object-fit: contain;
-
       filter: brightness(0) invert(1);
-
       transition: filter 0.3s ease;
-
     }
-
-
 
     .social-bar a.linktree-btn:hover {
-
       background: var(--accent-linktree);
-
       box-shadow: 0 5px 15px rgba(67, 230, 96, 0.4);
-
     }
-
-
 
     .social-bar a.linktree-btn:hover img {
-
       filter: brightness(0);
-
     }
-
-
 
     /* GRILLE DES 3 UNIVERS */
-
     .hub-container {
-
       width: 100%;
-
       max-width: 1300px;
-
       padding: 20px;
-
       display: grid;
-
       grid-template-columns: repeat(3, 1fr);
-
       gap: 25px;
-
       margin: auto 0;
-
       z-index: 10;
-
     }
 
+    /* COLONNE DÉDIÉE POUR ALIGNER LE LOGO ET LA CARTE AION */
+    .card-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
 
+    /* LOGO LAGOFAST CENTRÉ AU-DESSUS DE LA CARTE AION */
+    .card-lagofast-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+      text-decoration: none;
+    }
+
+    .card-lagofast-top img {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.6));
+      transition: all 0.3s ease;
+    }
+
+    .card-lagofast-top:hover img {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.95));
+    }
 
     .hub-card {
-
       position: relative;
-
       height: 480px;
-
+      width: 100%;
       border-radius: 16px;
-
       overflow: hidden;
-
       border: 1px solid rgba(255, 255, 255, 0.12);
-
       background-size: cover;
-
       background-position: center;
-
       display: flex;
-
       flex-direction: column;
-
       justify-content: flex-end;
-
       padding: 30px;
-
       text-decoration: none;
-
       backdrop-filter: blur(4px);
-
       transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-
     }
-
-
 
     .hub-card::before {
-
       content: '';
-
       position: absolute;
-
       top: 0; left: 0; right: 0; bottom: 0;
-
       background: linear-gradient(180deg, rgba(9, 13, 22, 0.2) 0%, rgba(9, 13, 22, 0.95) 85%);
-
       transition: background 0.3s ease;
-
       z-index: 1;
-
     }
-
-
 
     .hub-card:hover {
-
       transform: translateY(-8px);
-
       border-color: rgba(255, 255, 255, 0.3);
-
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-
     }
-
-
 
     .hub-card:hover::before {
-
       background: linear-gradient(180deg, rgba(9, 13, 22, 0.1) 0%, rgba(9, 13, 22, 0.9) 85%);
-
     }
-
-
 
     /* CARTE FOND SPÉCIFIQUE */
-
     .card-aion {
-
       background-image: url('images/fond-aion2bis.jpg');
-
     }
-
     .card-aion:hover { border-color: var(--accent-aion); box-shadow: 0 0 25px rgba(0, 242, 254, 0.3); }
 
-
-
     .card-stream {
-
       background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop');
-
     }
-
     .card-stream:hover { border-color: var(--accent-stream); box-shadow: 0 0 25px rgba(145, 70, 255, 0.3); }
 
-
-
     .card-tech {
-
       background-image: url('https://images.unsplash.com/photo-1587202372775-e229f172b9d7?q=80&w=1000&auto=format&fit=crop');
-
     }
-
     .card-tech:hover { border-color: var(--accent-tech); box-shadow: 0 0 25px rgba(255, 51, 102, 0.3); }
 
-
-
     /* CONTENU CARTE */
-
     .card-content {
-
       position: relative;
-
       z-index: 2;
-
     }
-
-
 
     .badge {
-
       display: inline-block;
-
       padding: 5px 12px;
-
       border-radius: 20px;
-
       font-size: 0.75rem;
-
       font-weight: 800;
-
       text-transform: uppercase;
-
       letter-spacing: 0.05em;
-
       margin-bottom: 12px;
-
     }
-
-
 
     .badge-aion { background: rgba(0, 242, 254, 0.15); color: var(--accent-aion); border: 1px solid var(--accent-aion); }
-
     .badge-stream { background: rgba(145, 70, 255, 0.15); color: var(--accent-stream); border: 1px solid var(--accent-stream); }
-
     .badge-tech { background: rgba(255, 51, 102, 0.15); color: var(--accent-tech); border: 1px solid var(--accent-tech); }
 
-
-
     .card-title {
-
       font-size: 1.8rem;
-
       font-weight: 800;
-
       margin-bottom: 8px;
-
       color: #fff;
-
     }
-
-
 
     .card-desc {
-
       font-size: 0.95rem;
-
       color: var(--text-muted);
-
       line-height: 1.4;
-
       margin-bottom: 20px;
-
     }
-
-
 
     .card-btn {
-
       display: inline-flex;
-
       align-items: center;
-
       gap: 10px;
-
       font-weight: 700;
-
       font-size: 0.9rem;
-
       color: #fff;
-
       transition: gap 0.2s ease;
-
     }
-
-
 
     .hub-card:hover .card-btn {
-
       gap: 15px;
-
     }
-
-
 
     footer {
-
       padding: 20px;
-
       color: var(--text-muted);
-
       font-size: 0.85rem;
-
       text-align: center;
-
       z-index: 10;
-
     }
-
-
 
     /* CONTENEUR FIXE DE LECTEUR TWITCH EN BAS À DROITE */
-
     #twitch-widget {
-
       position: fixed;
-
       bottom: 25px;
-
       right: 25px;
-
       z-index: 9999;
-
     }
-
-
 
     @media (max-width: 960px) {
-
       .hub-container { grid-template-columns: 1fr; }
-
       .hub-card { height: 320px; }
-
       .brand-title { font-size: 2.2rem; }
-
       #twitch-widget { bottom: 15px; right: 15px; }
-
     }
-
   </style>
-
 </head>
-
 <body>
-
-
-
-  <!-- CANVAS ARRIÈRE-PLAN ANIMÉ -->
 
   <canvas id="bg-canvas"></canvas>
 
-
-
   <header>
-
     <h1 class="brand-title">Angryskiz</h1>
-
     <p class="brand-subtitle">Créateur de contenu & Expertise High-Tech</p>
-
     
-
     <div class="social-bar">
-
       <a href="https://linktr.ee/Angryskiz" target="_blank" title="Linktree" class="linktree-btn">
-
         <img src="images/linktree.webp" alt="Linktree" />
-
       </a>
-
       <a href="https://twitch.tv/angryskiz" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
-
       <a href="https://tiktok.com" target="_blank" title="TikTok"><i class="fab fa-tiktok"></i></a>
-
       <a href="https://youtube.com" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
-
       <a href="https://instagram.com" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-
       <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
-
     </div>
-
   </header>
 
-
-
   <main class="hub-container">
-
     
+    <div class="card-wrapper">
+      <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="card-lagofast-top">
+        <img src="images/logo-lagofast.png" alt="LagoFast">
+      </a>
+      <a href="/aion2.html" class="hub-card card-aion">
+        <div class="card-content">
+          <span class="badge badge-aion">Communauté</span>
+          <h2 class="card-title">Portail Aion 2</h2>
+          <p class="card-desc">Guides, actualités, builds et présentations complètes des classes d'Aion 2.</p>
+          <div class="card-btn">Découvrir le portail <i class="fas fa-arrow-right"></i></div>
+        </div>
+      </a>
+    </div>
 
-    <!-- PORTE 1 : AION 2 -->
+    <div class="card-wrapper" style="justify-content: flex-end;">
+      <a href="https://twitch.tv/angryskiz" target="_blank" class="hub-card card-stream">
+        <div class="card-content">
+          <span class="badge badge-stream"><i class="fas fa-circle" style="font-size:0.6rem; vertical-align:middle;"></i> Live Stream</span>
+          <h2 class="card-title">Angryskiz Gaming</h2>
+          <p class="card-desc">Rejoins les lives Twitch, découvre les temps forts et la communauté en direct.</p>
+          <div class="card-btn">Accéder au Live <i class="fas fa-arrow-right"></i></div>
+        </div>
+      </a>
+    </div>
 
-    <a href="/aion2.html" class="hub-card card-aion">
-
-      <div class="card-content">
-
-        <span class="badge badge-aion">Communauté</span>
-
-        <h2 class="card-title">Portail Aion 2</h2>
-
-        <p class="card-desc">Guides, actualités, builds et présentations complètes des classes d'Aion 2.</p>
-
-        <div class="card-btn">Découvrir le portail <i class="fas fa-arrow-right"></i></div>
-
-      </div>
-
-    </a>
-
-
-
-    <!-- PORTE 2 : STREAMING & TWITCH -->
-
-    <a href="https://twitch.tv/angryskiz" target="_blank" class="hub-card card-stream">
-
-      <div class="card-content">
-
-        <span class="badge badge-stream"><i class="fas fa-circle" style="font-size:0.6rem; vertical-align:middle;"></i> Live Stream</span>
-
-        <h2 class="card-title">Angryskiz Gaming</h2>
-
-        <p class="card-desc">Rejoins les lives Twitch, découvre les temps forts et la communauté en direct.</p>
-
-        <div class="card-btn">Accéder au Live <i class="fas fa-arrow-right"></i></div>
-
-      </div>
-
-    </a>
-
-
-
-    <!-- PORTE 3 : SKIZTECH -->
-
-    <a href="https://angryskiz.fr/skiztech/index.html" class="hub-card card-tech">
-
-      <div class="card-content">
-
-        <span class="badge badge-tech">Service Pro</span>
-
-        <h2 class="card-title">SkizTech</h2>
-
-        <p class="card-desc">Expertise PC, montage sur-mesure, assistance informatique et maintenance professionnelle.</p>
-
-        <div class="card-btn">Voir nos prestations <i class="fas fa-arrow-right"></i></div>
-
-      </div>
-
-    </a>
-
-
+    <div class="card-wrapper" style="justify-content: flex-end;">
+      <a href="https://angryskiz.fr/skiztech/index.html" class="hub-card card-tech">
+        <div class="card-content">
+          <span class="badge badge-tech">Service Pro</span>
+          <h2 class="card-title">SkizTech</h2>
+          <p class="card-desc">Expertise PC, montage sur-mesure, assistance informatique et maintenance professionnelle.</p>
+          <div class="card-btn">Voir nos prestations <i class="fas fa-arrow-right"></i></div>
+        </div>
+      </a>
+    </div>
 
   </main>
 
-
-
   <footer>
-
     <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
-
   </footer>
-
-
-
-  <!-- LECTEUR TWITCH FLOTTANT EN BAS À DROITE -->
 
   <div id="twitch-widget"></div>
 
-
-
-  <!-- SCRIPT DU PLAYER TWITCH -->
-
   <script src="js/player.js?v=2"></script>
 
-
-
-  <!-- SCRIPT DU CANVAS ANIMÉ (PARTICULES & NÉONS) -->
-
   <script>
-
     const canvas = document.getElementById('bg-canvas');
-
     const ctx = canvas.getContext('2d');
 
-
-
     function resize() {
-
       canvas.width = window.innerWidth;
-
       canvas.height = window.innerHeight;
-
     }
-
     window.addEventListener('resize', resize);
-
     resize();
 
-
-
     const particles = [];
-
-    const particleCount = 70; // Ajustable selon l'intensité désirée
-
-
+    const particleCount = 70;
 
     for (let i = 0; i < particleCount; i++) {
-
       particles.push({
-
         x: Math.random() * canvas.width,
-
         y: Math.random() * canvas.height,
-
         radius: Math.random() * 2 + 0.5,
-
         vx: (Math.random() - 0.5) * 0.4,
-
         vy: (Math.random() - 0.5) * 0.4,
-
-        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe' // Violet Twitch / Cyan Aion
-
+        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe'
       });
-
     }
-
-
 
     function animate() {
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       
-
-      // Fond dégradé très sombre
-
       let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-
       grad.addColorStop(0, '#090d16');
-
       grad.addColorStop(1, '#04060a');
-
       ctx.fillStyle = grad;
-
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-
-
-      // Dessin des particules et des liens
-
       for (let i = 0; i < particleCount; i++) {
-
         let p = particles[i];
-
         p.x += p.vx;
-
         p.y += p.vy;
 
-
-
         if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-
         if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
 
-
-
         ctx.beginPath();
-
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-
         ctx.fillStyle = p.color;
-
         ctx.shadowBlur = 8;
-
         ctx.shadowColor = p.color;
-
         ctx.fill();
 
-
-
-        // Connexions entre particules proches
-
         for (let j = i + 1; j < particleCount; j++) {
-
           let p2 = particles[j];
-
           let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-
           if (dist < 130) {
-
             ctx.beginPath();
-
             ctx.moveTo(p.x, p.y);
-
             ctx.lineTo(p2.x, p2.y);
-
             ctx.strokeStyle = p.color;
-
             ctx.globalAlpha = (1 - dist / 130) * 0.2;
-
             ctx.lineWidth = 0.6;
-
             ctx.stroke();
-
             ctx.globalAlpha = 1;
-
           }
-
         }
-
       }
-
       requestAnimationFrame(animate);
-
     }
-
     animate();
-
   </script>
 
-
-
 </body>
-
-</html> 
+</html>
