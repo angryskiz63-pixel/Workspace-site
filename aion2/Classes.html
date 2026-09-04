@@ -43,7 +43,7 @@
       overflow-x: hidden;
     }
 
-    /* HEADER FIXÉ AVEC LOGO */
+    /* HEADER FIXÉ AVEC LOGO IDENTIQUE */
     .aion-nav {
       position: fixed;
       top: 0;
@@ -66,18 +66,24 @@
       text-decoration: none;
       height: 100%;
       position: relative;
+      width: 120px;
     }
     
     .aion-logo-img {
-      height: 75px;
+      height: 100px;
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
       transition: transform 0.3s ease;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+      z-index: 10;
     }
     
     .aion-logo-img:hover {
-      transform: scale(1.05);
+      transform: translateY(-50%) scale(1.05);
     }
     
     .aion-menu { 
@@ -460,7 +466,7 @@
 
     @media (max-width: 900px) {
       .aion-menu { display: none; }
-      .aion-logo-img { height: 50px; }
+      .aion-logo-img { height: 60px; }
       .classes-container { height: auto; }
       .class-display {
         flex-direction: column;
@@ -480,29 +486,29 @@
 </head>
 <body>
 
-<nav class="aion-nav">
-  <a href="/aion2/aion2.html" class="aion-logo">
-    <img src="/aion2/images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='images/logo-aion2.png'; if(!this.src.includes('../')) this.src='../images/logo-aion2.png';">
-  </a>
-  <ul class="aion-menu">
-    <li><a href="/aion2.html#actualites">Actualités</a></li>
-    <li><a href="/aion2/Classes.html">Classes</a></li>
-    <li><a href="/aion2/Builds.html">Builds</a></li>
-    <li><a href="/aion2/Guides.html">Guides</a></li>
-    <li><a href="/aion2/Patchs.html">Patchs</a></li>
-    <li><a href="/aion2/Unleashed.html" class="active">UNLEASHED</a></li>
-    <li>
-      <button onclick="ajouterFavoris()" class="aion-fav-btn">
-        <i class="fas fa-star"></i> Favoris
-      </button>
-    </li>
-    <li>
-      <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
-        <i class="fab fa-discord"></i> Discord
-      </a>
-    </li>
-  </ul>
-</nav>
+  <nav class="aion-nav">
+    <a href="aion2.html" class="aion-logo">
+      <img src="images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='../images/logo-aion2.png';">
+    </a>
+    <ul class="aion-menu">
+      <li><a href="aion2.html#actualites">Actualités</a></li>
+      <li><a href="Classes.html" class="active">Classes</a></li>
+      <li><a href="Builds.html">Builds</a></li>
+      <li><a href="Guides.html">Guides</a></li>
+      <li><a href="Patchs.html">Patchs</a></li>
+      <li><a href="Unleashed.html">UNLEASHED</a></li>
+      <li>
+        <button onclick="ajouterFavoris()" class="aion-fav-btn">
+          <i class="fas fa-star"></i> Favoris
+        </button>
+      </li>
+      <li>
+        <a href="https://discord.gg/ZHsHXGXdUz" target="_blank" class="aion-discord-btn">
+          <i class="fab fa-discord"></i> Discord
+        </a>
+      </li>
+    </ul>
+  </nav>
 
   <main class="classes-container">
     <h1 class="section-title">Classes</h1>
@@ -563,7 +569,6 @@
       'spiritualiste'
     ];
 
-    /* Échelles harmonisées (customScale) pour faire correspondre toutes les tailles à celle du Rôdeur */
     const classesData = {
       gladiateur: {
         title: "Gladiateur",
