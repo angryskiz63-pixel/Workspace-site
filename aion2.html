@@ -84,12 +84,12 @@
       transform: translateY(-50%) scale(1.05);
     }
 
-    /* Logo Lagofast centré dans le bandeau haut */
+    /* Logo LagoFast centré entre le logo AION2 et Actualités */
     .aion-lagofast {
       position: absolute;
-      left: 50%;
+      left: 32%; /* Ajusté pour se placer idéalement entre le logo AION2 et les onglets */
       top: 50%;
-      transform: translate(-50%, -50%);
+      transform: translateY(-50%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -97,16 +97,16 @@
     }
     
     .aion-lagofast-img {
-      height: 42px;
+      height: 52px; /* Taille agrandie */
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 0 10px rgba(0, 242, 254, 0.4));
+      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.5));
       transition: all 0.3s ease;
     }
 
     .aion-lagofast-img:hover {
-      transform: scale(1.08);
-      filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.8));
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.9));
     }
     
     .aion-menu { 
@@ -369,6 +369,10 @@
       font-size: 0.9rem;
     }
 
+    @media (max-width: 1100px) {
+      .aion-lagofast { left: 22%; }
+    }
+
     @media (max-width: 900px) {
       .aion-hero { height: 550px; min-height: auto; }
       .main-layout { grid-template-columns: 1fr; }
@@ -379,7 +383,7 @@
       .ln-img { height: 240px; }
       .aion-menu { display: none; }
       .quick-links { margin-top: -40px; }
-      .aion-lagofast { display: none; } /* Masqué sur mobile pour garder la barre propre */
+      .aion-lagofast { display: none; }
     }
   </style>
 </head>
@@ -390,7 +394,7 @@
     <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
   </a>
 
-  <a href="#" target="_blank" class="aion-lagofast">
+  <a href="Aion2/lagofast.html" class="aion-lagofast">
     <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
   </a>
 
