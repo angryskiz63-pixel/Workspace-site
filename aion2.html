@@ -118,6 +118,10 @@
       align-items: center;
     }
 
+    .aion-menu li {
+      position: relative;
+    }
+
     .aion-menu a {
       color: var(--text-main);
       text-decoration: none;
@@ -128,6 +132,25 @@
     }
 
     .aion-menu a:hover { color: var(--accent-cyan); }
+
+    /* Badge COMING SOON dans le Menu */
+    .nav-coming-soon {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff8c00;
+      color: #fff;
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 3px;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 6px rgba(255, 140, 0, 0.5);
+      pointer-events: none;
+    }
 
     /* Bouton Favoris */
     .aion-fav-btn {
@@ -200,7 +223,7 @@
     }
     .slide.active { opacity: 1; }
 
-    /* Overlay Badge Coming Soon */
+    /* Overlay Badge Coming Soon pour les cartes */
     .img-overlay-container {
       position: relative;
       width: 100%;
@@ -442,7 +465,10 @@
     <li><a href="#actualites">Actualités</a></li>
     <li><a href="/aion2/Classes.html">Classes</a></li>
     <li><a href="/aion2/Builds.html">Builds</a></li>
-    <li><a href="/aion2/Guides.html">Guides</a></li>
+    <li>
+      <span class="nav-coming-soon">COMING SOON</span>
+      <a href="/aion2/Guides.html">Guides</a>
+    </li>
     <li><a href="/aion2/Patchs.html">Patchs</a></li>
     <li><a href="/aion2/Unleashed.html">UNLEASHED</a></li>
     <li>
