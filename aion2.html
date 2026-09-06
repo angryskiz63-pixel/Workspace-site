@@ -1,125 +1,78 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="images/logo-aion2bis.png" />
-  <link rel="shortcut icon" type="image/png" href="images/logo-aion2bis.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Aion 2 - Accueil</title>
-  <meta name="description" content="Base de connaissances, guides, builds, actualités et codes pour Aion 2. Fansite communautaire francophone." />
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AION 2 - Accueil</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
+    /* VARIABLES GLOBALES ET RESET */
     :root {
-      --bg-main: #070b16;
-      --bg-card: rgba(15, 23, 42, 0.85);
-      --border-card: rgba(0, 242, 254, 0.25);
-      --accent-cyan: #00f2fe;
-      --accent-blue: #4facfe;
+      --bg-dark: #0b0d12;
+      --card-bg: rgba(22, 27, 34, 0.85);
+      --border-cyan: #00d2ff;
+      --accent-cyan: #00e5ff;
       --accent-gold: #ffb74d;
       --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
+      --text-sub: #94a3b8;
     }
 
-    /* Défilement fluide */
-    html {
-      scroll-behavior: smooth;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
     body {
-      font-family: 'Outfit', sans-serif;
-      background: #070b16;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-dark);
       color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
-    /* Header Aion 2 */
+    /* BARRE DE NAVIGATION (HEADER) */
     .aion-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 70px;
-      background: linear-gradient(180deg, rgba(7, 11, 22, 0.95) 0%, rgba(7, 11, 22, 0.7) 100%);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0 4%;
+      background: rgba(11, 13, 18, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 210, 255, 0.2);
+      padding: 12px 30px;
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      z-index: 100;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    
+
+    .nav-left, .nav-center, .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
     .aion-logo {
-      display: flex;
-      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
       text-decoration: none;
-      height: 100%;
-      position: relative;
-      width: 120px;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
     }
-    
-    .aion-logo-img {
-      height: 100px;
-      width: auto;
-      object-fit: contain;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
+
+    .lagofast-logo img {
+      height: 28px;
       transition: transform 0.3s ease;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.9));
-      z-index: 10;
     }
-    
-    .aion-logo-img:hover {
-      transform: translateY(-50%) scale(1.05);
+    .lagofast-logo img:hover {
+      transform: scale(1.05);
     }
 
-    /* Logo LagoFast centré entre le logo AION2 et Actualités */
-    .aion-lagofast {
-      position: absolute;
-      left: 32%;
-      top: 50%;
-      transform: translateY(-50%);
+    .aion-menu {
       display: flex;
+      list-style: none;
+      gap: 24px;
       align-items: center;
-      justify-content: center;
-      z-index: 15;
-    }
-    
-    .aion-lagofast-img {
-      height: 52px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.5));
-      transition: all 0.3s ease;
-    }
-
-    .aion-lagofast-img:hover {
-      transform: scale(1.1);
-      filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.9));
-    }
-    
-    .aion-menu { 
-      display: flex; 
-      gap: 18px; 
-      list-style: none; 
-      margin-left: auto;
-      align-items: center;
-    }
-
-    .aion-menu li {
-      position: relative;
     }
 
     .aion-menu a {
@@ -127,536 +80,243 @@
       text-decoration: none;
       font-weight: 600;
       font-size: 0.95rem;
-      transition: 0.2s;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+      transition: color 0.3s, text-shadow 0.3s;
     }
 
-    .aion-menu a:hover { color: var(--accent-cyan); }
+    .aion-menu a:hover,
+    .aion-menu a.active {
+      color: var(--accent-cyan);
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+    }
 
-    /* Badge COMING SOON dans le Menu */
-    .nav-coming-soon {
+    /* REGROUPEMENT COMING SOON SUR LE MENU */
+    .coming-soon-group {
+      position: relative;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding-top: 10px;
+    }
+
+    .coming-soon-group::before {
+      content: 'COMING SOON';
       position: absolute;
-      top: -14px;
+      top: -4px;
       left: 50%;
       transform: translateX(-50%);
-      background: #ff8c00;
-      color: #fff;
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       font-weight: 800;
-      padding: 1px 5px;
-      border-radius: 3px;
+      color: var(--accent-gold);
+      letter-spacing: 0.1em;
       white-space: nowrap;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      box-shadow: 0 2px 6px rgba(255, 140, 0, 0.5);
+      text-shadow: 0 0 6px rgba(255, 183, 77, 0.6);
       pointer-events: none;
     }
 
-    /* Bouton Favoris */
-    .aion-fav-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-card);
-      color: var(--accent-gold);
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
+    .coming-soon-group a {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .coming-soon-group a:hover {
+      color: var(--text-main);
+    }
+
+    /* BOUTONS NAVIGATION */
+    .aion-fav-btn, .aion-discord-btn {
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
     }
 
+    .aion-fav-btn {
+      background: transparent;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+    }
     .aion-fav-btn:hover {
-      background: var(--accent-gold);
-      color: #070b16;
-      border-color: var(--accent-gold);
-      box-shadow: 0 0 12px rgba(255, 183, 77, 0.5);
+      background: rgba(255, 183, 77, 0.15);
+      box-shadow: 0 0 10px rgba(255, 183, 77, 0.3);
     }
 
-    /* Bouton Discord */
     .aion-discord-btn {
       background: #5865F2;
-      color: #fff !important;
-      padding: 8px 18px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: bold !important;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
-      transition: all 0.2s ease !important;
+      border: none;
+      color: #fff;
     }
-
     .aion-discord-btn:hover {
       background: #4752C4;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
+      box-shadow: 0 0 12px rgba(88, 101, 242, 0.5);
     }
 
-    /* Hero Section */
-    .aion-hero {
-      position: relative;
-      min-height: calc(100vh - 180px);
-      max-height: 700px;
+    /* CONTENU PRINCIPAL */
+    main {
+      flex: 1;
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
       width: 100%;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+    }
+
+    .hero-title {
       text-align: center;
-      margin-top: 70px;
-    }
-
-    .slider-bg { position: absolute; inset: 0; z-index: 0; }
-    .slide {
-      position: absolute;
-      inset: 0;
-      background-size: cover;
-      background-position: center top;
-      opacity: 0;
-      transition: opacity 1s ease-in-out;
-    }
-    .slide.active { opacity: 1; }
-
-    /* Overlay Badge Coming Soon pour les cartes */
-    .img-overlay-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    .coming-soon-badge {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: linear-gradient(135deg, #ffb74d 0%, #ff9800 100%);
-      color: #070b16;
-      font-weight: 800;
-      font-size: 0.75rem;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
       letter-spacing: 1px;
-      padding: 6px 12px;
-      border-radius: 6px;
-      box-shadow: 0 4px 15px rgba(255, 183, 77, 0.4);
-      z-index: 5;
       text-transform: uppercase;
-    }
-
-    .slider-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
-      background: rgba(7, 11, 22, 0.6);
-      border: 1px solid var(--border-card);
-      color: var(--text-main);
-      font-size: 1.3rem;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(4px);
-    }
-
-    .slider-btn:hover {
-      background: var(--accent-cyan);
-      color: #070b16;
-      box-shadow: 0 0 15px var(--accent-cyan);
-    }
-
-    .slider-btn.prev { left: 25px; }
-    .slider-btn.next { right: 25px; }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(7,11,22,0.2) 0%, rgba(7,11,22,0.5) 65%, rgba(7,11,22,1) 100%);
-      z-index: 1;
-      pointer-events: none;
-    }
-    
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      max-width: 900px;
-      padding: 0 20px 120px 20px;
-    }
-
-    .hero-content h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 3.8rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-      background: linear-gradient(to right, #ffffff, var(--accent-cyan));
+      background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
-      text-shadow: 0 4px 15px rgba(0,0,0,0.9);
     }
 
-    .hero-content p { font-size: 1.3rem; color: #cbd5e1; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
-    
-    /* Quick Links */
-    .quick-links {
+    /* GRILLE D'ACCÈS RAPIDE / ACTUALITÉS */
+    .cards-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 18px;
-      max-width: 1400px;
-      margin: -70px auto 40px auto;
-      padding: 0 20px;
-      position: relative;
-      z-index: 10;
-      width: 100%;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
     }
 
-    .quick-card {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(7, 11, 22, 0.9) 100%);
-      border: 1px solid var(--border-card);
-      padding: 22px 15px;
-      border-radius: 8px;
-      text-align: center;
-      color: white;
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .quick-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-      opacity: 0.6;
-    }
-
-    .quick-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent-cyan);
-      box-shadow: 0 8px 25px rgba(0, 242, 254, 0.25), inset 0 0 15px rgba(0, 242, 254, 0.1);
-    }
-
-    .quick-card i {
-      font-size: 1.8rem;
-      color: var(--accent-cyan);
-      margin-bottom: 12px;
-      filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5));
-      transition: transform 0.3s ease;
-      display: inline-block;
-    }
-
-    .quick-card:hover i { transform: scale(1.15); }
-    .quick-card h3 { font-size: 0.95rem; font-family: 'Cinzel', serif; letter-spacing: 0.5px; text-transform: uppercase; }
-
-    /* Main Layout */
-    .main-layout {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 20px 60px 20px;
-      display: grid;
-      grid-template-columns: 2.3fr 1fr;
-      gap: 35px;
-      width: 100%;
-    }
-
-    .section-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.6rem;
-      margin-bottom: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid var(--border-card);
-      padding-bottom: 10px;
-      scroll-margin-top: 90px;
-    }
-
-    .section-title a { color: var(--accent-cyan); font-size: 0.95rem; text-decoration: none; font-family: 'Outfit'; }
-
-    /* Actualités */
-    .ln-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
-    
-    .ln-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 14px;
-      overflow: hidden;
-      text-decoration: none;
-      color: white;
-      transition: 0.3s;
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 210, 255, 0.2);
+      border-radius: 12px;
+      padding: 25px;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .ln-card:hover { transform: translateY(-5px); border-color: var(--accent-cyan); }
-    .ln-img { height: 320px; width: 100%; background-size: cover; background-position: center top; transition: transform 0.3s ease; }
-    .ln-card:hover .ln-img { transform: scale(1.03); }
-    .ln-body { padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; flex-grow: 1; background: var(--bg-card); }
-    .ln-title { font-weight: 700; font-size: 1.05rem; line-height: 1.35; }
-    .ln-date { font-size: 0.85rem; color: var(--text-muted); margin-top: auto; }
-
-    /* Sidebar & Discord Box */
-    .sidebar-section { display: flex; flex-direction: column; gap: 35px; }
-    
-    .side-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 14px;
-      padding: 22px;
+    .card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 8px 25px rgba(0, 210, 255, 0.15);
     }
 
-    .tag { font-size: 0.75rem; padding: 4px 9px; border-radius: 4px; font-weight: bold; width: fit-content; }
-    .tag-off { background: var(--accent-cyan); color: #070b16; }
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: #fff;
+    }
 
-    .news-item { display: flex; gap: 14px; text-decoration: none; color: white; margin-bottom: 18px; }
-    .news-thumb { width: 90px; height: 70px; border-radius: 8px; background-size: cover; background-position: center; flex-shrink: 0; }
-    .news-title { font-size: 0.95rem; font-weight: 600; line-height: 1.3; }
+    .card p {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
 
+    .card-link {
+      align-self: flex-start;
+      color: var(--accent-cyan);
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: gap 0.2s;
+    }
+
+    .card-link:hover {
+      gap: 10px;
+    }
+
+    /* FOOTER */
     footer {
-      margin-top: auto;
-      background: rgba(7, 11, 22, 0.98);
-      border-top: 1px solid var(--border-card);
-      padding: 35px;
       text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 1100px) {
-      .aion-lagofast { left: 22%; }
-    }
-
-    @media (max-width: 900px) {
-      .aion-hero { height: 550px; min-height: auto; }
-      .main-layout { grid-template-columns: 1fr; }
-      .hero-content { padding-bottom: 60px; }
-      .hero-content h1 { font-size: 2.2rem; }
-      .hero-content p { font-size: 1.05rem; }
-      .aion-logo-img { height: 60px; }
-      .ln-img { height: 240px; }
-      .aion-menu { display: none; }
-      .quick-links { margin-top: -40px; }
-      .aion-lagofast { display: none; }
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-sub);
+      font-size: 0.85rem;
     }
   </style>
 </head>
 <body>
 
-<nav class="aion-nav">
-  <a href="/aion2/aion2.html" class="aion-logo">
-    <img src="images/logo-aion2.png" alt="Aion 2" class="aion-logo-img">
-  </a>
-
-  <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="aion-lagofast">
-    <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
-  </a>
-
-  <ul class="aion-menu">
-    <li><a href="#actualites">Actualités</a></li>
-    <li><a href="/aion2/Classes.html">Classes</a></li>
-    <li><a href="/aion2/Builds.html">Builds</a></li>
-    <li>
-      <span class="nav-coming-soon">COMING SOON</span>
-      <a href="/aion2/Guides.html">Guides</a>
-    </li>
-    <li><a href="/aion2/Patchs.html">Patchs</a></li>
-    <li><a href="/aion2/Unleashed.html">UNLEASHED</a></li>
-    <li>
-      <button onclick="ajouterFavoris()" class="aion-fav-btn">
-        <i class="fas fa-star"></i> Favoris
-      </button>
-    </li>
-    <li>
-      <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="aion-discord-btn">
-        <i class="fab fa-discord"></i> Discord
-      </a>
-    </li>
-  </ul>
-</nav>
-
-<section class="aion-hero">
-  <div class="slider-bg">
-    <div class="slide active" style="background-image: url('images/fond-aion2bis.jpg');"></div>
-    <div class="slide" style="background-image: url('images/fondaion2.png');"></div>
-    <div class="slide" style="background-image: url('images/fondaion3.png');"></div>
-    <div class="slide" style="background-image: url('images/fondaion4.png');"></div>
-  </div>
-
-  <button class="slider-btn prev" id="prevBtn" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
-  <button class="slider-btn next" id="nextBtn" aria-label="Suivant"><i class="fas fa-chevron-right"></i></button>
-
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
-    <h1>L'HÉRITAGE ÉTERNEL</h1>
-    <p>Le portail francophone ultime : guides de jeu, builds optimisés et actualités en direct.</p>
-  </div>
-</section>
-
-<div class="quick-links">
-  <a href="/aion2/Classes.html" class="quick-card">
-    <i class="fas fa-shield-halved"></i>
-    <h3>Classes</h3>
-  </a>
-  <a href="/aion2/Builds.html" class="quick-card">
-    <i class="fas fa-khanda"></i>
-    <h3>Builds</h3>
-  </a>
-  <a href="/aion2/Guides.html" class="quick-card">
-    <i class="fas fa-book-bookmark"></i>
-    <h3>Guides</h3>
-  </a>
-  <a href="/aion2/Patchs.html" class="quick-card">
-    <i class="fas fa-newspaper"></i>
-    <h3>Patchs</h3>
-  </a>
-  <a href="/aion2/Unleashed.html" class="quick-card">
-    <i class="fas fa-dragon" style="color: #a855f7; filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));"></i>
-    <h3>UNLEASHED</h3>
-  </a>
-  <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="quick-card">
-    <i class="fab fa-discord" style="color: #5865F2; filter: drop-shadow(0 0 8px rgba(88, 101, 242, 0.6));"></i>
-    <h3>Rejoindre Discord</h3>
-  </a>
-</div>
-
-<main class="main-layout">
-  <section class="content-left">
-    <div class="section-title" id="actualites">
-      <span><i class="fas fa-fire" style="color:var(--accent-cyan);"></i> Dernières Actualités</span>
-      <a href="actualite.html">Voir tout &rarr;</a>
+  <!-- EN-TÊTE / NAVIGATION -->
+  <nav class="aion-nav">
+    <div class="nav-left">
+      <a href="aion2.html" class="aion-logo">AION 2</a>
     </div>
-    <div class="ln-grid" id="latest-news-grid">
-      <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
-        <div class="img-overlay-container">
-          <span class="coming-soon-badge">Coming Soon</span>
-          <div class="ln-img" style="background-image:url('images/prelancement.jpeg')"></div>
-        </div>
-        <div class="ln-body">
-          <span class="tag tag-off">Global</span>
-          <div class="ln-title">Pré-lancement Aion 2 : Préparez-vous !</div>
-          <div class="ln-date">Disponible sur Steam</div>
-        </div>
-      </a>
 
-      <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
-        <div class="img-overlay-container">
-          <span class="coming-soon-badge">Coming Soon</span>
-          <div class="ln-img" style="background-image:url('images/packfondateur.jpeg')"></div>
-        </div>
-        <div class="ln-body">
-          <span class="tag tag-off">Global</span>
-          <div class="ln-title">Packs Fondateurs disponibles sur Steam</div>
-          <div class="ln-date">Disponible sur Steam</div>
-        </div>
-      </a>
-    </div>
-  </section>
-
-  <aside class="sidebar-section">
-    <div class="side-box" style="text-align: center;">
-      <div class="section-title" style="justify-content: center; margin-bottom: 15px;">
-        <span><i class="fab fa-discord" style="color:#5865F2;"></i> Communauté Discord</span>
-      </div>
-      
-      <div style="font-size: 3rem; color: #5865F2; margin: 10px 0;">
-        <i class="fab fa-discord"></i>
-      </div>
-
-      <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
-        Rejoins la communauté ANGRYSKiZ pour échanger avec les joueurs et suivre les actus Aion 2 !
-      </p>
-
-      <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="aion-discord-btn" style="width: 100%;">
-        <i class="fab fa-discord"></i> Rejoindre le serveur
+    <div class="nav-center">
+      <a href="Lagofast.html" class="lagofast-logo" title="Partenaire LagoFast">
+        <img src="https://via.placeholder.com/120x30?text=LagoFast" alt="LagoFast Logo">
       </a>
     </div>
 
-    <div class="side-box">
-      <div class="section-title">
-        <span><i class="fas fa-rss"></i> Flash Actus</span>
-      </div>
-      <div id="sidebar-news-list">
-        <a class="news-item" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
-          <div class="news-thumb" style="background-image:url('images/prelancement.jpeg')"></div>
-          <div>
-            <div class="news-title">Pré-lancement Aion 2</div>
-            <span class="ln-date">Steam</span>
-          </div>
-        </a>
-        <a class="news-item" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
-          <div class="news-thumb" style="background-image:url('images/packfondateur.jpeg')"></div>
-          <div>
-            <div class="news-title">Packs Fondateurs</div>
-            <span class="ln-date">Steam</span>
-          </div>
-        </a>
-      </div>
+    <div class="nav-right">
+      <ul class="aion-menu">
+        <li><a href="aion2.html#actualites" class="active">Actualités</a></li>
+        <li><a href="Classes.html">Classes</a></li>
+
+        <!-- REGROUPEMENT COMING SOON -->
+        <li class="coming-soon-group">
+          <a href="#">Builds</a>
+          <a href="#">Guides</a>
+          <a href="#">Patchs</a>
+        </li>
+
+        <li><a href="Unleashed.html">UNLEASHED</a></li>
+        <li>
+          <button onclick="ajouterFavoris()" class="aion-fav-btn">
+            <i class="fas fa-star"></i> Favoris
+          </button>
+        </li>
+        <li>
+          <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="aion-discord-btn">
+            <i class="fab fa-discord"></i> Discord
+          </a>
+        </li>
+      </ul>
     </div>
-  </aside>
-</main>
+  </nav>
 
-<footer>
-  <p style="margin-bottom: 12px;">
-    <a href="https://discord.gg/q3qDmCzdum" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
-      <i class="fab fa-discord"></i> Rejoindre la communauté sur Discord
-    </a>
-  </p>
-  <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
-</footer>
+  <!-- CONTENU PRINCIPAL -->
+  <main>
+    <h1 class="hero-title">Bienvenue sur le Portail AION 2</h1>
 
-<script>
-  // Slider Hero
-  const slides = document.querySelectorAll('.slide');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  let currentSlide = 0;
-  let slideInterval;
+    <section id="actualites">
+      <div class="cards-grid">
+        <div class="card">
+          <h3>Classes Jouables</h3>
+          <p>Découvrez les compétences, les vidéos et les rôles de toutes les classes d'AION 2.</p>
+          <a href="Classes.html" class="card-link">Voir les classes <i class="fas fa-arrow-right"></i></a>
+        </div>
 
-  function showSlide(index) {
-    slides.forEach((slide, i) => {
-      slide.classList.remove('active');
-      if (i === index) slide.classList.add('active');
-    });
-  }
+        <div class="card">
+          <h3>AION Unleashed</h3>
+          <p>Toutes les informations exclusives et mises à jour sur le contenu Unleashed.</p>
+          <a href="Unleashed.html" class="card-link">Explorer <i class="fas fa-arrow-right"></i></a>
+        </div>
 
-  function nextSlide() {
-    currentSlide = (currentSlide + 1) % slides.length;
-    showSlide(currentSlide);
-  }
+        <div class="card">
+          <h3>Rejoindre le Discord</h3>
+          <p>Échangez avec la communauté française, trouvez un groupe et suivez le développement.</p>
+          <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="card-link">Rejoindre <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  function prevSlide() {
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    showSlide(currentSlide);
-  }
+  <footer>
+    <p>&copy; 2026 AION 2 Fanbase - Tous droits réservés.</p>
+  </footer>
 
-  function startTimer() { slideInterval = setInterval(nextSlide, 3500); }
-  function resetTimer() { clearInterval(slideInterval); startTimer(); }
-
-  nextBtn.addEventListener('click', () => { nextSlide(); resetTimer(); });
-  prevBtn.addEventListener('click', () => { prevSlide(); resetTimer(); });
-  startTimer();
-
-  // Fonction Ajout aux Favoris
-  function ajouterFavoris() {
-    const title = document.title;
-    const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
-    const shortcut = isMac ? 'Cmd + D' : 'Ctrl + D';
-
-    alert(`Appuyez sur ${shortcut} pour ajouter "${title}" à vos favoris !`);
-  }
-</script>
-
-<script src="js/player.js?v=2"></script>
-
+  <script>
+    function ajouterFavoris() {
+      alert("Appuyez sur " + (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + " + D pour ajouter cette page à vos favoris.");
+    }
+  </script>
 </body>
 </html>
