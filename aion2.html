@@ -129,6 +129,39 @@
 
     .aion-menu a:hover { color: var(--accent-cyan); }
 
+    /* REGROUPEMENT COMING SOON SUR LE MENU */
+    .coming-soon-group {
+      position: relative;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding-top: 10px;
+    }
+
+    .coming-soon-group::before {
+      content: 'COMING SOON';
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      text-shadow: 0 0 6px rgba(255, 183, 77, 0.6);
+      pointer-events: none;
+    }
+
+    .coming-soon-group a {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .coming-soon-group a:hover {
+      color: var(--text-main);
+    }
+
     /* Bouton Favoris */
     .aion-fav-btn {
       background: rgba(255, 255, 255, 0.05);
@@ -442,9 +475,11 @@
   <ul class="aion-menu">
     <li><a href="#actualites">Actualités</a></li>
     <li><a href="/aion2/Classes.html">Classes</a></li>
-    <li><a href="/aion2/Builds.html">Builds</a></li>
-    <li><a href="/aion2/Guides.html">Guides</a></li>
-    <li><a href="/aion2/Patchs.html">Patchs</a></li>
+    <li class="coming-soon-group">
+      <a href="#">Builds</a>
+      <a href="#">Guides</a>
+      <a href="#">Patchs</a>
+    </li>
     <li><a href="/aion2/Unleashed.html">UNLEASHED</a></li>
     <li>
       <button onclick="ajouterFavoris()" class="aion-fav-btn">
