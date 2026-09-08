@@ -368,6 +368,39 @@
     .quick-card:hover i { transform: scale(1.15); }
     .quick-card h3 { font-size: 0.95rem; font-family: 'Cinzel', serif; letter-spacing: 0.5px; text-transform: uppercase; }
 
+    /* CARTES DÉSACTIVÉES (COMING SOON) */
+    .quick-card.disabled-card {
+      opacity: 0.45;
+      cursor: not-allowed;
+      filter: grayscale(80%);
+      border-color: rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+
+    .quick-card.disabled-card::after {
+      content: 'COMING SOON';
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.58rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      text-shadow: 0 0 6px rgba(255, 183, 77, 0.8);
+    }
+
+    .quick-card.disabled-card:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .quick-card.disabled-card:hover i {
+      transform: none;
+    }
+
     /* Main Layout */
     .main-layout {
       max-width: 1400px;
@@ -515,15 +548,15 @@
     <i class="fas fa-shield-halved"></i>
     <h3>Classes</h3>
   </a>
-  <a href="/aion2/Builds.html" class="quick-card">
+  <a href="#" class="quick-card disabled-card">
     <i class="fas fa-khanda"></i>
     <h3>Builds</h3>
   </a>
-  <a href="/aion2/Guides.html" class="quick-card">
+  <a href="#" class="quick-card disabled-card">
     <i class="fas fa-book-bookmark"></i>
     <h3>Guides</h3>
   </a>
-  <a href="/aion2/Patchs.html" class="quick-card">
+  <a href="#" class="quick-card disabled-card">
     <i class="fas fa-newspaper"></i>
     <h3>Patchs</h3>
   </a>
