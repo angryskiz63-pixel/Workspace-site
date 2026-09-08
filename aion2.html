@@ -276,7 +276,7 @@
 
     .hero-content p { font-size: 1.3rem; color: #cbd5e1; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
 
-    /* NOUVELLE STRUCTURE : QUICK LINKS AVEC IMAGES DE FOND */
+    /* Quick Links */
     .quick-links {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -303,7 +303,6 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     }
 
-    /* Calque d'image avec dégradé sombre */
     .quick-card-bg {
       position: absolute;
       inset: 0;
@@ -334,7 +333,6 @@
       transition: color 0.3s ease, transform 0.3s ease;
     }
 
-    /* Effets Hover */
     .quick-card:hover {
       transform: translateY(-5px);
       border-color: var(--accent-cyan);
@@ -354,7 +352,6 @@
       transform: scale(1.05);
     }
 
-    /* Variantes de cartes spécifiques */
     .quick-card.card-unleashed { border-color: rgba(168, 85, 247, 0.4); }
     .quick-card.card-unleashed:hover { border-color: var(--accent-purple); box-shadow: 0 12px 30px rgba(168, 85, 247, 0.35); }
     .quick-card.card-unleashed:hover h3 { color: #d8b4fe; }
@@ -363,7 +360,6 @@
     .quick-card.card-discord:hover { border-color: #5865F2; box-shadow: 0 12px 30px rgba(88, 101, 242, 0.4); }
     .quick-card.card-discord:hover h3 { color: #93c5fd; }
 
-    /* CARTES DÉSACTIVÉES (COMING SOON) */
     .quick-card.disabled-card {
       opacity: 0.55;
       cursor: not-allowed;
@@ -390,7 +386,6 @@
       z-index: 4;
     }
 
-    /* Layout Principal */
     .main-layout {
       max-width: 1400px;
       margin: 0 auto;
@@ -529,10 +524,9 @@
   </div>
 </section>
 
-<!-- NOUVELLE SECTION AVEC IMAGES EN FOND AU LIEU DES ICÔNES FA -->
 <div class="quick-links">
   <a href="/aion2/Classes.html" class="quick-card">
-    <div class="quick-card-bg" style="background-image: url('images/card-classes.jpg');"></div>
+    <div class="quick-card-bg" style="background-image: url('aion2/images/Charac.jpeg');"></div>
     <div class="quick-card-overlay"></div>
     <h3>Classes</h3>
   </a>
