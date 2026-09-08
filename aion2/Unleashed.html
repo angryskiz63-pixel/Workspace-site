@@ -319,11 +319,11 @@
       100% { transform: scale(0.95); opacity: 0.8; }
     }
 
-    /* Info Cards Grid */
+    /* Info Cards Grid — Alignement sur 4 colonnes */
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
       margin-bottom: 40px;
     }
 
@@ -331,7 +331,7 @@
       background: var(--bg-card);
       border: 1px solid var(--border-card);
       border-radius: 12px;
-      padding: 22px;
+      padding: 18px 14px;
       transition: all 0.3s ease;
     }
 
@@ -341,21 +341,21 @@
     }
 
     .info-card i {
-      font-size: 2rem;
+      font-size: 1.8rem;
       color: var(--accent-cyan);
       margin-bottom: 12px;
     }
 
     .info-card h3 {
       font-family: 'Cinzel', serif;
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       margin-bottom: 8px;
     }
 
     .info-card p {
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.4;
     }
 
     /* Sidebar Boxes & Buttons */
@@ -423,11 +423,23 @@
       font-size: 0.9rem;
     }
 
+    @media (max-width: 1200px) {
+      .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     @media (max-width: 900px) {
       .main-layout { grid-template-columns: 1fr; }
       .guild-hero-content h1 { font-size: 2.3rem; }
       .aion-logo-img { height: 60px; }
       .aion-menu { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
