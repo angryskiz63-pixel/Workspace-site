@@ -382,6 +382,11 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
+    .side-box.admin-box {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.05);
+    }
+
     .twitch-btn {
       display: flex;
       align-items: center;
@@ -407,7 +412,7 @@
     }
 
     .form-group {
-      margin-top: 15px;
+      margin-top: 12px;
       text-align: left;
     }
 
@@ -452,6 +457,23 @@
     .reserve-submit-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
+    }
+
+    .admin-submit-btn {
+      width: 100%;
+      margin-top: 15px;
+      background: #ef4444;
+      color: #fff;
+      font-weight: 800;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .admin-submit-btn:hover {
+      background: #dc2626;
     }
 
     .user-badge {
@@ -513,6 +535,23 @@
       padding: 2px 8px;
       border-radius: 12px;
       font-size: 0.75rem;
+    }
+
+    .delete-btn {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      border-radius: 4px;
+      padding: 2px 6px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      margin-left: 8px;
+      transition: all 0.2s;
+    }
+
+    .delete-btn:hover {
+      background: #ef4444;
+      color: #fff;
     }
 
     footer {
@@ -708,6 +747,39 @@
       </div>
     </div>
 
+    <!-- PANNEAU ADMIN (Masqué par défaut, s'affiche si connecté en tant qu'angryskiz) -->
+    <div class="side-box admin-box" id="admin-panel" style="display: none;">
+      <div class="section-title" style="justify-content: center; margin-bottom: 12px; border-color: #ef4444;">
+        <span style="color: #ef4444;"><i class="fas fa-user-shield"></i> Panneau Admin</span>
+      </div>
+      <form onsubmit="ajouterPoteAdmin(event)">
+        <div class="form-group">
+          <label for="admin-tw">Pseudo Twitch du pote :</label>
+          <input type="text" id="admin-tw" class="form-input" placeholder="ex: PoteDeSkiz" required>
+        </div>
+        <div class="form-group">
+          <label for="admin-char">Nom Personnage :</label>
+          <input type="text" id="admin-char" class="form-input" placeholder="ex: PoteGame" required>
+        </div>
+        <div class="form-group">
+          <label for="admin-class">Classe :</label>
+          <select id="admin-class" class="form-select" required>
+            <option value="Gladiateur">Gladiateur</option>
+            <option value="Templier">Templier</option>
+            <option value="Assassin">Assassin</option>
+            <option value="Rôdeur">Rôdeur</option>
+            <option value="Sorcier">Sorcier</option>
+            <option value="Spiritualiste">Spiritualiste</option>
+            <option value="Clerc">Clerc</option>
+            <option value="Aède">Aède</option>
+          </select>
+        </div>
+        <button type="submit" class="admin-submit-btn">
+          <i class="fas fa-plus-circle"></i> Ajouter manuellement
+        </button>
+      </form>
+    </div>
+
     <!-- Liens Discord -->
     <div class="side-box" style="text-align: center;">
       <div class="section-title" style="justify-content: center; margin-bottom: 12px;">
@@ -735,6 +807,7 @@
 
 <script>
   const TWITCH_CLIENT_ID = 'gmzt0gwom9gxnaxotky9jjn683y283'; 
+  const ADMIN_TWITCH = 'angryskiz'; // Ton pseudo Twitch admin
   const REDIRECT_URI = window.location.origin + window.location.pathname;
 
   let currentIP = "";
@@ -806,6 +879,13 @@
     const localReservation = localStorage.getItem('unleashed_reservation');
     const blockedIPs = JSON.parse(localStorage.getItem('unleashed_blocked_ips') || '[]');
 
+    // Si tu es connecté avec ton compte admin
+    if (twUser && twUser.toLowerCase() === ADMIN_TWITCH.toLowerCase()) {
+      document.getElementById('admin-panel').style.display = 'block';
+    } else {
+      document.getElementById('admin-panel').style.display = 'none';
+    }
+
     if (blockedIPs.includes(currentIP) || localReservation) {
       let data = localReservation ? JSON.parse(localReservation) : { twitch: twUser || 'Anonyme', character: 'Enregistré', class: 'Bloqué (IP)' };
       document.getElementById('step-login').style.display = 'none';
@@ -833,8 +913,6 @@
     const charName = document.getElementById('char-name').value;
     const charClass = document.getElementById('char-class').value;
 
-    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1547233701551808512/OzUsbQfnH1yxAGRL97UgT07MIDtMOuoDa-9R-tf2gUIygdwrMk5srKo44Lw292nrJ6GB";
-
     const newReservation = {
       twitch: twUser || "Non renseigné",
       character: charName,
@@ -843,32 +921,7 @@
       date: new Date().toLocaleDateString('fr-FR')
     };
 
-    if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("https://discord")) {
-      try {
-        await fetch(DISCORD_WEBHOOK_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            username: "Bot UNLEASHED",
-            avatar_url: "https://angryskiz.fr/aion2/images/logo-aion2bis.png",
-            embeds: [{
-              title: "⚔️ Nouvelle Inscription — Guilde UNLEASHED !",
-              color: 62206,
-              fields: [
-                { name: "Pseudo Twitch", value: twUser || "Non connecté", inline: true },
-                { name: "Nom Personnage", value: charName, inline: true },
-                { name: "Classe prévue", value: charClass, inline: true },
-                { name: "Adresse IP", value: currentIP || "Non détectée", inline: false }
-              ],
-              footer: { text: "Portail Aion 2 — UNLEASHED" },
-              timestamp: new Date()
-            }]
-          })
-        });
-      } catch (err) {
-        console.error("Erreur d'envoi Discord Webhook :", err);
-      }
-    }
+    publierDiscord(newReservation);
 
     localStorage.setItem('unleashed_reservation', JSON.stringify(newReservation));
 
@@ -886,9 +939,77 @@
     afficherListeJoueurs();
   }
 
+  function ajouterPoteAdmin(e) {
+    e.preventDefault();
+    const twUser = document.getElementById('admin-tw').value.trim();
+    const charName = document.getElementById('admin-char').value.trim();
+    const charClass = document.getElementById('admin-class').value;
+
+    const newReservation = {
+      twitch: twUser,
+      character: charName,
+      class: charClass,
+      ip: "Ajout-Admin",
+      date: new Date().toLocaleDateString('fr-FR')
+    };
+
+    publierDiscord(newReservation);
+
+    let allPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
+    allPlayers.push(newReservation);
+    localStorage.setItem('unleashed_global_players', JSON.stringify(allPlayers));
+
+    document.getElementById('admin-tw').value = '';
+    document.getElementById('admin-char').value = '';
+
+    afficherListeJoueurs();
+  }
+
+  function supprimerJoueur(index) {
+    if (confirm("Supprimer ce membre ?")) {
+      let allPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
+      allPlayers.splice(index, 1);
+      localStorage.setItem('unleashed_global_players', JSON.stringify(allPlayers));
+      afficherListeJoueurs();
+    }
+  }
+
+  async function publierDiscord(reservation) {
+    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1547233701551808512/OzUsbQfnH1yxAGRL97UgT07MIDtMOuoDa-9R-tf2gUIygdwrMk5srKo44Lw292nrJ6GB";
+
+    if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("https://discord")) {
+      try {
+        await fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: "Bot UNLEASHED",
+            avatar_url: "https://angryskiz.fr/aion2/images/logo-aion2bis.png",
+            embeds: [{
+              title: "⚔️ Nouvelle Inscription — Guilde UNLEASHED !",
+              color: 62206,
+              fields: [
+                { name: "Pseudo Twitch", value: reservation.twitch || "Non connecté", inline: true },
+                { name: "Nom Personnage", value: reservation.character, inline: true },
+                { name: "Classe prévue", value: reservation.class, inline: true },
+                { name: "Adresse IP", value: reservation.ip || "Non détectée", inline: false }
+              ],
+              footer: { text: "Portail Aion 2 — UNLEASHED" },
+              timestamp: new Date()
+            }]
+          })
+        });
+      } catch (err) {
+        console.error("Erreur Discord Webhook :", err);
+      }
+    }
+  }
+
   function afficherListeJoueurs() {
     const container = document.getElementById('players-list-container');
     const counter = document.getElementById('player-count');
+    const twUser = localStorage.getItem('unleashed_tw_user');
+    const isAdmin = twUser && twUser.toLowerCase() === ADMIN_TWITCH.toLowerCase();
 
     let globalPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
     counter.innerText = globalPlayers.length;
@@ -898,13 +1019,16 @@
       return;
     }
 
-    container.innerHTML = globalPlayers.map(p => `
+    container.innerHTML = globalPlayers.map((p, index) => `
       <div class="player-row">
         <div>
           <span class="char">${p.character}</span>
           <span style="font-size:0.75rem; color:var(--text-muted);">(${p.twitch})</span>
         </div>
-        <span class="class-badge">${p.class}</span>
+        <div>
+          <span class="class-badge">${p.class}</span>
+          ${isAdmin ? `<button onclick="supprimerJoueur(${index})" class="delete-btn" title="Supprimer">X</button>` : ''}
+        </div>
       </div>
     `).join('');
   }
