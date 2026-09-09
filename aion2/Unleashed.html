@@ -1,877 +1,19 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="images/logo-aion2bis.png" />
-  <link rel="shortcut icon" type="image/png" href="images/logo-aion2bis.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Aion 2 | Unleashed</title>
-  <meta name="description" content="Rejoignez la guilde UNLEASHED sur Aion 2. Réservez votre place dans la guilde, suivez le live Twitch et préparez la sortie officielle." />
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <!-- Integration Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
-  <style>
-    :root {
-      --bg-main: #070b16;
-      --bg-card: rgba(15, 23, 42, 0.88);
-      --border-card: rgba(0, 242, 254, 0.25);
-      --accent-cyan: #00f2fe;
-      --accent-blue: #4facfe;
-      --accent-gold: #ffb74d;
-      --accent-purple: #a855f7;
-      --accent-twitch: #9146FF;
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-    }
-
-    html { scroll-behavior: smooth; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body {
-      font-family: 'Outfit', sans-serif;
-      background-color: var(--bg-main);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Header Aion 2 */
-    .aion-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 70px;
-      background: linear-gradient(180deg, rgba(7, 11, 22, 0.95) 0%, rgba(7, 11, 22, 0.8) 100%);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0 4%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-    }
-    
-    .aion-logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      height: 100%;
-      position: relative;
-      width: 120px;
-    }
-    
-    .aion-logo-img {
-      height: 100px;
-      width: auto;
-      object-fit: contain;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      transition: transform 0.3s ease;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.9));
-      z-index: 10;
-    }
-    
-    .aion-logo-img:hover { transform: translateY(-50%) scale(1.05); }
-    
-    .aion-lagofast {
-      position: absolute;
-      left: 32%;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 15;
-    }
-
-    .aion-lagofast-img {
-      height: 52px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.5));
-      transition: all 0.3s ease;
-    }
-
-    .aion-lagofast-img:hover {
-      transform: scale(1.1);
-      filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.9));
-    }
-
-    .aion-menu { 
-      display: flex; 
-      gap: 18px; 
-      list-style: none; 
-      margin-left: auto;
-      align-items: center;
-    }
-
-    .aion-menu a {
-      color: var(--text-main);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: 0.2s;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    }
-
-    .aion-menu a:hover, .aion-menu a.active { color: var(--accent-cyan); }
-
-    .coming-soon-group {
-      position: relative;
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      padding-top: 10px;
-    }
-
-    .coming-soon-group::before {
-      content: 'COMING SOON';
-      position: absolute;
-      top: -4px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.62rem;
-      font-weight: 800;
-      color: var(--accent-gold);
-      letter-spacing: 0.1em;
-      white-space: nowrap;
-      text-shadow: 0 0 6px rgba(255, 183, 77, 0.6);
-      pointer-events: none;
-    }
-
-    .coming-soon-group a { opacity: 0.6; cursor: not-allowed; }
-    .coming-soon-group a:hover { color: var(--text-main); }
-
-    .aion-fav-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-card);
-      color: var(--accent-gold);
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .aion-fav-btn:hover {
-      background: var(--accent-gold);
-      color: #070b16;
-      border-color: var(--accent-gold);
-      box-shadow: 0 0 12px rgba(255, 183, 77, 0.5);
-    }
-
-    .aion-discord-btn {
-      background: #5865F2;
-      color: #fff !important;
-      padding: 8px 18px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: bold !important;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
-      transition: all 0.2s ease !important;
-    }
-
-    .aion-discord-btn:hover {
-      background: #4752C4;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
-    }
-
-    /* Hero Banner */
-    .guild-hero {
-      position: relative;
-      height: 480px;
-      width: 100%;
-      margin-top: 70px;
-      background: url('images/Unleashed.jpg') center/cover no-repeat,
-                  url('/aion2/images/Unleashed.jpg') center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      border-bottom: 2px solid var(--border-card);
-      box-shadow: inset 0 -50px 50px rgba(7, 11, 22, 0.8);
-    }
-
-    .guild-hero-content {
-      background: rgba(7, 11, 22, 0.45);
-      padding: 30px 40px;
-      border-radius: 16px;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .guild-hero-content h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 3.5rem;
-      font-weight: 900;
-      letter-spacing: 3px;
-      background: linear-gradient(to right, #ffffff, var(--accent-cyan), var(--accent-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 10px;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.9);
-    }
-
-    .guild-hero-content p {
-      font-size: 1.2rem;
-      color: #ffffff;
-      max-width: 650px;
-      margin: 0 auto;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-      font-weight: 500;
-    }
-
-    .badge-tw {
-      display: inline-block;
-      background: rgba(168, 85, 247, 0.4);
-      border: 1px solid var(--accent-purple);
-      color: #f3e8ff;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      backdrop-filter: blur(5px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-    }
-
-    /* Layout Main */
-    .main-layout {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 40px 20px 60px 20px;
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 35px;
-      width: 100%;
-    }
-
-    .section-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.6rem;
-      margin-bottom: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid var(--border-card);
-      padding-bottom: 10px;
-    }
-
-    /* Section Twitch Embed */
-    .twitch-container {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 14px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      margin-bottom: 40px;
-    }
-
-    .twitch-player {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-    }
-
-    .twitch-player iframe {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      border: none;
-    }
-
-    .live-bar {
-      padding: 15px 20px;
-      background: rgba(15, 23, 42, 0.95);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid var(--border-card);
-    }
-
-    .live-status {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-    }
-
-    .pulse-dot {
-      width: 10px; height: 10px;
-      background-color: #ef4444;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #ef4444;
-      animation: pulse 1.5s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(0.95); opacity: 0.8; }
-    }
-
-    /* Cards Grid */
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-bottom: 40px;
-    }
-
-    .info-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 12px;
-      padding: 22px;
-      transition: all 0.3s ease;
-    }
-
-    .info-card:hover {
-      border-color: var(--accent-cyan);
-      transform: translateY(-3px);
-    }
-
-    .info-card i {
-      font-size: 2rem;
-      color: var(--accent-cyan);
-      margin-bottom: 12px;
-    }
-
-    .info-card h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.05rem;
-      margin-bottom: 8px;
-    }
-
-    .info-card p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* Sidebar & Module de Réservation Twitch */
-    .sidebar-section { display: flex; flex-direction: column; gap: 35px; }
-
-    .side-box {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: 14px;
-      padding: 24px;
-      position: relative;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    }
-
-    .side-box.admin-box {
-      border-color: #ef4444;
-      background: rgba(239, 68, 68, 0.05);
-    }
-
-    .twitch-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      width: 100%;
-      background: var(--accent-twitch);
-      color: #fff;
-      font-weight: 700;
-      padding: 12px 18px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(145, 70, 255, 0.4);
-    }
-
-    .twitch-btn:hover {
-      background: #772ce8;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(145, 70, 255, 0.6);
-    }
-
-    .logout-btn {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: var(--text-muted);
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      margin-left: auto;
-      transition: all 0.2s;
-    }
-
-    .logout-btn:hover {
-      background: #ef4444;
-      color: #fff;
-      border-color: #ef4444;
-    }
-
-    .edit-btn {
-      width: 100%;
-      background: rgba(0, 242, 254, 0.1);
-      border: 1px solid var(--accent-cyan);
-      color: var(--accent-cyan);
-      padding: 8px;
-      border-radius: 6px;
-      font-weight: bold;
-      font-size: 0.85rem;
-      cursor: pointer;
-      margin-bottom: 10px;
-      transition: all 0.2s;
-    }
-
-    .edit-btn:hover {
-      background: var(--accent-cyan);
-      color: #070b16;
-    }
-
-    .form-group {
-      margin-top: 12px;
-      text-align: left;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      font-weight: 600;
-    }
-
-    .form-input, .form-select {
-      width: 100%;
-      padding: 10px 14px;
-      background: rgba(7, 11, 22, 0.8);
-      border: 1px solid var(--border-card);
-      border-radius: 8px;
-      color: var(--text-main);
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.9rem;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-input:focus, .form-select:focus { border-color: var(--accent-cyan); }
-
-    .reserve-submit-btn {
-      width: 100%;
-      margin-top: 20px;
-      background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%);
-      color: #070b16;
-      font-weight: 800;
-      padding: 12px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: all 0.3s ease;
-    }
-
-    .reserve-submit-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
-    }
-
-    .admin-submit-btn {
-      width: 100%;
-      margin-top: 15px;
-      background: #ef4444;
-      color: #fff;
-      font-weight: 800;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .admin-submit-btn:hover {
-      background: #dc2626;
-    }
-
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(145, 70, 255, 0.15);
-      border: 1px solid var(--accent-twitch);
-      padding: 10px 14px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    .user-avatar {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: var(--accent-twitch);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      color: white;
-    }
-
-    .reservation-confirmed {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid #10b981;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    .players-list {
-      margin-top: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 280px;
-      overflow-y: auto;
-      padding-right: 5px;
-    }
-
-    .player-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(7, 11, 22, 0.6);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-size: 0.85rem;
-    }
-
-    .player-row .char { font-weight: bold; color: var(--accent-cyan); }
-    .player-row .class-badge {
-      background: rgba(255,183,77,0.15);
-      color: var(--accent-gold);
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 0.75rem;
-    }
-
-    .delete-btn {
-      background: rgba(239, 68, 68, 0.2);
-      border: 1px solid #ef4444;
-      color: #ef4444;
-      border-radius: 4px;
-      padding: 2px 6px;
-      cursor: pointer;
-      font-size: 0.75rem;
-      margin-left: 8px;
-      transition: all 0.2s;
-    }
-
-    .delete-btn:hover {
-      background: #ef4444;
-      color: #fff;
-    }
-
-    footer {
-      margin-top: auto;
-      background: rgba(7, 11, 22, 0.98);
-      border-top: 1px solid var(--border-card);
-      padding: 35px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 1100px) {
-      .aion-lagofast { left: 22%; }
-      .info-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 900px) {
-      .main-layout { grid-template-columns: 1fr; }
-      .guild-hero-content h1 { font-size: 2.3rem; }
-      .aion-logo-img { height: 60px; }
-      .aion-menu, .aion-lagofast { display: none; }
-    }
-
-    @media (max-width: 600px) {
-      .info-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-<nav class="aion-nav">
-  <a href="/aion2/aion2.html" class="aion-logo">
-    <img src="/aion2/images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='images/logo-aion2.png'; if(!this.src.includes('../')) this.src='../images/logo-aion2.png';">
-  </a>
-
-  <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="aion-lagofast">
-    <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
-  </a>
-
-  <ul class="aion-menu">
-    <li><a href="/aion2.html#actualites">Actualités</a></li>
-    <li><a href="/aion2/Classes.html">Classes</a></li>
-    <li class="coming-soon-group">
-      <a href="#">Builds</a>
-      <a href="#">Guides</a>
-      <a href="#">Patchs</a>
-    </li>
-    <li><a href="/aion2/Unleashed.html" class="active">UNLEASHED</a></li>
-    <li>
-      <button onclick="ajouterFavoris()" class="aion-fav-btn">
-        <i class="fas fa-star"></i> Favoris
-      </button>
-    </li>
-    <li>
-      <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="aion-discord-btn">
-        <i class="fab fa-discord"></i> Discord
-      </a>
-    </li>
-  </ul>
-</nav>
-
-<section class="guild-hero">
-  <div class="guild-hero-content">
-    <span class="badge-tw"><i class="fa-solid fa-crown" style="color:var(--accent-gold);"></i> SERVEUR FONDATEUR — FACTION ÉLYSÉENNE</span>
-    <h1>GUILDE UNLEASHED</h1>
-    <p>Structure compétitive et entraide pour l'ouverture globale d'Aion 2. Suivez l'aventure en direct sur Twitch !</p>
-  </div>
-</section>
-
-<main class="main-layout">
-  <section class="content-left">
-    
-    <div class="section-title">
-      <span><i class="fab fa-twitch" style="color:var(--accent-purple);"></i> Le Live en Direct</span>
-    </div>
-    
-    <div class="twitch-container">
-      <div class="twitch-player" id="twitch-embed">
-        <iframe src="https://player.twitch.tv/?channel=angryskiz&parent=angryskiz.fr&parent=www.angryskiz.fr" allowfullscreen></iframe>
-      </div>
-      <div class="live-bar">
-        <div class="live-status">
-          <span class="pulse-dot"></span>
-          <span>Twitch / AngrySkiz</span>
-        </div>
-        <a href="https://www.twitch.tv/angryskiz" target="_blank" style="color:var(--accent-purple); text-decoration:none; font-weight:bold; font-size:0.9rem;">
-          Ouvrir sur Twitch <i class="fas fa-external-link-alt"></i>
-        </a>
-      </div>
-    </div>
-
-    <div class="section-title">
-      <span><i class="fas fa-shield-halved" style="color:var(--accent-cyan);"></i> À Propos d'UNLEASHED</span>
-    </div>
-
-    <div class="info-grid">
-      <div class="info-card" style="border-color: var(--accent-gold);">
-        <i class="fas fa-crown" style="color: var(--accent-gold);"></i>
-        <h3>Faction & Serveur</h3>
-        <p>Nous serons du côté <strong>Élyséen</strong> sur le <strong>Serveur Fondateur</strong> dès l'ouverture officielle d'Aion 2.</p>
-      </div>
-      <div class="info-card">
-        <i class="fas fa-globe-asia"></i>
-        <h3>Expérience Taïwan</h3>
-        <p>Présents activement sur les serveurs taïwanais pour poncer le jeu, tester les méta-builds et vous fournir les meilleurs guides.</p>
-      </div>
-      <div class="info-card">
-        <i class="fas fa-users-rays"></i>
-        <h3>Entraide & Communauté</h3>
-        <p>Un groupe soudé favorisant le partage de conseils, les sorties en guilde optimisées et une ambiance axée sur la progression collective.</p>
-      </div>
-    </div>
-
-  </section>
-
-  <aside class="sidebar-section">
-    
-    <!-- Module Réservation -->
-    <div class="side-box">
-      <div class="section-title" style="justify-content: center; margin-bottom: 15px;">
-        <span><i class="fas fa-id-card" style="color:var(--accent-cyan);"></i> Réservation Guilde</span>
-      </div>
-
-      <!-- ÉTAPE 1 : Connexion Twitch -->
-      <div id="step-login">
-        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 18px; text-align: center;">
-          Connecte-toi avec Twitch pour réserver ta place dans la guilde <strong>UNLEASHED</strong> pour le lancement d'Aion 2 !
-        </p>
-        <button onclick="loginTwitch()" class="twitch-btn">
-          <i class="fab fa-twitch" style="font-size:1.2rem;"></i> Se connecter avec Twitch
-        </button>
-      </div>
-
-      <!-- ÉTAPE 2 : Saisie / Modification du personnage -->
-      <div id="step-form" style="display: none;">
-        <div class="user-badge">
-          <div class="user-avatar" id="tw-avatar"><i class="fas fa-user"></i></div>
-          <div style="text-align: left; flex-grow: 1;">
-            <div style="font-size: 0.75rem; color: var(--text-muted);">Connecté en tant que</div>
-            <div style="font-weight: bold; color: #fff;" id="tw-username">JoueurTwitch</div>
-          </div>
-          <button type="button" onclick="logoutTwitch()" class="logout-btn" title="Déconnexion">
-            <i class="fas fa-sign-out-alt"></i> Déconnexion
-          </button>
-        </div>
-
-        <form id="reservation-form" onsubmit="envoyerReservation(event)">
-          <div class="form-group">
-            <label for="char-name"><i class="fas fa-user-ninja"></i> Nom de ton personnage :</label>
-            <input type="text" id="char-name" class="form-input" placeholder="ex: Skizor" required>
-          </div>
-
-          <div class="form-group">
-            <label for="char-class"><i class="fas fa-khanda"></i> Classe prévue :</label>
-            <select id="char-class" class="form-select" required>
-              <option value="" disabled selected>-- Choisis ta classe --</option>
-              <option value="Gladiateur">Gladiateur</option>
-              <option value="Templier">Templier</option>
-              <option value="Assassin">Assassin</option>
-              <option value="Rôdeur">Rôdeur</option>
-              <option value="Sorcier">Sorcier</option>
-              <option value="Spiritualiste">Spiritualiste</option>
-              <option value="Clerc">Clerc</option>
-              <option value="Aède">Aède</option>
-            </select>
-          </div>
-
-          <button type="submit" class="reserve-submit-btn" id="btn-submit-text">
-            <i class="fas fa-check-circle"></i> Confirmer ma place
-          </button>
-        </form>
-      </div>
-
-      <!-- ÉTAPE 3 : Confirmation + Option Modifier -->
-      <div id="step-confirmed" style="display: none;">
-        <div class="reservation-confirmed">
-          <i class="fas fa-circle-check" style="font-size: 2rem; color: #10b981; margin-bottom: 10px;"></i>
-          <h4 style="color: #fff; margin-bottom: 5px;">Place Réservée !</h4>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;" id="summary-text">
-            Votre personnage est enregistré pour le jour J.
-          </p>
-          
-          <!-- BOUTON D'ÉDITION DU PERSONNAGE -->
-          <button type="button" onclick="activerModification()" class="edit-btn">
-            <i class="fas fa-edit"></i> Modifier mon personnage
-          </button>
-
-          <button type="button" onclick="logoutTwitch()" class="logout-btn" style="margin: 0 auto; display: block;">
-            <i class="fas fa-sign-out-alt"></i> Se déconnecter
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- BOX : Liste des Joueurs Inscrits -->
-    <div class="side-box">
-      <div class="section-title" style="justify-content: space-between; margin-bottom: 15px;">
-        <span><i class="fas fa-users" style="color:var(--accent-gold);"></i> Membres Inscrits</span>
-        <span id="player-count" style="font-size: 0.9rem; color: var(--accent-cyan);">0</span>
-      </div>
-      
-      <div class="players-list" id="players-list-container">
-        <!-- Rempli dynamiquement depuis Firebase -->
-      </div>
-    </div>
-
-    <!-- PANNEAU ADMIN -->
-    <div class="side-box admin-box" id="admin-panel" style="display: none;">
-      <div class="section-title" style="justify-content: center; margin-bottom: 12px; border-color: #ef4444;">
-        <span style="color: #ef4444;"><i class="fas fa-user-shield"></i> Panneau Admin</span>
-      </div>
-      <form onsubmit="ajouterPoteAdmin(event)">
-        <div class="form-group">
-          <label for="admin-tw">Pseudo Twitch du pote :</label>
-          <input type="text" id="admin-tw" class="form-input" placeholder="ex: PoteDeSkiz" required>
-        </div>
-        <div class="form-group">
-          <label for="admin-char">Nom Personnage :</label>
-          <input type="text" id="admin-char" class="form-input" placeholder="ex: PoteGame" required>
-        </div>
-        <div class="form-group">
-          <label for="admin-class">Classe :</label>
-          <select id="admin-class" class="form-select" required>
-            <option value="Gladiateur">Gladiateur</option>
-            <option value="Templier">Templier</option>
-            <option value="Assassin">Assassin</option>
-            <option value="Rôdeur">Rôdeur</option>
-            <option value="Sorcier">Sorcier</option>
-            <option value="Spiritualiste">Spiritualiste</option>
-            <option value="Clerc">Clerc</option>
-            <option value="Aède">Aède</option>
-          </select>
-        </div>
-        <button type="submit" class="admin-submit-btn">
-          <i class="fas fa-plus-circle"></i> Ajouter manuellement
-        </button>
-      </form>
-    </div>
-
-    <!-- Liens Discord -->
-    <div class="side-box" style="text-align: center;">
-      <div class="section-title" style="justify-content: center; margin-bottom: 12px;">
-        <span><i class="fab fa-discord" style="color:#5865F2;"></i> Rejoins le Discord</span>
-      </div>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">
-        Rejoins nos canaux vocaux et textuels pour organiser ton groupe de pexing !
-      </p>
-      <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="aion-discord-btn">
-        <i class="fab fa-discord"></i> Discord UNLEASHED
-      </a>
-    </div>
-
-  </aside>
-</main>
-
-<footer>
-  <p style="margin-bottom: 12px;">
-    <a href="https://discord.gg/q3qDmCzdum" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
-      <i class="fab fa-discord"></i> Rejoindre la communauté sur Discord
-    </a>
-  </p>
-  <p>&copy; 2026 Portail Aion 2 — Guilde UNLEASHED</p>
-</footer>
-
 <script>
-  // Configuration Firebase Realtime Database
   const firebaseConfig = {
     databaseURL: "https://unleashed-69944-default-rtdb.europe-west1.firebasedatabase.app"
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
+  // IDs OAuth
   const TWITCH_CLIENT_ID = 'gmzt0gwom9gxnaxotky9jjn683y283'; 
-  const ADMIN_TWITCH = 'angryskiz'; 
+  const DISCORD_CLIENT_ID = '1547252711790088214'; // Ton ID Discord
+  const ADMIN_NAME = 'angryskiz'; 
   const REDIRECT_URI = window.location.origin + window.location.pathname;
 
   let currentIP = "";
-  let joueursData = {}; // Cache local des données
-  let isEditingMode = false; // Suivi du mode édition
+  let joueursData = {};
+  let isEditingMode = false;
 
   function ajouterFavoris() {
     if (window.sidebar && window.sidebar.addPanel) {
@@ -893,13 +35,19 @@
     }
   }
 
+  // --- Authentification ---
   function loginTwitch() {
     const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
     window.location.href = authUrl;
   }
 
-  function logoutTwitch() {
-    localStorage.removeItem('unleashed_tw_user');
+  function loginDiscord() {
+    const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${DISCORD_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=identify`;
+    window.location.href = authUrl;
+  }
+
+  function logoutSocial() {
+    localStorage.removeItem('unleashed_user');
     isEditingMode = false;
     verifierSession();
   }
@@ -909,8 +57,14 @@
     
     const hash = window.location.hash;
     if (hash.includes('access_token')) {
-      const token = new URLSearchParams(hash.substring(1)).get('access_token');
-      recupererProfilTwitch(token);
+      const params = new URLSearchParams(hash.substring(1));
+      const token = params.get('access_token');
+      
+      if (hash.includes('scope=identify')) {
+        recupererProfilDiscord(token);
+      } else {
+        recupererProfilTwitch(token);
+      }
     } else {
       verifierSession();
     }
@@ -919,7 +73,6 @@
       joueursData = snapshot.val() || {};
       afficherListeJoueurs(joueursData);
       
-      // Si l'utilisateur n'est pas en train de taper en mode édition, on met à jour la vue
       if (!isEditingMode) {
         verifierInscriptionExistante();
       }
@@ -937,31 +90,57 @@
     .then(data => {
       if (data.data && data.data.length > 0) {
         const username = data.data[0].display_name;
-        sauvegarderUtilisateurTwitch(username);
+        sauvegarderSession({ name: username, provider: 'Twitch' });
       }
     })
     .catch(err => console.error("Erreur Twitch OAuth:", err));
   }
 
-  function sauvegarderUtilisateurTwitch(username) {
-    localStorage.setItem('unleashed_tw_user', username);
+  function recupererProfilDiscord(token) {
+    fetch('https://discord.com/api/users/@me', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.username) {
+        const username = data.global_name || data.username;
+        sauvegarderSession({ name: username, provider: 'Discord' });
+      }
+    })
+    .catch(err => console.error("Erreur Discord OAuth:", err));
+  }
+
+  function sauvegarderSession(userData) {
+    localStorage.setItem('unleashed_user', JSON.stringify(userData));
     window.location.hash = '';
     verifierSession();
   }
 
-  function verifierSession() {
-    const twUser = localStorage.getItem('unleashed_tw_user');
+  function meObtenirSession() {
+    const raw = localStorage.getItem('unleashed_user');
+    return raw ? JSON.parse(raw) : null;
+  }
 
-    if (twUser && twUser.toLowerCase() === ADMIN_TWITCH.toLowerCase()) {
+  function verifierSession() {
+    const session = meObtenirSession();
+
+    if (session && session.name.toLowerCase() === ADMIN_NAME.toLowerCase()) {
       document.getElementById('admin-panel').style.display = 'block';
     } else {
       document.getElementById('admin-panel').style.display = 'none';
     }
 
-    if (twUser) {
+    if (session) {
       document.getElementById('step-login').style.display = 'none';
-      document.getElementById('tw-username').innerText = twUser;
-      document.getElementById('tw-avatar').innerText = twUser.charAt(0).toUpperCase();
+      document.getElementById('social-username').innerText = session.name;
+      document.getElementById('social-platform').innerText = `Connecté via ${session.provider}`;
+      
+      const avatarContainer = document.getElementById('social-avatar');
+      avatarContainer.innerText = session.name.charAt(0).toUpperCase();
+      avatarContainer.style.background = session.provider === 'Twitch' ? 'var(--accent-twitch)' : 'var(--accent-discord)';
+
       if (!isEditingMode) {
         verifierInscriptionExistante();
       }
@@ -973,12 +152,12 @@
   }
 
   function verifierInscriptionExistante() {
-    const twUser = localStorage.getItem('unleashed_tw_user');
-    if (!twUser) return;
+    const session = meObtenirSession();
+    if (!session) return;
 
     let joueurExiste = null;
     for (const key in joueursData) {
-      if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
+      if (joueursData[key].account && joueursData[key].account.toLowerCase() === session.name.toLowerCase()) {
         joueurExiste = joueursData[key];
         break;
       }
@@ -988,7 +167,7 @@
       document.getElementById('step-form').style.display = 'none';
       document.getElementById('step-confirmed').style.display = 'block';
       document.getElementById('summary-text').innerHTML = `
-        Twitch : <strong>${joueurExiste.twitch}</strong><br>
+        ${joueurExiste.provider || 'Compte'} : <strong>${joueurExiste.account}</strong><br>
         Perso : <strong>${joueurExiste.character}</strong> (${joueurExiste.class})
       `;
     } else if (!isEditingMode) {
@@ -998,14 +177,13 @@
     }
   }
 
-  // Active le mode modification et remplit le formulaire avec les valeurs actuelles
   function activerModification() {
-    const twUser = localStorage.getItem('unleashed_tw_user');
-    if (!twUser) return;
+    const session = meObtenirSession();
+    if (!session) return;
 
     let joueurExiste = null;
     for (const key in joueursData) {
-      if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
+      if (joueursData[key].account && joueursData[key].account.toLowerCase() === session.name.toLowerCase()) {
         joueurExiste = joueursData[key];
         break;
       }
@@ -1024,22 +202,23 @@
 
   async function envoyerReservation(e) {
     e.preventDefault();
-    const twUser = localStorage.getItem('unleashed_tw_user');
+    const session = meObtenirSession();
     const charName = document.getElementById('char-name').value.trim();
     const charClass = document.getElementById('char-class').value;
 
-    if (!twUser) return;
+    if (!session) return;
 
     let existingKey = null;
     for (const key in joueursData) {
-      if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
+      if (joueursData[key].account && joueursData[key].account.toLowerCase() === session.name.toLowerCase()) {
         existingKey = key;
         break;
       }
     }
 
     const newReservation = {
-      twitch: twUser,
+      account: session.name,
+      provider: session.provider,
       character: charName,
       class: charClass,
       ip: currentIP,
@@ -1047,10 +226,8 @@
     };
 
     if (existingKey) {
-      // Met à jour la ligne existante
       db.ref('joueurs/' + existingKey).set(newReservation);
     } else {
-      // Ajoute une nouvelle ligne
       db.ref('joueurs').push(newReservation);
     }
 
@@ -1060,27 +237,28 @@
     document.getElementById('step-form').style.display = 'none';
     document.getElementById('step-confirmed').style.display = 'block';
     document.getElementById('summary-text').innerHTML = `
-      Twitch : <strong>${newReservation.twitch}</strong><br>
+      ${newReservation.provider} : <strong>${newReservation.account}</strong><br>
       Perso : <strong>${newReservation.character}</strong> (${newReservation.class})
     `;
   }
 
   function ajouterPoteAdmin(e) {
     e.preventDefault();
-    const twUser = document.getElementById('admin-tw').value.trim();
+    const accountName = document.getElementById('admin-tw').value.trim();
     const charName = document.getElementById('admin-char').value.trim();
     const charClass = document.getElementById('admin-class').value;
 
     let existingKey = null;
     for (const key in joueursData) {
-      if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
+      if (joueursData[key].account && joueursData[key].account.toLowerCase() === accountName.toLowerCase()) {
         existingKey = key;
         break;
       }
     }
 
     const newReservation = {
-      twitch: twUser,
+      account: accountName,
+      provider: 'Manuel',
       character: charName,
       class: charClass,
       ip: "Ajout-Admin",
@@ -1118,9 +296,9 @@
             avatar_url: "https://angryskiz.fr/aion2/images/logo-aion2bis.png",
             embeds: [{
               title: "⚔️ Inscription / Modification — Guilde UNLEASHED !",
-              color: 62206,
+              color: reservation.provider === 'Discord' ? 5793266 : 9520895,
               fields: [
-                { name: "Pseudo Twitch", value: reservation.twitch || "Non connecté", inline: true },
+                { name: `Compte (${reservation.provider || 'Twitch'})`, value: reservation.account, inline: true },
                 { name: "Nom Personnage", value: reservation.character, inline: true },
                 { name: "Classe prévue", value: reservation.class, inline: true },
                 { name: "Adresse IP", value: reservation.ip || "Non détectée", inline: false }
@@ -1139,8 +317,8 @@
   function afficherListeJoueurs(data) {
     const container = document.getElementById('players-list-container');
     const counter = document.getElementById('player-count');
-    const twUser = localStorage.getItem('unleashed_tw_user');
-    const isAdmin = twUser && twUser.toLowerCase() === ADMIN_TWITCH.toLowerCase();
+    const session = meObtenirSession();
+    const isAdmin = session && session.name.toLowerCase() === ADMIN_NAME.toLowerCase();
 
     if (!data || Object.keys(data).length === 0) {
       counter.innerText = "0";
@@ -1153,11 +331,12 @@
 
     container.innerHTML = keys.map(key => {
       const p = data[key];
+      const accountDisplay = p.account || p.twitch || 'Anonyme';
       return `
         <div class="player-row">
           <div>
             <span class="char">${p.character}</span>
-            <span style="font-size:0.75rem; color:var(--text-muted);">(${p.twitch})</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);">(${accountDisplay})</span>
           </div>
           <div>
             <span class="class-badge">${p.class}</span>
@@ -1168,6 +347,3 @@
     }).join('');
   }
 </script>
-
-</body>
-</html>
