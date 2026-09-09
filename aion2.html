@@ -196,8 +196,8 @@
     /* Hero Section */
     .aion-hero {
       position: relative;
-      min-height: calc(100vh - 180px);
-      max-height: 700px;
+      min-height: calc(100vh - 140px);
+      max-height: 750px;
       width: 100%;
       overflow: hidden;
       display: flex;
@@ -260,6 +260,9 @@
       z-index: 2;
       max-width: 900px;
       padding: 0 20px 120px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .hero-content h1 {
@@ -270,11 +273,79 @@
       background: linear-gradient(to right, #ffffff, var(--accent-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       text-shadow: 0 4px 15px rgba(0,0,0,0.9);
     }
 
-    .hero-content p { font-size: 1.3rem; color: #cbd5e1; text-shadow: 0 2px 10px rgba(0,0,0,0.9); }
+    .hero-content p { font-size: 1.2rem; color: #cbd5e1; text-shadow: 0 2px 10px rgba(0,0,0,0.9); margin-bottom: 20px; }
+
+    /* Widget Compte à Rebours */
+    .launch-countdown-box {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid var(--border-card);
+      backdrop-filter: blur(12px);
+      padding: 16px 28px;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 242, 254, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-top: 5px;
+    }
+
+    .countdown-header {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-shadow: 0 0 8px rgba(255, 183, 77, 0.4);
+    }
+
+    .countdown-timer {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .time-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 55px;
+    }
+
+    .time-val {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow: 0 0 12px var(--accent-cyan);
+      line-height: 1;
+    }
+
+    .time-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .time-separator {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--accent-cyan);
+      margin-top: -12px;
+      opacity: 0.7;
+    }
 
     /* Quick Links */
     .quick-links {
@@ -462,7 +533,7 @@
     }
 
     @media (max-width: 900px) {
-      .aion-hero { height: 550px; min-height: auto; }
+      .aion-hero { height: 600px; min-height: auto; }
       .main-layout { grid-template-columns: 1fr; }
       .hero-content { padding-bottom: 60px; }
       .hero-content h1 { font-size: 2.2rem; }
@@ -472,6 +543,9 @@
       .aion-menu { display: none; }
       .quick-links { margin-top: -40px; grid-template-columns: repeat(2, 1fr); }
       .aion-lagofast { display: none; }
+      .time-val { font-size: 1.4rem; }
+      .time-block { min-width: 42px; }
+      .countdown-timer { gap: 10px; }
     }
   </style>
 </head>
@@ -518,9 +592,38 @@
   <button class="slider-btn prev" id="prevBtn" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
   <button class="slider-btn next" id="nextBtn" aria-label="Suivant"><i class="fas fa-chevron-right"></i></button>
   <div class="hero-overlay"></div>
+  
   <div class="hero-content">
     <h1>L'HÉRITAGE ÉTERNEL</h1>
     <p>Le portail francophone ultime : guides de jeu, builds optimisés et actualités en direct.</p>
+    
+    <!-- Widget Compte à Rebours -->
+    <div class="launch-countdown-box">
+      <div class="countdown-header">
+        <i class="fas fa-clock"></i> Lancement de la version globale
+      </div>
+      <div class="countdown-timer">
+        <div class="time-block">
+          <span class="time-val" id="cd-days">00</span>
+          <span class="time-label">Jours</span>
+        </div>
+        <span class="time-separator">:</span>
+        <div class="time-block">
+          <span class="time-val" id="cd-hours">00</span>
+          <span class="time-label">Heures</span>
+        </div>
+        <span class="time-separator">:</span>
+        <div class="time-block">
+          <span class="time-val" id="cd-minutes">00</span>
+          <span class="time-label">Min</span>
+        </div>
+        <span class="time-separator">:</span>
+        <div class="time-block">
+          <span class="time-val" id="cd-seconds">00</span>
+          <span class="time-label">Sec</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -687,6 +790,33 @@
       alert('Appuie sur ' + (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + ' + D pour ajouter cette page à tes favoris.');
     }
   }
+
+  // --- SCRIPT DU COMPTE À REBOURS ---
+  // Date cible fixée au 30 septembre à 00:00:00
+  const targetDate = new Date('2026-09-30T00:00:00').getTime();
+
+  function updateCountdown() {
+    const currentTime = new Date().getTime();
+    const distance = targetDate - currentTime;
+
+    if (distance <= 0) {
+      document.querySelector('.launch-countdown-box').innerHTML = "<div class='countdown-header' style='color:var(--accent-cyan);'><i class='fas fa-check-circle'></i> LE JEU EST DISPONIBLE !</div>";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
+    document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
+    document.getElementById('cd-minutes').innerText = String(minutes).padStart(2, '0');
+    document.getElementById('cd-seconds').innerText = String(seconds).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 </script>
 
 </body>
