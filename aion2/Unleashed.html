@@ -433,6 +433,25 @@
       border-color: #ef4444;
     }
 
+    .edit-btn {
+      width: 100%;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: all 0.2s;
+    }
+
+    .edit-btn:hover {
+      background: var(--accent-cyan);
+      color: #070b16;
+    }
+
     .form-group {
       margin-top: 12px;
       text-align: left;
@@ -707,7 +726,7 @@
         </button>
       </div>
 
-      <!-- ÉTAPE 2 : Saisie du personnage -->
+      <!-- ÉTAPE 2 : Saisie / Modification du personnage -->
       <div id="step-form" style="display: none;">
         <div class="user-badge">
           <div class="user-avatar" id="tw-avatar"><i class="fas fa-user"></i></div>
@@ -741,20 +760,26 @@
             </select>
           </div>
 
-          <button type="submit" class="reserve-submit-btn">
+          <button type="submit" class="reserve-submit-btn" id="btn-submit-text">
             <i class="fas fa-check-circle"></i> Confirmer ma place
           </button>
         </form>
       </div>
 
-      <!-- ÉTAPE 3 : Confirmation -->
+      <!-- ÉTAPE 3 : Confirmation + Option Modifier -->
       <div id="step-confirmed" style="display: none;">
         <div class="reservation-confirmed">
           <i class="fas fa-circle-check" style="font-size: 2rem; color: #10b981; margin-bottom: 10px;"></i>
           <h4 style="color: #fff; margin-bottom: 5px;">Place Réservée !</h4>
-          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;" id="summary-text">
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;" id="summary-text">
             Votre personnage est enregistré pour le jour J.
           </p>
+          
+          <!-- BOUTON D'ÉDITION DU PERSONNAGE -->
+          <button type="button" onclick="activerModification()" class="edit-btn">
+            <i class="fas fa-edit"></i> Modifier mon personnage
+          </button>
+
           <button type="button" onclick="logoutTwitch()" class="logout-btn" style="margin: 0 auto; display: block;">
             <i class="fas fa-sign-out-alt"></i> Se déconnecter
           </button>
@@ -845,7 +870,8 @@
   const REDIRECT_URI = window.location.origin + window.location.pathname;
 
   let currentIP = "";
-  let joueursData = {}; // Cache local des données Firebase
+  let joueursData = {}; // Cache local des données
+  let isEditingMode = false; // Suivi du mode édition
 
   function ajouterFavoris() {
     if (window.sidebar && window.sidebar.addPanel) {
@@ -874,6 +900,7 @@
 
   function logoutTwitch() {
     localStorage.removeItem('unleashed_tw_user');
+    isEditingMode = false;
     verifierSession();
   }
 
@@ -888,11 +915,14 @@
       verifierSession();
     }
 
-    // Écoute en temps réel les données dans Firebase
     db.ref('joueurs').on('value', (snapshot) => {
       joueursData = snapshot.val() || {};
       afficherListeJoueurs(joueursData);
-      verifierInscriptionExistante();
+      
+      // Si l'utilisateur n'est pas en train de taper en mode édition, on met à jour la vue
+      if (!isEditingMode) {
+        verifierInscriptionExistante();
+      }
     });
   });
 
@@ -932,7 +962,9 @@
       document.getElementById('step-login').style.display = 'none';
       document.getElementById('tw-username').innerText = twUser;
       document.getElementById('tw-avatar').innerText = twUser.charAt(0).toUpperCase();
-      verifierInscriptionExistante();
+      if (!isEditingMode) {
+        verifierInscriptionExistante();
+      }
     } else {
       document.getElementById('step-login').style.display = 'block';
       document.getElementById('step-form').style.display = 'none';
@@ -940,13 +972,38 @@
     }
   }
 
-  // Vérifie si l'utilisateur Twitch a déjà soumis un personnage
   function verifierInscriptionExistante() {
     const twUser = localStorage.getItem('unleashed_tw_user');
     if (!twUser) return;
 
     let joueurExiste = null;
+    for (const key in joueursData) {
+      if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
+        joueurExiste = joueursData[key];
+        break;
+      }
+    }
 
+    if (joueurExiste && !isEditingMode) {
+      document.getElementById('step-form').style.display = 'none';
+      document.getElementById('step-confirmed').style.display = 'block';
+      document.getElementById('summary-text').innerHTML = `
+        Twitch : <strong>${joueurExiste.twitch}</strong><br>
+        Perso : <strong>${joueurExiste.character}</strong> (${joueurExiste.class})
+      `;
+    } else if (!isEditingMode) {
+      document.getElementById('step-form').style.display = 'block';
+      document.getElementById('step-confirmed').style.display = 'none';
+      document.getElementById('btn-submit-text').innerHTML = `<i class="fas fa-check-circle"></i> Confirmer ma place`;
+    }
+  }
+
+  // Active le mode modification et remplit le formulaire avec les valeurs actuelles
+  function activerModification() {
+    const twUser = localStorage.getItem('unleashed_tw_user');
+    if (!twUser) return;
+
+    let joueurExiste = null;
     for (const key in joueursData) {
       if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
         joueurExiste = joueursData[key];
@@ -955,15 +1012,13 @@
     }
 
     if (joueurExiste) {
-      document.getElementById('step-form').style.display = 'none';
-      document.getElementById('step-confirmed').style.display = 'block';
-      document.getElementById('summary-text').innerHTML = `
-        Twitch : <strong>${joueurExiste.twitch}</strong><br>
-        Perso : <strong>${joueurExiste.character}</strong> (${joueurExiste.class})
-      `;
-    } else {
-      document.getElementById('step-form').style.display = 'block';
+      isEditingMode = true;
+      document.getElementById('char-name').value = joueurExiste.character || '';
+      document.getElementById('char-class').value = joueurExiste.class || '';
+      document.getElementById('btn-submit-text').innerHTML = `<i class="fas fa-save"></i> Enregistrer les modifications`;
+
       document.getElementById('step-confirmed').style.display = 'none';
+      document.getElementById('step-form').style.display = 'block';
     }
   }
 
@@ -975,7 +1030,6 @@
 
     if (!twUser) return;
 
-    // Vérifie si une entrée existe déjà
     let existingKey = null;
     for (const key in joueursData) {
       if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
@@ -993,15 +1047,16 @@
     };
 
     if (existingKey) {
-      // Mise à jour (empêche les doublons)
+      // Met à jour la ligne existante
       db.ref('joueurs/' + existingKey).set(newReservation);
     } else {
-      // Création
+      // Ajoute une nouvelle ligne
       db.ref('joueurs').push(newReservation);
     }
 
     publierDiscord(newReservation);
 
+    isEditingMode = false;
     document.getElementById('step-form').style.display = 'none';
     document.getElementById('step-confirmed').style.display = 'block';
     document.getElementById('summary-text').innerHTML = `
