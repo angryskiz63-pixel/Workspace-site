@@ -696,7 +696,7 @@
       </div>
     </div>
 
-    <!-- NOUVELLE BOX : Liste des Joueurs Inscrits -->
+    <!-- BOX : Liste des Joueurs Inscrits -->
     <div class="side-box">
       <div class="section-title" style="justify-content: space-between; margin-bottom: 15px;">
         <span><i class="fas fa-users" style="color:var(--accent-gold);"></i> Membres Inscrits</span>
@@ -833,31 +833,61 @@
     }
   }
 
-  function envoyerReservation(e) {
+  async function envoyerReservation(e) {
     e.preventDefault();
     const twUser = localStorage.getItem('unleashed_tw_user');
     const charName = document.getElementById('char-name').value;
     const charClass = document.getElementById('char-class').value;
 
+    const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1547233701551808512/OzUsbQfnH1yxAGRL97UgT07MIDtMOuoDa-9R-tf2gUIygdwrMk5srKo44Lw292nrJ6GB";
+
     const newReservation = {
-      twitch: twUser,
+      twitch: twUser || "Non renseigné",
       character: charName,
       class: charClass,
       ip: currentIP,
       date: new Date().toLocaleDateString('fr-FR')
     };
 
-    // 1. Sauvegarder la réservation du joueur local
+    // 1. Envoi au Webhook Discord
+    if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("https://discord")) {
+      try {
+        await fetch(DISCORD_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: "Bot UNLEASHED",
+            avatar_url: "https://angryskiz.fr/aion2/images/logo-aion2bis.png",
+            embeds: [{
+              title: "⚔️ Nouvelle Inscription — Guilde UNLEASHED !",
+              color: 62206, // Couleur Cyan Aion 2
+              fields: [
+                { name: "Pseudo Twitch", value: twUser || "Non connecté", inline: true },
+                { name: "Nom Personnage", value: charName, inline: true },
+                { name: "Classe prévue", value: charClass, inline: true },
+                { name: "Adresse IP", value: currentIP || "Non détectée", inline: false }
+              ],
+              footer: { text: "Portail Aion 2 — UNLEASHED" },
+              timestamp: new Date()
+            }]
+          })
+        });
+      } catch (err) {
+        console.error("Erreur d'envoi Discord Webhook :", err);
+      }
+    }
+
+    // 2. Sauvegarder la réservation du joueur local
     localStorage.setItem('unleashed_reservation', JSON.stringify(newReservation));
 
-    // 2. Bloquer l'adresse IP localement
+    // 3. Bloquer l'adresse IP localement
     const blockedIPs = JSON.parse(localStorage.getItem('unleashed_blocked_ips') || '[]');
     if(!blockedIPs.includes(currentIP)) {
       blockedIPs.push(currentIP);
       localStorage.setItem('unleashed_blocked_ips', JSON.stringify(blockedIPs));
     }
 
-    // 3. Ajouter à la liste globale affichée
+    // 4. Ajouter à la liste globale affichée
     let allPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
     allPlayers.push(newReservation);
     localStorage.setItem('unleashed_global_players', JSON.stringify(allPlayers));
@@ -869,25 +899,18 @@
   function afficherListeJoueurs() {
     const container = document.getElementById('players-list-container');
     const counter = document.getElementById('player-count');
-    
-    // Données par défaut pour remplir la liste
-    const defaultPlayers = [
-      { character: 'Skiz', class: 'Templier', twitch: 'AngrySkiz' },
-      { character: 'Auron', class: 'Gladiateur', twitch: 'Auron' },
-      { character: 'Elysia', class: 'Clerc', twitch: 'Elysia_TV' }
-    ];
 
+    // Charge uniquement les vrais joueurs depuis le stockage local
     let globalPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
-    let fullList = [...defaultPlayers, ...globalPlayers];
 
-    counter.innerText = fullList.length;
+    counter.innerText = globalPlayers.length;
 
-    if (fullList.length === 0) {
-      container.innerHTML = `<p style="text-align:center; font-size:0.8rem; color:var(--text-muted);">Aucun inscrit pour le moment.</p>`;
+    if (globalPlayers.length === 0) {
+      container.innerHTML = `<p style="text-align:center; font-size:0.8rem; color:var(--text-muted); padding:10px;">Aucun inscrit pour le moment.</p>`;
       return;
     }
 
-    container.innerHTML = fullList.map(p => `
+    container.innerHTML = globalPlayers.map(p => `
       <div class="player-row">
         <div>
           <span class="char">${p.character}</span>
