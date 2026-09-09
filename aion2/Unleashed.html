@@ -734,7 +734,7 @@
 </footer>
 
 <script>
-  const TWITCH_CLIENT_ID = 'VOTRE_CLIENT_ID_TWITCH_ICI'; 
+  const TWITCH_CLIENT_ID = 'gmzt0gwom9gxnaxotky9jjn683y283'; 
   const REDIRECT_URI = window.location.origin + window.location.pathname;
 
   let currentIP = "";
@@ -749,7 +749,6 @@
     }
   }
 
-  // Récupération automatique de l'IP du visiteur (Protection Anti-Spam)
   async function obtenirIP() {
     try {
       const res = await fetch('https://api.ipify.org?format=json');
@@ -761,14 +760,6 @@
   }
 
   function loginTwitch() {
-    if(TWITCH_CLIENT_ID === 'VOTRE_CLIENT_ID_TWITCH_ICI') {
-      const demoUser = prompt("AION 2 DEMO : Entrez votre pseudo Twitch pour vous identifier :");
-      if(demoUser) {
-        sauvegarderUtilisateurTwitch(demoUser);
-      }
-      return;
-    }
-
     const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
     window.location.href = authUrl;
   }
@@ -815,7 +806,6 @@
     const localReservation = localStorage.getItem('unleashed_reservation');
     const blockedIPs = JSON.parse(localStorage.getItem('unleashed_blocked_ips') || '[]');
 
-    // Bloquer si l'IP a déjà soumis une réservation
     if (blockedIPs.includes(currentIP) || localReservation) {
       let data = localReservation ? JSON.parse(localReservation) : { twitch: twUser || 'Anonyme', character: 'Enregistré', class: 'Bloqué (IP)' };
       document.getElementById('step-login').style.display = 'none';
@@ -853,7 +843,6 @@
       date: new Date().toLocaleDateString('fr-FR')
     };
 
-    // 1. Envoi au Webhook Discord
     if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("https://discord")) {
       try {
         await fetch(DISCORD_WEBHOOK_URL, {
@@ -864,7 +853,7 @@
             avatar_url: "https://angryskiz.fr/aion2/images/logo-aion2bis.png",
             embeds: [{
               title: "⚔️ Nouvelle Inscription — Guilde UNLEASHED !",
-              color: 62206, // Couleur Cyan Aion 2
+              color: 62206,
               fields: [
                 { name: "Pseudo Twitch", value: twUser || "Non connecté", inline: true },
                 { name: "Nom Personnage", value: charName, inline: true },
@@ -881,17 +870,14 @@
       }
     }
 
-    // 2. Sauvegarder la réservation du joueur local
     localStorage.setItem('unleashed_reservation', JSON.stringify(newReservation));
 
-    // 3. Bloquer l'adresse IP localement
     const blockedIPs = JSON.parse(localStorage.getItem('unleashed_blocked_ips') || '[]');
     if(!blockedIPs.includes(currentIP)) {
       blockedIPs.push(currentIP);
       localStorage.setItem('unleashed_blocked_ips', JSON.stringify(blockedIPs));
     }
 
-    // 4. Ajouter à la liste globale affichée
     let allPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
     allPlayers.push(newReservation);
     localStorage.setItem('unleashed_global_players', JSON.stringify(allPlayers));
@@ -904,9 +890,7 @@
     const container = document.getElementById('players-list-container');
     const counter = document.getElementById('player-count');
 
-    // Charge uniquement les vrais joueurs depuis le stockage local
     let globalPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
-
     counter.innerText = globalPlayers.length;
 
     if (globalPlayers.length === 0) {
