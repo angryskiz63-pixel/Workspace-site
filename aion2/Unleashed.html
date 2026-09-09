@@ -415,6 +415,24 @@
       box-shadow: 0 6px 20px rgba(145, 70, 255, 0.6);
     }
 
+    .logout-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-muted);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      margin-left: auto;
+      transition: all 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #ef4444;
+      color: #fff;
+      border-color: #ef4444;
+    }
+
     .form-group {
       margin-top: 12px;
       text-align: left;
@@ -693,10 +711,13 @@
       <div id="step-form" style="display: none;">
         <div class="user-badge">
           <div class="user-avatar" id="tw-avatar"><i class="fas fa-user"></i></div>
-          <div style="text-align: left;">
+          <div style="text-align: left; flex-grow: 1;">
             <div style="font-size: 0.75rem; color: var(--text-muted);">Connecté en tant que</div>
             <div style="font-weight: bold; color: #fff;" id="tw-username">JoueurTwitch</div>
           </div>
+          <button type="button" onclick="logoutTwitch()" class="logout-btn" title="Déconnexion">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
         </div>
 
         <form id="reservation-form" onsubmit="envoyerReservation(event)">
@@ -809,7 +830,7 @@
 </footer>
 
 <script>
-  // Configuration Firebase Realtime Database liée à ton projet "unleashed-69944"
+  // Configuration Firebase Realtime Database
   const firebaseConfig = {
     databaseURL: "https://unleashed-69944-default-rtdb.europe-west1.firebasedatabase.app"
   };
@@ -845,6 +866,11 @@
   function loginTwitch() {
     const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
     window.location.href = authUrl;
+  }
+
+  function logoutTwitch() {
+    localStorage.removeItem('unleashed_tw_user');
+    verifierSession();
   }
 
   window.addEventListener('DOMContentLoaded', async () => {
