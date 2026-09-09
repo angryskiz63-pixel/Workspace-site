@@ -809,9 +809,9 @@
 </footer>
 
 <script>
-  // Configuration Firebase Realtime Database
+  // Configuration Firebase Realtime Database liée à ton projet "unleashed-69944"
   const firebaseConfig = {
-    databaseURL: "https://aion2-unleashed-default-rtdb.europe-west1.firebasedatabase.app"
+    databaseURL: "https://unleashed-69944-default-rtdb.europe-west1.firebasedatabase.app"
   };
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
@@ -858,7 +858,7 @@
       verifierSession();
     }
 
-    // Écoute en temps réel les données dans la base Firebase
+    // Écoute en temps réel les données dans Firebase
     db.ref('joueurs').on('value', (snapshot) => {
       const data = snapshot.val();
       afficherListeJoueurs(data);
@@ -923,7 +923,7 @@
       date: new Date().toLocaleDateString('fr-FR')
     };
 
-    // Envoi dans la base globale Firebase
+    // Envoi vers Firebase
     db.ref('joueurs').push(newReservation);
 
     publierDiscord(newReservation);
@@ -950,7 +950,7 @@
       date: new Date().toLocaleDateString('fr-FR')
     };
 
-    // Envoi direct dans la BDD Firebase
+    // Envoi direct vers Firebase
     db.ref('joueurs').push(newReservation);
 
     publierDiscord(newReservation);
