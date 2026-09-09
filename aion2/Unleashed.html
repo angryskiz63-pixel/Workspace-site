@@ -14,6 +14,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <!-- Integration Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <style>
     :root {
       --bg-main: #070b16;
@@ -506,7 +510,6 @@
       text-align: center;
     }
 
-    /* Style Liste des Inscrits */
     .players-list {
       margin-top: 15px;
       display: flex;
@@ -743,11 +746,11 @@
       </div>
       
       <div class="players-list" id="players-list-container">
-        <!-- Rempli dynamiquement en JS -->
+        <!-- Rempli dynamiquement depuis Firebase -->
       </div>
     </div>
 
-    <!-- PANNEAU ADMIN (Masqué par défaut, s'affiche si connecté en tant qu'angryskiz) -->
+    <!-- PANNEAU ADMIN -->
     <div class="side-box admin-box" id="admin-panel" style="display: none;">
       <div class="section-title" style="justify-content: center; margin-bottom: 12px; border-color: #ef4444;">
         <span style="color: #ef4444;"><i class="fas fa-user-shield"></i> Panneau Admin</span>
@@ -806,8 +809,15 @@
 </footer>
 
 <script>
+  // Configuration Firebase Realtime Database
+  const firebaseConfig = {
+    databaseURL: "https://aion2-unleashed-default-rtdb.europe-west1.firebasedatabase.app"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
   const TWITCH_CLIENT_ID = 'gmzt0gwom9gxnaxotky9jjn683y283'; 
-  const ADMIN_TWITCH = 'angryskiz'; // Ton pseudo Twitch admin
+  const ADMIN_TWITCH = 'angryskiz'; 
   const REDIRECT_URI = window.location.origin + window.location.pathname;
 
   let currentIP = "";
@@ -848,7 +858,11 @@
       verifierSession();
     }
 
-    afficherListeJoueurs();
+    // Écoute en temps réel les données dans la base Firebase
+    db.ref('joueurs').on('value', (snapshot) => {
+      const data = snapshot.val();
+      afficherListeJoueurs(data);
+    });
   });
 
   function recupererProfilTwitch(token) {
@@ -876,26 +890,14 @@
 
   function verifierSession() {
     const twUser = localStorage.getItem('unleashed_tw_user');
-    const localReservation = localStorage.getItem('unleashed_reservation');
-    const blockedIPs = JSON.parse(localStorage.getItem('unleashed_blocked_ips') || '[]');
 
-    // Si tu es connecté avec ton compte admin
     if (twUser && twUser.toLowerCase() === ADMIN_TWITCH.toLowerCase()) {
       document.getElementById('admin-panel').style.display = 'block';
     } else {
       document.getElementById('admin-panel').style.display = 'none';
     }
 
-    if (blockedIPs.includes(currentIP) || localReservation) {
-      let data = localReservation ? JSON.parse(localReservation) : { twitch: twUser || 'Anonyme', character: 'Enregistré', class: 'Bloqué (IP)' };
-      document.getElementById('step-login').style.display = 'none';
-      document.getElementById('step-form').style.display = 'none';
-      document.getElementById('step-confirmed').style.display = 'block';
-      document.getElementById('summary-text').innerHTML = `
-        Twitch : <strong>${data.twitch}</strong><br>
-        Perso : <strong>${data.character}</strong> (${data.class})
-      `;
-    } else if (twUser) {
+    if (twUser) {
       document.getElementById('step-login').style.display = 'none';
       document.getElementById('step-form').style.display = 'block';
       document.getElementById('tw-username').innerText = twUser;
@@ -921,22 +923,17 @@
       date: new Date().toLocaleDateString('fr-FR')
     };
 
+    // Envoi dans la base globale Firebase
+    db.ref('joueurs').push(newReservation);
+
     publierDiscord(newReservation);
 
-    localStorage.setItem('unleashed_reservation', JSON.stringify(newReservation));
-
-    const blockedIPs = JSON.parse(localStorage.getItem('unleashed_blocked_ips') || '[]');
-    if(!blockedIPs.includes(currentIP)) {
-      blockedIPs.push(currentIP);
-      localStorage.setItem('unleashed_blocked_ips', JSON.stringify(blockedIPs));
-    }
-
-    let allPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
-    allPlayers.push(newReservation);
-    localStorage.setItem('unleashed_global_players', JSON.stringify(allPlayers));
-
-    verifierSession();
-    afficherListeJoueurs();
+    document.getElementById('step-form').style.display = 'none';
+    document.getElementById('step-confirmed').style.display = 'block';
+    document.getElementById('summary-text').innerHTML = `
+      Twitch : <strong>${newReservation.twitch}</strong><br>
+      Perso : <strong>${newReservation.character}</strong> (${newReservation.class})
+    `;
   }
 
   function ajouterPoteAdmin(e) {
@@ -953,24 +950,18 @@
       date: new Date().toLocaleDateString('fr-FR')
     };
 
-    publierDiscord(newReservation);
+    // Envoi direct dans la BDD Firebase
+    db.ref('joueurs').push(newReservation);
 
-    let allPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
-    allPlayers.push(newReservation);
-    localStorage.setItem('unleashed_global_players', JSON.stringify(allPlayers));
+    publierDiscord(newReservation);
 
     document.getElementById('admin-tw').value = '';
     document.getElementById('admin-char').value = '';
-
-    afficherListeJoueurs();
   }
 
-  function supprimerJoueur(index) {
-    if (confirm("Supprimer ce membre ?")) {
-      let allPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
-      allPlayers.splice(index, 1);
-      localStorage.setItem('unleashed_global_players', JSON.stringify(allPlayers));
-      afficherListeJoueurs();
+  function supprimerJoueur(key) {
+    if (confirm("Supprimer ce membre définitivement ?")) {
+      db.ref('joueurs/' + key).remove();
     }
   }
 
@@ -1005,32 +996,36 @@
     }
   }
 
-  function afficherListeJoueurs() {
+  function afficherListeJoueurs(data) {
     const container = document.getElementById('players-list-container');
     const counter = document.getElementById('player-count');
     const twUser = localStorage.getItem('unleashed_tw_user');
     const isAdmin = twUser && twUser.toLowerCase() === ADMIN_TWITCH.toLowerCase();
 
-    let globalPlayers = JSON.parse(localStorage.getItem('unleashed_global_players') || '[]');
-    counter.innerText = globalPlayers.length;
-
-    if (globalPlayers.length === 0) {
+    if (!data) {
+      counter.innerText = "0";
       container.innerHTML = `<p style="text-align:center; font-size:0.8rem; color:var(--text-muted); padding:10px;">Aucun inscrit pour le moment.</p>`;
       return;
     }
 
-    container.innerHTML = globalPlayers.map((p, index) => `
-      <div class="player-row">
-        <div>
-          <span class="char">${p.character}</span>
-          <span style="font-size:0.75rem; color:var(--text-muted);">(${p.twitch})</span>
+    const keys = Object.keys(data);
+    counter.innerText = keys.length;
+
+    container.innerHTML = keys.map(key => {
+      const p = data[key];
+      return `
+        <div class="player-row">
+          <div>
+            <span class="char">${p.character}</span>
+            <span style="font-size:0.75rem; color:var(--text-muted);">(${p.twitch})</span>
+          </div>
+          <div>
+            <span class="class-badge">${p.class}</span>
+            ${isAdmin ? `<button onclick="supprimerJoueur('${key}')" class="delete-btn" title="Supprimer">X</button>` : ''}
+          </div>
         </div>
-        <div>
-          <span class="class-badge">${p.class}</span>
-          ${isAdmin ? `<button onclick="supprimerJoueur(${index})" class="delete-btn" title="Supprimer">X</button>` : ''}
-        </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
   }
 </script>
 
