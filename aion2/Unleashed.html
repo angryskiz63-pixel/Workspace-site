@@ -382,6 +382,30 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
+    .twitch-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--accent-twitch);
+      color: #fff;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(145, 70, 255, 0.4);
+    }
+
+    .twitch-btn:hover {
+      background: #772ce8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(145, 70, 255, 0.6);
+    }
+
     .form-group {
       margin-top: 15px;
       text-align: left;
@@ -428,6 +452,28 @@
     .reserve-submit-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(0, 242, 254, 0.5);
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(145, 70, 255, 0.15);
+      border: 1px solid var(--accent-twitch);
+      padding: 10px 14px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .user-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--accent-twitch);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
     }
 
     .reservation-confirmed {
@@ -591,14 +637,27 @@
         <span><i class="fas fa-id-card" style="color:var(--accent-cyan);"></i> Réservation Guilde</span>
       </div>
 
-      <!-- Formulaire direct sans auth OAuth -->
-      <div id="step-form">
-        <form id="reservation-form" onsubmit="envoyerReservation(event)">
-          <div class="form-group">
-            <label for="tw-username"><i class="fab fa-twitch" style="color:var(--accent-purple);"></i> Pseudo Twitch :</label>
-            <input type="text" id="tw-username" class="form-input" placeholder="ex: AngrySkiz" required>
-          </div>
+      <!-- ÉTAPE 1 : Connexion Twitch -->
+      <div id="step-login">
+        <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 18px; text-align: center;">
+          Connecte-toi avec Twitch pour réserver ta place dans la guilde <strong>UNLEASHED</strong> pour le lancement d'Aion 2 !
+        </p>
+        <button onclick="loginTwitch()" class="twitch-btn">
+          <i class="fab fa-twitch" style="font-size:1.2rem;"></i> Se connecter avec Twitch
+        </button>
+      </div>
 
+      <!-- ÉTAPE 2 : Saisie du personnage -->
+      <div id="step-form" style="display: none;">
+        <div class="user-badge">
+          <div class="user-avatar" id="tw-avatar"><i class="fas fa-user"></i></div>
+          <div style="text-align: left;">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Connecté en tant que</div>
+            <div style="font-weight: bold; color: #fff;" id="tw-username">JoueurTwitch</div>
+          </div>
+        </div>
+
+        <form id="reservation-form" onsubmit="envoyerReservation(event)">
           <div class="form-group">
             <label for="char-name"><i class="fas fa-user-ninja"></i> Nom de ton personnage :</label>
             <input type="text" id="char-name" class="form-input" placeholder="ex: Skizor" required>
@@ -625,7 +684,7 @@
         </form>
       </div>
 
-      <!-- Confirmation après validation -->
+      <!-- ÉTAPE 3 : Confirmation -->
       <div id="step-confirmed" style="display: none;">
         <div class="reservation-confirmed">
           <i class="fas fa-circle-check" style="font-size: 2rem; color: #10b981; margin-bottom: 10px;"></i>
@@ -675,6 +734,9 @@
 </footer>
 
 <script>
+  const TWITCH_CLIENT_ID = 'VOTRE_CLIENT_ID_TWITCH_ICI'; 
+  const REDIRECT_URI = window.location.origin + window.location.pathname;
+
   let currentIP = "";
 
   function ajouterFavoris() {
@@ -698,38 +760,93 @@
     }
   }
 
+  function loginTwitch() {
+    if(TWITCH_CLIENT_ID === 'VOTRE_CLIENT_ID_TWITCH_ICI') {
+      const demoUser = prompt("AION 2 DEMO : Entrez votre pseudo Twitch pour vous identifier :");
+      if(demoUser) {
+        sauvegarderUtilisateurTwitch(demoUser);
+      }
+      return;
+    }
+
+    const authUrl = `https://id.twitch.tv/oauth2/authorize?client_id=${TWITCH_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=user:read:email`;
+    window.location.href = authUrl;
+  }
+
   window.addEventListener('DOMContentLoaded', async () => {
     await obtenirIP();
-    verifierSession();
+    
+    const hash = window.location.hash;
+    if (hash.includes('access_token')) {
+      const token = new URLSearchParams(hash.substring(1)).get('access_token');
+      recupererProfilTwitch(token);
+    } else {
+      verifierSession();
+    }
+
     afficherListeJoueurs();
   });
 
+  function recupererProfilTwitch(token) {
+    fetch('https://api.twitch.tv/helix/users', {
+      headers: {
+        'Client-ID': TWITCH_CLIENT_ID,
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.data && data.data.length > 0) {
+        const username = data.data[0].display_name;
+        sauvegarderUtilisateurTwitch(username);
+      }
+    })
+    .catch(err => console.error("Erreur Twitch OAuth:", err));
+  }
+
+  function sauvegarderUtilisateurTwitch(username) {
+    localStorage.setItem('unleashed_tw_user', username);
+    window.location.hash = '';
+    verifierSession();
+  }
+
   function verifierSession() {
+    const twUser = localStorage.getItem('unleashed_tw_user');
     const localReservation = localStorage.getItem('unleashed_reservation');
     const blockedIPs = JSON.parse(localStorage.getItem('unleashed_blocked_ips') || '[]');
 
     // Bloquer si l'IP a déjà soumis une réservation
     if (blockedIPs.includes(currentIP) || localReservation) {
-      let data = localReservation ? JSON.parse(localReservation) : { twitch: 'Inconnu', character: 'Enregistré', class: 'Bloqué (IP)' };
+      let data = localReservation ? JSON.parse(localReservation) : { twitch: twUser || 'Anonyme', character: 'Enregistré', class: 'Bloqué (IP)' };
+      document.getElementById('step-login').style.display = 'none';
       document.getElementById('step-form').style.display = 'none';
       document.getElementById('step-confirmed').style.display = 'block';
       document.getElementById('summary-text').innerHTML = `
         Twitch : <strong>${data.twitch}</strong><br>
         Perso : <strong>${data.character}</strong> (${data.class})
       `;
+    } else if (twUser) {
+      document.getElementById('step-login').style.display = 'none';
+      document.getElementById('step-form').style.display = 'block';
+      document.getElementById('tw-username').innerText = twUser;
+      document.getElementById('tw-avatar').innerText = twUser.charAt(0).toUpperCase();
+    } else {
+      document.getElementById('step-login').style.display = 'block';
+      document.getElementById('step-form').style.display = 'none';
+      document.getElementById('step-confirmed').style.display = 'none';
     }
   }
 
   async function envoyerReservation(e) {
     e.preventDefault();
-    const twUser = document.getElementById('tw-username').value;
+    const twUser = localStorage.getItem('unleashed_tw_user');
     const charName = document.getElementById('char-name').value;
     const charClass = document.getElementById('char-class').value;
 
     const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1547233701551808512/OzUsbQfnH1yxAGRL97UgT07MIDtMOuoDa-9R-tf2gUIygdwrMk5srKo44Lw292nrJ6GB";
 
     const newReservation = {
-      twitch: twUser,
+      twitch: twUser || "Non renseigné",
       character: charName,
       class: charClass,
       ip: currentIP,
@@ -749,7 +866,7 @@
               title: "⚔️ Nouvelle Inscription — Guilde UNLEASHED !",
               color: 62206, // Couleur Cyan Aion 2
               fields: [
-                { name: "Pseudo Twitch", value: twUser, inline: true },
+                { name: "Pseudo Twitch", value: twUser || "Non connecté", inline: true },
                 { name: "Nom Personnage", value: charName, inline: true },
                 { name: "Classe prévue", value: charClass, inline: true },
                 { name: "Adresse IP", value: currentIP || "Non détectée", inline: false }
