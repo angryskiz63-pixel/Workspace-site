@@ -197,7 +197,7 @@
     .aion-hero {
       position: relative;
       min-height: calc(100vh - 140px);
-      max-height: 750px;
+      max-height: 800px;
       width: 100%;
       overflow: hidden;
       display: flex;
@@ -258,11 +258,12 @@
     .hero-content {
       position: relative;
       z-index: 2;
-      max-width: 1000px;
-      padding: 0 20px 120px 20px;
+      max-width: 1200px;
+      padding: 0 20px 100px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 100%;
     }
 
     .hero-content h1 {
@@ -279,44 +280,40 @@
 
     .hero-content p { font-size: 1.2rem; color: #cbd5e1; text-shadow: 0 2px 10px rgba(0,0,0,0.9); margin-bottom: 20px; }
 
-    /* Container Double Compte à Rebours */
+    /* Container des 3 Comptes à Rebours */
     .countdowns-wrapper {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
       width: 100%;
       margin-top: 5px;
     }
 
-    /* Widget Compte à Rebours */
     .launch-countdown-box {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(15, 23, 42, 0.8);
       border: 1px solid var(--border-card);
       backdrop-filter: blur(12px);
-      padding: 16px 24px;
+      padding: 14px 16px;
       border-radius: 16px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 242, 254, 0.15);
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
-      flex: 1;
-      min-width: 280px;
-      max-width: 440px;
+      gap: 8px;
     }
 
     .countdown-header {
       font-family: 'Cinzel', serif;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       color: var(--accent-gold);
       text-transform: uppercase;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       text-shadow: 0 0 8px rgba(255, 183, 77, 0.4);
+      white-space: nowrap;
     }
 
     .countdown-header.test-header {
@@ -324,9 +321,14 @@
       text-shadow: 0 0 8px rgba(0, 242, 254, 0.4);
     }
 
+    .countdown-header.early-header {
+      color: var(--accent-purple);
+      text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+    }
+
     .countdown-timer {
       display: flex;
-      gap: 14px;
+      gap: 10px;
       align-items: center;
     }
 
@@ -334,12 +336,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-width: 45px;
+      min-width: 38px;
     }
 
     .time-val {
       font-family: 'Cinzel', serif;
-      font-size: 1.7rem;
+      font-size: 1.5rem;
       font-weight: 900;
       color: #ffffff;
       text-shadow: 0 0 12px var(--accent-cyan);
@@ -347,7 +349,7 @@
     }
 
     .time-label {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--text-muted);
@@ -357,10 +359,10 @@
 
     .time-separator {
       font-family: 'Cinzel', serif;
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 900;
       color: var(--accent-cyan);
-      margin-top: -12px;
+      margin-top: -10px;
       opacity: 0.7;
     }
 
@@ -547,6 +549,7 @@
 
     @media (max-width: 1100px) {
       .aion-lagofast { left: 22%; }
+      .countdowns-wrapper { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 900px) {
@@ -561,10 +564,8 @@
       .quick-links { margin-top: -40px; grid-template-columns: repeat(2, 1fr); }
       .aion-lagofast { display: none; }
       .time-val { font-size: 1.3rem; }
-      .time-block { min-width: 35px; }
-      .countdown-timer { gap: 8px; }
-      .countdowns-wrapper { flex-direction: column; align-items: center; }
-      .launch-countdown-box { width: 100%; }
+      .time-block { min-width: 32px; }
+      .countdown-timer { gap: 6px; }
     }
   </style>
 </head>
@@ -616,7 +617,7 @@
     <h1>L'HÉRITAGE ÉTERNEL</h1>
     <p>Le portail francophone ultime : guides de jeu, builds optimisés et actualités en direct.</p>
     
-    <!-- Zone Comptes à Rebours -->
+    <!-- Zone des 3 Comptes à Rebours -->
     <div class="countdowns-wrapper">
       <!-- Chrono 1 : Tests de Lancement -->
       <div class="launch-countdown-box">
@@ -646,10 +647,38 @@
         </div>
       </div>
 
-      <!-- Chrono 2 : Version Globale -->
+      <!-- Chrono 2 : Accès Anticipé Fondateurs -->
+      <div class="launch-countdown-box">
+        <div class="countdown-header early-header">
+          <i class="fas fa-crown"></i> Accès Anticipé
+        </div>
+        <div class="countdown-timer">
+          <div class="time-block">
+            <span class="time-val" id="early-days">00</span>
+            <span class="time-label">Jours</span>
+          </div>
+          <span class="time-separator">:</span>
+          <div class="time-block">
+            <span class="time-val" id="early-hours">00</span>
+            <span class="time-label">Heures</span>
+          </div>
+          <span class="time-separator">:</span>
+          <div class="time-block">
+            <span class="time-val" id="early-minutes">00</span>
+            <span class="time-label">Min</span>
+          </div>
+          <span class="time-separator">:</span>
+          <div class="time-block">
+            <span class="time-val" id="early-seconds">00</span>
+            <span class="time-label">Sec</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chrono 3 : Sortie Globale -->
       <div class="launch-countdown-box">
         <div class="countdown-header">
-          <i class="fas fa-globe"></i> Version Globale
+          <i class="fas fa-globe"></i> Sortie Globale
         </div>
         <div class="countdown-timer">
           <div class="time-block">
@@ -846,8 +875,11 @@
   // 1. Tests de Lancement : 17 septembre à 15:00:00
   const testDate = new Date('2026-09-17T15:00:00').getTime();
 
-  // 2. Version Globale : 30 septembre à 00:00:00
-  const globalDate = new Date('2026-09-30T00:00:00').getTime();
+  // 2. Accès Anticipé Fondateurs : 30 septembre à 00:00:00
+  const earlyDate = new Date('2026-09-30T00:00:00').getTime();
+
+  // 3. Sortie Globale : 5 octobre à 00:00:00
+  const globalDate = new Date('2026-10-05T00:00:00').getTime();
 
   function updateCountdown(targetDate, prefix, finishText) {
     const currentTime = new Date().getTime();
@@ -874,6 +906,7 @@
 
   function updateAllCountdowns() {
     updateCountdown(testDate, 'test', 'TESTS EN COURS !');
+    updateCountdown(earlyDate, 'early', 'ACCÈS DISPONIBLE !');
     updateCountdown(globalDate, 'cd', 'LE JEU EST DISPONIBLE !');
   }
 
