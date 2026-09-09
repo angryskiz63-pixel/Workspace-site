@@ -716,7 +716,7 @@
             <div style="font-weight: bold; color: #fff;" id="tw-username">JoueurTwitch</div>
           </div>
           <button type="button" onclick="logoutTwitch()" class="logout-btn" title="Déconnexion">
-            <i class="fas fa-sign-out-alt"></i>
+            <i class="fas fa-sign-out-alt"></i> Déconnexion
           </button>
         </div>
 
@@ -752,9 +752,12 @@
         <div class="reservation-confirmed">
           <i class="fas fa-circle-check" style="font-size: 2rem; color: #10b981; margin-bottom: 10px;"></i>
           <h4 style="color: #fff; margin-bottom: 5px;">Place Réservée !</h4>
-          <p style="font-size: 0.85rem; color: var(--text-muted);" id="summary-text">
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;" id="summary-text">
             Votre personnage est enregistré pour le jour J.
           </p>
+          <button type="button" onclick="logoutTwitch()" class="logout-btn" style="margin: 0 auto; display: block;">
+            <i class="fas fa-sign-out-alt"></i> Se déconnecter
+          </button>
         </div>
       </div>
     </div>
@@ -842,6 +845,7 @@
   const REDIRECT_URI = window.location.origin + window.location.pathname;
 
   let currentIP = "";
+  let joueursData = {}; // Cache local des données Firebase
 
   function ajouterFavoris() {
     if (window.sidebar && window.sidebar.addPanel) {
@@ -886,8 +890,9 @@
 
     // Écoute en temps réel les données dans Firebase
     db.ref('joueurs').on('value', (snapshot) => {
-      const data = snapshot.val();
-      afficherListeJoueurs(data);
+      joueursData = snapshot.val() || {};
+      afficherListeJoueurs(joueursData);
+      verifierInscriptionExistante();
     });
   });
 
@@ -925,9 +930,9 @@
 
     if (twUser) {
       document.getElementById('step-login').style.display = 'none';
-      document.getElementById('step-form').style.display = 'block';
       document.getElementById('tw-username').innerText = twUser;
       document.getElementById('tw-avatar').innerText = twUser.charAt(0).toUpperCase();
+      verifierInscriptionExistante();
     } else {
       document.getElementById('step-login').style.display = 'block';
       document.getElementById('step-form').style.display = 'none';
@@ -935,22 +940,65 @@
     }
   }
 
+  // Vérifie si l'utilisateur Twitch a déjà soumis un personnage
+  function verifierInscriptionExistante() {
+    const twUser = localStorage.getItem('unleashed_tw_user');
+    if (!twUser) return;
+
+    let joueurExiste = null;
+
+    for (const key in joueursData) {
+      if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
+        joueurExiste = joueursData[key];
+        break;
+      }
+    }
+
+    if (joueurExiste) {
+      document.getElementById('step-form').style.display = 'none';
+      document.getElementById('step-confirmed').style.display = 'block';
+      document.getElementById('summary-text').innerHTML = `
+        Twitch : <strong>${joueurExiste.twitch}</strong><br>
+        Perso : <strong>${joueurExiste.character}</strong> (${joueurExiste.class})
+      `;
+    } else {
+      document.getElementById('step-form').style.display = 'block';
+      document.getElementById('step-confirmed').style.display = 'none';
+    }
+  }
+
   async function envoyerReservation(e) {
     e.preventDefault();
     const twUser = localStorage.getItem('unleashed_tw_user');
-    const charName = document.getElementById('char-name').value;
+    const charName = document.getElementById('char-name').value.trim();
     const charClass = document.getElementById('char-class').value;
 
+    if (!twUser) return;
+
+    // Vérifie si une entrée existe déjà
+    let existingKey = null;
+    for (const key in joueursData) {
+      if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
+        existingKey = key;
+        break;
+      }
+    }
+
     const newReservation = {
-      twitch: twUser || "Non renseigné",
+      twitch: twUser,
       character: charName,
       class: charClass,
       ip: currentIP,
       date: new Date().toLocaleDateString('fr-FR')
     };
 
-    // Envoi vers Firebase
-    db.ref('joueurs').push(newReservation);
+    if (existingKey) {
+      // Mise à jour (empêche les doublons)
+      db.ref('joueurs/' + existingKey).set(newReservation);
+    } else {
+      // Création
+      db.ref('joueurs').push(newReservation);
+    }
 
     publierDiscord(newReservation);
 
@@ -968,6 +1016,14 @@
     const charName = document.getElementById('admin-char').value.trim();
     const charClass = document.getElementById('admin-class').value;
 
+    let existingKey = null;
+    for (const key in joueursData) {
+      if (joueursData[key].twitch && joueursData[key].twitch.toLowerCase() === twUser.toLowerCase()) {
+        existingKey = key;
+        break;
+      }
+    }
+
     const newReservation = {
       twitch: twUser,
       character: charName,
@@ -976,8 +1032,11 @@
       date: new Date().toLocaleDateString('fr-FR')
     };
 
-    // Envoi direct vers Firebase
-    db.ref('joueurs').push(newReservation);
+    if (existingKey) {
+      db.ref('joueurs/' + existingKey).set(newReservation);
+    } else {
+      db.ref('joueurs').push(newReservation);
+    }
 
     publierDiscord(newReservation);
 
@@ -1003,7 +1062,7 @@
             username: "Bot UNLEASHED",
             avatar_url: "https://angryskiz.fr/aion2/images/logo-aion2bis.png",
             embeds: [{
-              title: "⚔️ Nouvelle Inscription — Guilde UNLEASHED !",
+              title: "⚔️ Inscription / Modification — Guilde UNLEASHED !",
               color: 62206,
               fields: [
                 { name: "Pseudo Twitch", value: reservation.twitch || "Non connecté", inline: true },
@@ -1028,7 +1087,7 @@
     const twUser = localStorage.getItem('unleashed_tw_user');
     const isAdmin = twUser && twUser.toLowerCase() === ADMIN_TWITCH.toLowerCase();
 
-    if (!data) {
+    if (!data || Object.keys(data).length === 0) {
       counter.innerText = "0";
       container.innerHTML = `<p style="text-align:center; font-size:0.8rem; color:var(--text-muted); padding:10px;">Aucun inscrit pour le moment.</p>`;
       return;
