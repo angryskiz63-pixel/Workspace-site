@@ -280,7 +280,7 @@
 
     .hero-content p { font-size: 1.2rem; color: #cbd5e1; text-shadow: 0 2px 10px rgba(0,0,0,0.9); margin-bottom: 20px; }
 
-    /* Container des Comptes à Rebours (Modifié à 2 colonnes) */
+    /* Countdowns Wrapper */
     .countdowns-wrapper {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -526,7 +526,7 @@
       padding: 22px;
     }
 
-    /* Style du nouveau bloc Discord avec image de fond */
+    /* Corrected Discord Side Card Style */
     .discord-side-card {
       position: relative;
       border-radius: 14px;
@@ -543,7 +543,7 @@
     .discord-side-bg {
       position: absolute;
       inset: 0;
-      background-image: url('images/discord.jpeg');
+      background-image: url('aion2/images/discord.jpeg');
       background-size: cover;
       background-position: center;
       z-index: 1;
@@ -657,9 +657,7 @@
     <h1>L'HÉRITAGE ÉTERNEL</h1>
     <p>Le portail francophone ultime : guides de jeu, builds optimisés et actualités en direct.</p>
     
-    <!-- Zone des Comptes à Rebours (2 chronos conservés) -->
     <div class="countdowns-wrapper">
-      <!-- Chrono 1 : Accès Anticipé Fondateurs -->
       <div class="launch-countdown-box">
         <div class="countdown-header early-header">
           <i class="fas fa-crown"></i> Accès Anticipé
@@ -687,7 +685,6 @@
         </div>
       </div>
 
-      <!-- Chrono 2 : Sortie Globale -->
       <div class="launch-countdown-box">
         <div class="countdown-header">
           <i class="fas fa-globe"></i> Sortie Globale
@@ -764,7 +761,6 @@
     </div>
 
     <div class="ln-grid" id="latest-news-grid">
-      <!-- Card 1 -->
       <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
         <div class="img-overlay-container">
           <div class="ln-img" style="background-image:url('images/prelancement.jpeg')"></div>
@@ -776,7 +772,6 @@
         </div>
       </a>
 
-      <!-- Card 2 -->
       <a class="ln-card" href="https://store.steampowered.com/app/3393110/AION_2/" target="_blank">
         <div class="img-overlay-container">
           <div class="ln-img" style="background-image:url('images/packfondateur.jpeg')"></div>
@@ -791,7 +786,7 @@
   </section>
 
   <aside class="sidebar-section">
-    <!-- Encadré Discord avec l'image ...aion2/images/discord.jpeg -->
+    <!-- Updated Discord Side Card using aion2/images/discord.jpeg -->
     <div class="discord-side-card">
       <div class="discord-side-bg"></div>
       <div class="discord-side-overlay"></div>
@@ -845,7 +840,6 @@
 </footer>
 
 <script>
-  // Slider Hero
   const slides = document.querySelectorAll('.slide');
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
@@ -876,7 +870,6 @@
   prevBtn.addEventListener('click', () => { prevSlide(); resetTimer(); });
   startTimer();
 
-  // Fonction Ajout aux favoris
   function ajouterFavoris() {
     if (window.sidebar && window.sidebar.addPanel) {
       window.sidebar.addPanel(document.title, window.location.href, '');
@@ -887,12 +880,7 @@
     }
   }
 
-  // --- SCRIPTS DES COMPTES À REBOURS ---
-
-  // 1. Accès Anticipé Fondateurs : 30 septembre à 00:00:00
   const earlyDate = new Date('2026-09-30T00:00:00').getTime();
-
-  // 2. Sortie Globale : 5 octobre à 00:00:00
   const globalDate = new Date('2026-10-05T00:00:00').getTime();
 
   function updateCountdown(targetDate, prefix, finishText) {
