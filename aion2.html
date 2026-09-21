@@ -526,50 +526,6 @@
       padding: 22px;
     }
 
-    /* Corrected Discord Side Card Style */
-    .discord-side-card {
-      position: relative;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(88, 101, 242, 0.4);
-      padding: 30px 20px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    }
-
-    .discord-side-bg {
-      position: absolute;
-      inset: 0;
-      background-image: url('aion2/images/discord.jpeg');
-      background-size: cover;
-      background-position: center;
-      z-index: 1;
-      transition: transform 0.5s ease;
-    }
-
-    .discord-side-card:hover .discord-side-bg {
-      transform: scale(1.05);
-    }
-
-    .discord-side-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(7, 11, 22, 0.75) 0%, rgba(7, 11, 22, 0.92) 100%);
-      z-index: 2;
-    }
-
-    .discord-side-content {
-      position: relative;
-      z-index: 3;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
     .tag { font-size: 0.75rem; padding: 4px 9px; border-radius: 4px; font-weight: bold; width: fit-content; }
     .tag-off { background: var(--accent-cyan); color: #070b16; }
 
@@ -746,8 +702,9 @@
     <h3>UNLEASHED</h3>
   </a>
 
+  <!-- Carte Discord rapide mise à jour avec aion2/images/discord.jpeg -->
   <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="quick-card card-discord">
-    <div class="quick-card-bg" style="background-image: url('images/card-discord.jpg');"></div>
+    <div class="quick-card-bg" style="background-image: url('aion2/images/discord.jpeg');"></div>
     <div class="quick-card-overlay"></div>
     <h3>Discord</h3>
   </a>
@@ -786,26 +743,6 @@
   </section>
 
   <aside class="sidebar-section">
-    <!-- Updated Discord Side Card using aion2/images/discord.jpeg -->
-    <div class="discord-side-card">
-      <div class="discord-side-bg"></div>
-      <div class="discord-side-overlay"></div>
-      <div class="discord-side-content">
-        <div class="section-title" style="justify-content: center; margin-bottom: 15px; border-bottom: none; width: 100%;">
-          <span><i class="fab fa-discord" style="color:#5865F2;"></i> Communauté Discord</span>
-        </div>
-        <div style="font-size: 3rem; color: #5865F2; margin: 10px 0;">
-          <i class="fab fa-discord"></i>
-        </div>
-        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4;">
-          Rejoins la communauté ANGRYSKiZ pour échanger avec les joueurs et suivre les actus Aion 2 !
-        </p>
-        <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="aion-discord-btn" style="width: 100%;">
-          <i class="fab fa-discord"></i> Rejoindre le serveur
-        </a>
-      </div>
-    </div>
-
     <div class="side-box">
       <div class="section-title">
         <span><i class="fas fa-rss"></i> Flash Actus</span>
