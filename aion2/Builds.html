@@ -108,6 +108,25 @@
       align-items: center;
     }
 
+    .aion-menu li {
+      position: relative;
+    }
+
+    .coming-soon-badge {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+      pointer-events: none;
+    }
+
     .aion-menu a {
       color: var(--text-main);
       text-decoration: none;
@@ -367,6 +386,14 @@
       <li><a href="/aion2/aion2.html#actualites">Actualités</a></li>
       <li><a href="/aion2/Classes.html">Classes</a></li>
       <li><a href="/aion2/Build.html" class="active">Builds</a></li>
+      <li>
+        <span class="coming-soon-badge">Coming Soon</span>
+        <a href="#">Guides</a>
+      </li>
+      <li>
+        <span class="coming-soon-badge">Coming Soon</span>
+        <a href="#">Patchs</a>
+      </li>
       <li><a href="/aion2/Unleashed.html">UNLEASHED</a></li>
       <li>
         <button onclick="ajouterFavoris()" class="aion-fav-btn">
