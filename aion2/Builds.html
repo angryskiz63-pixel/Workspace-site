@@ -1,303 +1,160 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="images/logo-aion2bis.png" />
-  <link rel="shortcut icon" type="image/png" href="images/logo-aion2bis.png" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Aion 2 | Calculateur de Builds - UNLEASHED</title>
-  <meta name="description" content="Simulateur et calculateur de builds optimisés pour Aion 2. Créez et partagez vos configurations de classe." />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-  <style>
-    :root {
-      --bg-main: #070b16;
-      --bg-card: rgba(15, 23, 42, 0.85);
-      --border-card: rgba(0, 242, 254, 0.25);
-      --accent-cyan: #00f2fe;
-      --accent-blue: #4facfe;
-      --accent-gold: #ffb74d;
-      --accent-purple: #a855f7;
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-    }
-
-    html { scroll-behavior: smooth; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body {
-      font-family: 'Outfit', sans-serif;
-      background: var(--bg-main);
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Header Aion 2 */
-    .aion-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 70px;
-      background: linear-gradient(180deg, rgba(7, 11, 22, 0.95) 0%, rgba(7, 11, 22, 0.7) 100%);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 0 4%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-    }
-
-    .aion-logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-      height: 100%;
-      position: relative;
-      width: 120px;
-    }
-
-    .aion-logo-img {
-      height: 100px;
-      width: auto;
-      object-fit: contain;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      transition: transform 0.3s ease;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.9));
-      z-index: 10;
-    }
-
-    .aion-logo-img:hover { transform: translateY(-50%) scale(1.05); }
-
-    .aion-lagofast {
-      position: absolute;
-      left: 32%;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 15;
-    }
-
-    .aion-lagofast-img {
-      height: 52px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.5));
-      transition: all 0.3s ease;
-    }
-
-    .aion-lagofast-img:hover {
-      transform: scale(1.1);
-      filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.9));
-    }
-
-    .aion-menu { 
-      display: flex; 
-      gap: 18px; 
-      list-style: none; 
-      margin-left: auto;
-      align-items: center;
-    }
-
-    .aion-menu a {
-      color: var(--text-main);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: 0.2s;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-    }
-
-    .aion-menu a:hover, .aion-menu a.active { color: var(--accent-cyan); }
-
-    .coming-soon-group {
-      position: relative;
-      display: flex;
-      gap: 18px;
-      align-items: center;
-      padding-top: 10px;
-    }
-
-    .coming-soon-group::before {
-      content: 'COMING SOON';
-      position: absolute;
-      top: -4px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.62rem;
-      font-weight: 800;
-      color: var(--accent-gold);
-      letter-spacing: 0.1em;
-      white-space: nowrap;
-      text-shadow: 0 0 6px rgba(255, 183, 77, 0.6);
-      pointer-events: none;
-    }
-
-    .coming-soon-group a { opacity: 0.6; cursor: not-allowed; }
-    .coming-soon-group a:hover { color: var(--text-main); }
-
-    .aion-fav-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-card);
-      color: var(--accent-gold);
-      padding: 7px 14px;
-      border-radius: 20px;
-      font-family: 'Outfit', sans-serif;
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-
-    .aion-fav-btn:hover {
-      background: var(--accent-gold);
-      color: #070b16;
-      border-color: var(--accent-gold);
-      box-shadow: 0 0 12px rgba(255, 183, 77, 0.5);
-    }
-
-    .aion-discord-btn {
-      background: #5865F2;
-      color: #fff !important;
-      padding: 8px 18px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: bold !important;
-      text-decoration: none;
-      box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
-      transition: all 0.2s ease !important;
-    }
-
-    .aion-discord-btn:hover {
-      background: #4752C4;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
-    }
-
-    /* Layout Spécifique Page Build */
-    .build-container {
-      max-width: 1400px;
-      margin: 100px auto 40px auto;
-      padding: 0 20px;
-      flex: 1;
-      width: 100%;
-    }
-
-    .page-title {
-      font-family: 'Cinzel', serif;
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: var(--text-main);
-      border-bottom: 2px solid var(--border-card);
-      padding-bottom: 12px;
-      margin-bottom: 25px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .page-title i { color: var(--accent-cyan); }
-
-    /* Footer Aion 2 */
-    footer {
-      margin-top: auto;
-      background: rgba(7, 11, 22, 0.98);
-      border-top: 1px solid var(--border-card);
-      padding: 35px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 1100px) {
-      .aion-lagofast { left: 22%; }
-    }
-
-    @media (max-width: 900px) {
-      .aion-logo-img { height: 60px; }
-      .aion-menu { display: none; }
-      .aion-lagofast { display: none; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aion 2 Build & Simulateur — Angryskiz</title>
+<meta name="description" content="Crée et optimise ton build Aion 2 sur le site d'Angryskiz : choix des classes, compétences, strophes et simulateur de stats.">
+<link rel="stylesheet" href="style.css"> <!-- Remplace par le nom de ton fichier CSS global si besoin -->
+<style>
+/* Styles spécifiques intégrés pour le calculateur de build */
+.build-layout { display: grid; grid-template-columns: 270px 1fr; gap: 18px; margin-top: 20px; }
+.class-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+.class-btn {
+  background: var(--bg3, #161b26);
+  border: 1px solid var(--border, #252d40);
+  border-radius: 12px;
+  padding: 16px 10px 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .25s;
+  color: var(--text, #dde4f0);
+}
+.class-btn:hover, .class-btn.selected {
+  border-color: var(--gold, #c9a227);
+  background: linear-gradient(135deg, rgba(201,162,39,0.12), rgba(232,196,74,0.06));
+}
+.class-btn .class-icon { font-size: 30px; display: block; margin-bottom: 6px; }
+.class-btn .class-name { font-size: 12px; font-weight: 700; }
+.card {
+  background: var(--bg2, #0e1118);
+  border: 1px solid var(--border, #252d40);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
+.skill-slot {
+  background: var(--bg3, #161b26);
+  border: 1px dashed var(--border2, #2e3a52);
+  border-radius: 10px;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+}
+.skill-slot:hover { border-color: var(--gold, #c9a227); }
+.stats-box {
+  background: var(--bg3, #161b26);
+  border: 1px solid var(--border, #252d40);
+  border-radius: 10px;
+  padding: 16px;
+}
+.stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+.stat-value { font-weight: 800; color: var(--gold2, #e8c44a); }
+@media (max-width: 960px) {
+  .build-layout { grid-template-columns: 1fr; }
+  .class-grid { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
 </head>
 <body>
 
-<nav class="aion-nav">
-  <a href="/aion2/aion2.html" class="aion-logo">
-    <img src="images/logo-aion2bis.png" alt="Aion 2" class="aion-logo-img">
-  </a>
+<!-- BANDEAU / EN-TÊTE COMMUN DU SITE -->
+<header>
+  <div class="logo">ANGRYSKIZ</div>
+  <nav>
+    <button onclick="location.href='index.html'">Accueil</button>
+    <button class="active" onclick="location.href='Build.html'">Aion 2 Build</button>
+    <!-- Ajoute tes autres liens de navigation ici -->
+  </nav>
+</header>
 
-  <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="aion-lagofast">
-    <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
-  </a>
+<!-- CONTENU PRINCIPAL DE LA PAGE BUILD -->
+<main>
+  <div class="page-header">
+    <h1>Calculateur de Build Aion 2</h1>
+    <p>Sélectionne ta classe, configure tes compétences et optimise tes statistiques pour tes streams et sessions de jeu.</p>
+  </div>
 
-  <ul class="aion-menu">
-    <li><a href="/aion2/aion2.html#actualites">Actualités</a></li>
-    <li><a href="/aion2/Classes.html">Classes</a></li>
-    <li><a href="/aion2/Build.html" class="active">Builds</a></li>
-    <li class="coming-soon-group">
-      <a href="#">Guides</a>
-      <a href="#">Patchs</a>
-    </li>
-    <li><a href="/aion2/Unleashed.html">UNLEASHED</a></li>
-    <li>
-      <button onclick="ajouterFavoris()" class="aion-fav-btn">
-        <i class="fas fa-star"></i> Favoris
-      </button>
-    </li>
-    <li>
-      <a href="https://discord.gg/q3qDmCzdum" target="_blank" class="aion-discord-btn">
-        <i class="fab fa-discord"></i> Discord
-      </a>
-    </li>
-  </ul>
-</nav>
+  <!-- Grille de sélection des classes -->
+  <div class="card">
+    <div class="card-title">1. Choisis ta classe</div>
+    <div class="class-grid">
+      <div class="class-btn selected" onclick="selectClass('gladiateur')">
+        <span class="class-icon">⚔️</span>
+        <span class="class-name">Gladiateur</span>
+      </div>
+      <div class="class-btn" onclick="selectClass('templier')">
+        <span class="class-icon">🛡️</span>
+        <span class="class-name">Templier</span>
+      </div>
+      <div class="class-btn" onclick="selectClass('rodeur')">
+        <span class="class-icon">🏹</span>
+        <span class="class-name">Rôdeur</span>
+      </div>
+      <div class="class-btn" onclick="selectClass('assassin')">
+        <span class="class-icon">🗡️</span>
+        <span class="class-name">Assassin</span>
+      </div>
+    </div>
+  </div>
 
-<!-- Zone Principale du Builder -->
-<main class="build-container">
-  <h1 class="page-title"><i class="fas fa-tools"></i> CALCULATEUR DE BUILDS AION 2</h1>
-  
-  <!-- LE CODE DU BUILDER SERA INTÉGRÉ ICI -->
+  <!-- Layout Principal du Build (Compétences & Stats) -->
+  <div class="build-layout">
+    
+    <!-- Colonne de gauche : Liste / Recherche de compétences -->
+    <div class="card">
+      <div class="card-title">Bibliothèque de Skills</div>
+      <input type="text" class="skill-search" placeholder="Rechercher un skill..." id="searchSkill">
+      <div class="skill-list" id="skillListContainer">
+        <!-- Les skills injectés dynamiquement ou statiquement -->
+        <div style="font-size: 12px; color: var(--muted2); padding: 10px; text-align: center;">Choisis une classe pour afficher les compétences.</div>
+      </div>
+    </div>
 
+    <!-- Colonne de droite : Emplacements & Statistiques -->
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+      
+      <div class="card">
+        <div class="card-title">Emplacements Actifs & Passifs</div>
+        <div class="slots-grid">
+          <div class="skill-slot"><span style="font-size:18px; color:var(--border2)">+</span></div>
+          <div class="skill-slot"><span style="font-size:18px; color:var(--border2)">+</span></div>
+          <div class="skill-slot"><span style="font-size:18px; color:var(--border2)">+</span></div>
+          <div class="skill-slot"><span style="font-size:18px; color:var(--border2)">+</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Statistiques Totales du Build</div>
+        <div class="stats-box">
+          <div class="stat-row"><span class="stat-label">Attaque Physique / Magique</span><span class="stat-value">--</span></div>
+          <div class="stat-row"><span class="stat-label">Précision</span><span class="stat-value">--</span></div>
+          <div class="stat-row"><span class="stat-label">Coup Critique</span><span class="stat-value">--</span></div>
+          <div class="stat-row"><span class="stat-label">Vitesse d'attaque</span><span class="stat-value">--</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </main>
 
-<footer>
-  <p style="margin-bottom: 12px;">
-    <a href="https://discord.gg/q3qDmCzdum" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
-      <i class="fab fa-discord"></i> Rejoindre la communauté sur Discord
-    </a>
-  </p>
-  <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
+<!-- PIED DE PAGE COMMUN DU SITE -->
+<footer style="text-align: center; padding: 20px; border-top: 1px solid var(--border, #252d40); margin-top: 40px; color: var(--muted, #5a6a85); font-size: 12px;">
+  <p>&copy; 2026 Angryskiz — Tous droits réservés. Propulsé pour la communauté Aion 2 FR.</p>
 </footer>
 
 <script>
-  function ajouterFavoris() {
-    if (window.sidebar && window.sidebar.addPanel) {
-      window.sidebar.addPanel(document.title, window.location.href, '');
-    } else if (window.external && ('AddFavorite' in window.external)) {
-      window.external.AddFavorite(location.href, document.title);
-    } else {
-      alert('Appuie sur ' + (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + ' + D pour ajouter cette page à tes favoris.');
-    }
+  // Exemple de fonction de sélection de classe interactive
+  function selectClass(className) {
+    document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    // Tu pourras ajouter ici la logique de chargement des données de la classe sélectionnée
   }
 </script>
 
