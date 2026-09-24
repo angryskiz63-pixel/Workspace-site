@@ -3,160 +3,333 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aion 2 Build & Simulateur — Angryskiz</title>
-<meta name="description" content="Crée et optimise ton build Aion 2 sur le site d'Angryskiz : choix des classes, compétences, strophes et simulateur de stats.">
-<link rel="stylesheet" href="style.css"> <!-- Remplace par le nom de ton fichier CSS global si besoin -->
+<title>Calculateur de Build Aion 2 — Angryskiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
 <style>
-/* Styles spécifiques intégrés pour le calculateur de build */
-.build-layout { display: grid; grid-template-columns: 270px 1fr; gap: 18px; margin-top: 20px; }
-.class-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
-.class-btn {
-  background: var(--bg3, #161b26);
-  border: 1px solid var(--border, #252d40);
-  border-radius: 12px;
-  padding: 16px 10px 14px;
-  text-align: center;
-  cursor: pointer;
-  transition: all .25s;
-  color: var(--text, #dde4f0);
-}
-.class-btn:hover, .class-btn.selected {
-  border-color: var(--gold, #c9a227);
-  background: linear-gradient(135deg, rgba(201,162,39,0.12), rgba(232,196,74,0.06));
-}
-.class-btn .class-icon { font-size: 30px; display: block; margin-bottom: 6px; }
-.class-btn .class-name { font-size: 12px; font-weight: 700; }
-.card {
-  background: var(--bg2, #0e1118);
-  border: 1px solid var(--border, #252d40);
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-.slots-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
-.skill-slot {
-  background: var(--bg3, #161b26);
-  border: 1px dashed var(--border2, #2e3a52);
-  border-radius: 10px;
-  aspect-ratio: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all .2s;
-  position: relative;
-}
-.skill-slot:hover { border-color: var(--gold, #c9a227); }
-.stats-box {
-  background: var(--bg3, #161b26);
-  border: 1px solid var(--border, #252d40);
-  border-radius: 10px;
-  padding: 16px;
-}
-.stat-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
-.stat-value { font-weight: 800; color: var(--gold2, #e8c44a); }
-@media (max-width: 960px) {
-  .build-layout { grid-template-columns: 1fr; }
-  .class-grid { grid-template-columns: repeat(2, 1fr); }
-}
+  :root {
+    --bg-main: #090b10;
+    --bg-card: #0e1118;
+    --bg-card-hover: #161b26;
+    --border: #252d40;
+    --gold: #c9a227;
+    --gold-light: #e8c44a;
+    --text: #dde4f0;
+    --text-muted: #8b9bb4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background-color: var(--bg-main);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER DU SITE */
+  header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 15px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo-site {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  nav {
+    display: flex;
+    gap: 12px;
+  }
+
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+  }
+
+  nav a:hover, nav a.active {
+    color: var(--text);
+    background: var(--bg-card-hover);
+    border-color: var(--border);
+  }
+
+  nav a.active {
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+
+  /* CONTENEUR PRINCIPAL */
+  main {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px 20px;
+    flex: 1;
+  }
+
+  .page-title {
+    font-family: 'Cinzel', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .page-desc {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+
+  /* STRUCTURE DES BLOCS (CARTES) */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gold);
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* SECTION CLASSES */
+  .class-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+  }
+
+  .class-btn {
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .class-btn:hover, .class-btn.selected {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(201,162,39,0.1), rgba(228,196,74,0.02));
+  }
+
+  .class-icon { font-size: 26px; display: block; margin-bottom: 6px; }
+  .class-name { font-size: 13px; font-weight: 700; color: var(--text); }
+
+  /* LAYOUT PRINCIPAL (2 COLONNES) */
+  .build-container {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 25px;
+  }
+
+  /* RECHERCHE & SKILLS */
+  .skill-search {
+    width: 100%;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-size: 13px;
+    margin-bottom: 15px;
+  }
+  .skill-search:focus { outline: none; border-color: var(--gold); }
+
+  .skill-list-box {
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    height: 350px;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* EMPLACEMENTS DE BUILD (SLOTS) */
+  .slots-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .skill-slot {
+    background: var(--bg-main);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 20px;
+    color: var(--border);
+  }
+
+  .skill-slot:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--bg-card-hover);
+  }
+
+  /* STATS */
+  .stats-box {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--bg-main);
+    border-radius: 6px;
+    font-size: 13px;
+    border: 1px solid rgba(255,255,255,0.02);
+  }
+
+  .stat-val { font-weight: 700; color: var(--gold-light); }
+
+  /* PIED DE PAGE */
+  footer {
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-top: auto;
+  }
+
+  @media(max-width: 900px) {
+    .build-container { grid-template-columns: 1fr; }
+    .class-grid { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 </head>
 <body>
 
-<!-- BANDEAU / EN-TÊTE COMMUN DU SITE -->
-<header>
-  <div class="logo">ANGRYSKIZ</div>
-  <nav>
-    <button onclick="location.href='index.html'">Accueil</button>
-    <button class="active" onclick="location.href='Build.html'">Aion 2 Build</button>
-    <!-- Ajoute tes autres liens de navigation ici -->
-  </nav>
-</header>
+  <!-- HEADER -->
+  <header>
+    <div class="logo-site">Angryskiz</div>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="Builds.html" class="active">Aion 2 Build</a>
+    </nav>
+  </header>
 
-<!-- CONTENU PRINCIPAL DE LA PAGE BUILD -->
-<main>
-  <div class="page-header">
-    <h1>Calculateur de Build Aion 2</h1>
-    <p>Sélectionne ta classe, configure tes compétences et optimise tes statistiques pour tes streams et sessions de jeu.</p>
-  </div>
+  <!-- CONTENU -->
+  <main>
+    <h1 class="page-title">Calculateur de Build Aion 2</h1>
+    <p class="page-desc">Sélectionne ta classe, configure tes compétences actives/passives et suis l'évolution de tes stats en direct.</p>
 
-  <!-- Grille de sélection des classes -->
-  <div class="card">
-    <div class="card-title">1. Choisis ta classe</div>
-    <div class="class-grid">
-      <div class="class-btn selected" onclick="selectClass('gladiateur')">
-        <span class="class-icon">⚔️</span>
-        <span class="class-name">Gladiateur</span>
-      </div>
-      <div class="class-btn" onclick="selectClass('templier')">
-        <span class="class-icon">🛡️</span>
-        <span class="class-name">Templier</span>
-      </div>
-      <div class="class-btn" onclick="selectClass('rodeur')">
-        <span class="class-icon">🏹</span>
-        <span class="class-name">Rôdeur</span>
-      </div>
-      <div class="class-btn" onclick="selectClass('assassin')">
-        <span class="class-icon">🗡️</span>
-        <span class="class-name">Assassin</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Layout Principal du Build (Compétences & Stats) -->
-  <div class="build-layout">
-    
-    <!-- Colonne de gauche : Liste / Recherche de compétences -->
+    <!-- Choix des classes -->
     <div class="card">
-      <div class="card-title">Bibliothèque de Skills</div>
-      <input type="text" class="skill-search" placeholder="Rechercher un skill..." id="searchSkill">
-      <div class="skill-list" id="skillListContainer">
-        <!-- Les skills injectés dynamiquement ou statiquement -->
-        <div style="font-size: 12px; color: var(--muted2); padding: 10px; text-align: center;">Choisis une classe pour afficher les compétences.</div>
+      <div class="card-title">⚔️ 1. Sélection de la classe</div>
+      <div class="class-grid">
+        <div class="class-btn selected" onclick="selectClass(this)">
+          <span class="class-icon">⚔️</span>
+          <span class="class-name">Gladiateur</span>
+        </div>
+        <div class="class-btn" onclick="selectClass(this)">
+          <span class="class-icon">🛡️</span>
+          <span class="class-name">Templier</span>
+        </div>
+        <div class="class-btn" onclick="selectClass(this)">
+          <span class="class-icon">🏹</span>
+          <span class="class-name">Rôdeur</span>
+        </div>
+        <div class="class-btn" onclick="selectClass(this)">
+          <span class="class-icon">🗡️</span>
+          <span class="class-name">Assassin</span>
+        </div>
       </div>
     </div>
 
-    <!-- Colonne de droite : Emplacements & Statistiques -->
-    <div style="display: flex; flex-direction: column; gap: 18px;">
+    <!-- Layout 2 colonnes : Skills + Grille & Stats -->
+    <div class="build-container">
       
-      <div class="card">
-        <div class="card-title">Emplacements Actifs & Passifs</div>
-        <div class="slots-grid">
-          <div class="skill-slot"><span style="font-size:18px; color:var(--border2)">+</span></div>
-          <div class="skill-slot"><span style="font-size:18px; color:var(--border2)">+</span></div>
-          <div class="skill-slot"><span style="font-size:18px; color:var(--border2)">+</span></div>
-          <div class="skill-slot"><span style="font-size:18px; color:var(--border2)">+</span></div>
+      <!-- Colonne Gauche : Bibliothèque -->
+      <div class="card" style="margin-bottom: 0;">
+        <div class="card-title">📖 Bibliothèque de Skills</div>
+        <input type="text" class="skill-search" placeholder="Rechercher un sort...">
+        <div class="skill-list-box">
+          Sélectionne une classe pour charger les compétences disponibles.
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-title">Statistiques Totales du Build</div>
-        <div class="stats-box">
-          <div class="stat-row"><span class="stat-label">Attaque Physique / Magique</span><span class="stat-value">--</span></div>
-          <div class="stat-row"><span class="stat-label">Précision</span><span class="stat-value">--</span></div>
-          <div class="stat-row"><span class="stat-label">Coup Critique</span><span class="stat-value">--</span></div>
-          <div class="stat-row"><span class="stat-label">Vitesse d'attaque</span><span class="stat-value">--</span></div>
+      <!-- Colonne Droite : Emplacements & Stats -->
+      <div style="display: flex; flex-direction: column; gap: 25px;">
+        <div class="card" style="margin-bottom: 0;">
+          <div class="card-title">⚡ Emplacements du Build</div>
+          <div class="slots-grid">
+            <div class="skill-slot">+</div>
+            <div class="skill-slot">+</div>
+            <div class="skill-slot">+</div>
+            <div class="skill-slot">+</div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 0;">
+          <div class="card-title">📊 Statistiques Globales</div>
+          <div class="stats-box">
+            <div class="stat-row"><span>Attaque Physique</span> <span class="stat-val">--</span></div>
+            <div class="stat-row"><span>Précision</span> <span class="stat-val">--</span></div>
+            <div class="stat-row"><span>Coup Critique</span> <span class="stat-val">--</span></div>
+            <div class="stat-row"><span>Vitesse d'attaque</span> <span class="stat-val">--</span></div>
+          </div>
         </div>
       </div>
 
     </div>
-  </div>
-</main>
+  </main>
 
-<!-- PIED DE PAGE COMMUN DU SITE -->
-<footer style="text-align: center; padding: 20px; border-top: 1px solid var(--border, #252d40); margin-top: 40px; color: var(--muted, #5a6a85); font-size: 12px;">
-  <p>&copy; 2026 Angryskiz — Tous droits réservés. Propulsé pour la communauté Aion 2 FR.</p>
-</footer>
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Angryskiz — Tous droits réservés.</p>
+  </footer>
 
-<script>
-  // Exemple de fonction de sélection de classe interactive
-  function selectClass(className) {
-    document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
-    // Tu pourras ajouter ici la logique de chargement des données de la classe sélectionnée
-  }
-</script>
+  <script>
+    function selectClass(element) {
+      document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+  </script>
 
 </body>
 </html>
