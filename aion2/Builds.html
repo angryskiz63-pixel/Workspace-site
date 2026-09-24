@@ -39,7 +39,7 @@
       flex-direction: column;
     }
 
-    /* --- VOTRE HEADER D'ORIGINE --- */
+    /* --- HEADER D'ORIGINE --- */
     .aion-nav {
       position: fixed;
       top: 0;
@@ -192,9 +192,8 @@
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
     }
-    /* ------------------------------------- */
 
-    /* Layout Principal de la Page Builds */
+    /* --- LAYOUT PRINCIPAL --- */
     .builds-container {
       max-width: 1400px;
       margin: 110px auto 50px auto;
@@ -206,7 +205,6 @@
       flex-grow: 1;
     }
 
-    /* Sidebar des Classes */
     .classes-sidebar {
       background: var(--bg-card);
       border: 1px solid var(--border-card);
@@ -261,7 +259,6 @@
       box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
     }
 
-    /* Zone de Contenu & Compétences */
     .builds-content {
       background: var(--bg-card);
       border: 1px solid var(--border-card);
@@ -299,7 +296,6 @@
       gap: 8px;
     }
 
-    /* Grille de Sorts */
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
@@ -346,7 +342,7 @@
       line-height: 1.2;
     }
 
-    /* Panneau de configuration du Build Actif */
+    /* --- PANNEAU DU BUILD ACTIF INTERACTIF --- */
     .active-build-panel {
       margin-top: 35px;
       background: rgba(7, 11, 22, 0.9);
@@ -368,9 +364,40 @@
     .active-build-panel p {
       color: var(--text-muted);
       font-size: 0.9rem;
+      margin-bottom: 15px;
     }
 
-    /* --- VOTRE FOOTER D'ORIGINE --- */
+    .active-build-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .build-slot {
+      height: 75px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .build-slot.filled {
+      border-style: solid;
+      border-color: var(--accent-gold);
+      background: rgba(255, 183, 77, 0.08);
+    }
+
+    .build-slot.filled i { color: var(--accent-gold); font-size: 1.2rem; margin-bottom: 4px; }
+    .build-slot.filled span { font-size: 0.65rem; color: #fff; }
+
+    /* --- FOOTER D'ORIGINE --- */
     footer {
       margin-top: auto;
       background: rgba(7, 11, 22, 0.98);
@@ -383,22 +410,21 @@
 
     @media (max-width: 1100px) {
       .aion-lagofast { left: 22%; }
+      .active-build-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     @media (max-width: 900px) {
-      .builds-container {
-        grid-template-columns: 1fr;
-        margin-top: 90px;
-      }
+      .builds-container { grid-template-columns: 1fr; margin-top: 90px; }
       .aion-menu { display: none; }
       .aion-lagofast { display: none; }
       .aion-logo-img { height: 60px; }
+      .active-build-grid { grid-template-columns: repeat(3, 1fr); }
     }
   </style>
 </head>
 <body>
 
-<!-- VOTRE EN-TÊTE D'ORIGINE -->
+<!-- EN-TÊTE D'ORIGINE -->
 <nav class="aion-nav">
   <a href="/aion2/aion2.html" class="aion-logo">
     <img src="images/logo-aion2bis.png" alt="Aion 2" class="aion-logo-img">
@@ -430,9 +456,9 @@
   </ul>
 </nav>
 
-<!-- CONTENEUR DES 8 CLASSES ET COMPÉTENCES -->
+<!-- CONTENEUR PRINCIPAL -->
 <div class="builds-container">
-  <!-- Sidebar des 8 classes -->
+  <!-- Sidebar des classes -->
   <aside class="classes-sidebar">
     <div class="sidebar-heading"><i class="fas fa-users"></i> Classes</div>
     <ul class="class-nav-list">
@@ -447,29 +473,29 @@
     </ul>
   </aside>
 
-  <!-- Zone de contenu principale -->
+  <!-- Zone de contenu -->
   <main class="builds-content">
     <h1 class="builds-main-title" id="class-title"><i class="fas fa-bolt"></i> Compétences : Assassin</h1>
-    <p class="builds-subtitle">Consultez l'exhaustivité des sorts actifs, passifs et enchaînements pour optimiser votre build de combat.</p>
+    <p class="builds-subtitle">Cliquez sur une compétence pour l'ajouter à votre build actif ou l'en retirer.</p>
     
     <div class="category-title"><i class="fas fa-fire"></i> Compétences Actives & Enchaînements</div>
-    <div class="skills-grid" id="active-skills-grid">
-      <!-- Injecté dynamiquement par JS -->
-    </div>
+    <div class="skills-grid" id="active-skills-grid"></div>
 
     <div class="category-title"><i class="fas fa-shield-alt"></i> Compétences Passives & Traits</div>
-    <div class="skills-grid" id="passive-skills-grid">
-      <!-- Injecté dynamiquement par JS -->
-    </div>
+    <div class="skills-grid" id="passive-skills-grid"></div>
 
+    <!-- Panneau Interactif du Build -->
     <div class="active-build-panel">
-      <h4><i class="fas fa-sliders-h"></i> Configuration de Build Actif</h4>
-      <p id="build-description-text">Cliquez sur les compétences pour composer votre set personnalisé et préparer vos rotations.</p>
+      <h4><i class="fas fa-sliders-h"></i> Mon Build Actif (12 Emplacements Max)</h4>
+      <p>Cliquez sur un emplacement rempli ci-dessous pour le vider.</p>
+      <div class="active-build-grid" id="user-build-grid">
+        <!-- Généré dynamiquement en JS -->
+      </div>
     </div>
   </main>
 </div>
 
-<!-- VOTRE PIED DE PAGE D'ORIGINE[cite: 10] -->
+<!-- FOOTER D'ORIGINE -->
 <footer>
   <p style="margin-bottom: 12px;">
     <a href="https://discord.gg/eJvZcncpRN" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
@@ -480,7 +506,6 @@
 </footer>
 
 <script>
-  // Données techniques complètes pour les 8 classes d'Aion 2
   const classDatabase = {
     assassin: {
       name: "Assassin",
@@ -525,7 +550,7 @@
         { name: "Enchaînement", icon: "fa-link" },
         { name: "Cri de Guerre", icon: "fa-bullhorn" },
         { name: "Tourbillon de Lames", icon: "fa-spinner" },
-        { name: "charge brutale", icon: "fa-running" },
+        { name: "Charge Brutale", icon: "fa-running" },
         { name: "Vague d'Énergie", icon: "fa-water" }
       ],
       passives: [
@@ -614,35 +639,36 @@
     }
   };
 
+  // Tableau qui stocke les sorts sélectionnés pour le build (max 12)
+  let currentBuild = new Array(12).fill(null);
+
   function switchClass(classKey, element) {
-    // Gestion visuelle des onglets de la sidebar
     document.querySelectorAll('.class-nav-item').forEach(item => item.classList.remove('active'));
     element.classList.add('active');
 
     const data = classDatabase[classKey];
     if (!data) return;
 
-    // Mise à jour du titre
     document.getElementById('class-title').innerHTML = `<i class="fas fa-bolt"></i> Compétences : ${data.name}`;
 
-    // Remplissage des compétences actives
+    // Affichage des compétences actives
     const activeGrid = document.getElementById('active-skills-grid');
     activeGrid.innerHTML = '';
     data.actives.forEach(skill => {
       activeGrid.innerHTML += `
-        <div class="skill-slot" title="${skill.name}">
+        <div class="skill-slot" onclick="addSkillToBuild('${skill.name}', '${skill.icon}')" title="Ajouter ${skill.name}">
           <i class="fas ${skill.icon}"></i>
           <span>${skill.name}</span>
         </div>
       `;
     });
 
-    // Remplissage des compétences passives
+    // Affichage des compétences passives (Correction du bug "passifs" -> "passives")
     const passiveGrid = document.getElementById('passive-skills-grid');
     passiveGrid.innerHTML = '';
-    data.passifs.forEach(skill => {
+    data.passives.forEach(skill => {
       passiveGrid.innerHTML += `
-        <div class="skill-slot" title="${skill.name}">
+        <div class="skill-slot" onclick="addSkillToBuild('${skill.name}', '${skill.icon}')" title="Ajouter ${skill.name}">
           <i class="fas ${skill.icon}"></i>
           <span>${skill.name}</span>
         </div>
@@ -650,15 +676,54 @@
     });
   }
 
-  // Initialisation par défaut au chargement (Assassin)
+  // Ajouter un sort au build au premier emplacement vide
+  function addSkillToBuild(name, icon) {
+    const emptyIndex = currentBuild.indexOf(null);
+    if (emptyIndex === -1) {
+      alert("Votre build est complet (12 compétences maximum) !");
+      return;
+    }
+    currentBuild[emptyIndex] = { name, icon };
+    renderUserBuild();
+  }
+
+  // Retirer un sort du build en cliquant dessus
+  function removeSkillFromBuild(index) {
+    currentBuild[index] = null;
+    renderUserBuild();
+  }
+
+  // Dessiner la grille du build utilisateur
+  function renderUserBuild() {
+    const buildGrid = document.getElementById('user-build-grid');
+    buildGrid.innerHTML = '';
+    
+    currentBuild.forEach((skill, index) => {
+      if (skill) {
+        buildGrid.innerHTML += `
+          <div class="build-slot filled" onclick="removeSkillFromBuild(${index})" title="Retirer ${skill.name}">
+            <i class="fas ${skill.icon}"></i>
+            <span>${skill.name}</span>
+          </div>
+        `;
+      } else {
+        buildGrid.innerHTML += `
+          <div class="build-slot" title="Emplacement vide">
+            <span style="color: rgba(255,255,255,0.2); font-size: 0.75rem;">+ ${index + 1}</span>
+          </div>
+        `;
+      }
+    });
+  }
+
   window.addEventListener('DOMContentLoaded', () => {
     const firstItem = document.querySelector('.class-nav-item');
     if (firstItem) {
       switchClass('assassin', firstItem);
     }
+    renderUserBuild();
   });
 
-  // Fonction favoris d'origine
   function ajouterFavoris() {
     if (window.sidebar && window.sidebar.addPanel) {
       window.sidebar.addPanel(document.title, window.location.href, '');
