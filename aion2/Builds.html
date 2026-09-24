@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion 2 - Hub Stratégique & Simulateur | Angryskiz</title>
+    <title>Aion 2 - Simulateur de Builds & Compétences | Angryskiz</title>
     <style>
+        /* Variables et styles propres à votre identité visuelle */
         :root {
             --bg-color: #0f1016;
             --panel-bg: #161923;
@@ -26,36 +27,53 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
-            padding: 20px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
+        /* --- VOTRE HEADER / EN-TÊTE D'ORIGINE --- */
+        .site-header {
+            background: #111319;
             border-bottom: 1px solid var(--border-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        header h1 {
+        .site-header .logo {
             color: var(--accent-color);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
         }
 
-        header p {
+        .site-nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .site-nav a {
             color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
         }
 
-        .container {
+        .site-nav a:hover, .site-nav a.active {
+            color: var(--accent-color);
+        }
+        /* ----------------------------------------- */
+
+        .page-container {
             max-width: 1300px;
-            margin: 0 auto;
+            margin: 30px auto;
+            padding: 0 20px;
             display: grid;
             grid-template-columns: 280px 1fr;
             gap: 20px;
         }
 
         @media (max-width: 900px) {
-            .container {
+            .page-container {
                 grid-template-columns: 1fr;
             }
         }
@@ -170,39 +188,59 @@
             margin-bottom: 10px;
             color: var(--accent-color);
         }
+
+        /* --- VOTRE FOOTER / PIED DE PAGE D'ORIGINE --- */
+        .site-footer {
+            background: #111319;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        /* --------------------------------------------- */
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>AION 2 - Base de Données & Builds</h1>
-        <p>Espace stratégique officiel - Gestion des compétences et des arbres de classes[cite: 1]</p>
+    <!-- VOTRE HEADER (Gardé intact avec votre identité) -->
+    <header class="site-header">
+        <a href="/" class="logo">Angryskiz.fr</a>
+        <nav class="site-nav">
+            <ul>
+                <li><a href="/">Accueil</a></li>
+                <li><a href="/aion2.html" class="active">Aion 2</a></li>
+                <li><a href="/streams.html">Streams</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <div class="container">
-        <!-- Menu de sélection des 8 classes -->
+    <!-- CORPS DE LA PAGE AVEC LES 8 CLASSES -->
+    <div class="page-container">
+        <!-- Sidebar des 8 classes -->
         <aside class="sidebar">
             <h3>Classes</h3>
             <ul class="class-list">
-                <li class="class-item active" onclick="switchClass('assassin', 'Assassin')">Assassin[cite: 1]</li>
-                <li class="class-item" onclick="switchClass('archer', 'Archer')">Archer[cite: 1]</li>
-                <li class="class-item" onclick="switchClass('gladiator', 'Gladiateur')">Gladiateur[cite: 1]</li>
-                <li class="class-item" onclick="switchClass('templar', 'Templier')">Templier[cite: 1]</li>
-                <li class="class-item" onclick="switchClass('sorcerer', 'Sorcier')">Sorcier[cite: 1]</li>
-                <li class="class-item" onclick="switchClass('spiritmaster', 'Spiritualiste')">Spiritualiste[cite: 1]</li>
-                <li class="class-item" onclick="switchClass('aede', 'Aède')">Aède[cite: 1]</li>
-                <li class="class-item" onclick="switchClass('cleric', 'Clerc')">Clerc[cite: 1]</li>
+                <li class="class-item active" onclick="switchClass('assassin', 'Assassin')">Assassin</li>
+                <li class="class-item" onclick="switchClass('archer', 'Archer')">Archer</li>
+                <li class="class-item" onclick="switchClass('gladiator', 'Gladiateur')">Gladiateur</li>
+                <li class="class-item" onclick="switchClass('templar', 'Templier')">Templier</li>
+                <li class="class-item" onclick="switchClass('sorcerer', 'Sorcier')">Sorcier</li>
+                <li class="class-item" onclick="switchClass('spiritmaster', 'Spiritualiste')">Spiritualiste</li>
+                <li class="class-item" onclick="switchClass('aede', 'Aède')">Aède</li>
+                <li class="class-item" onclick="switchClass('cleric', 'Clerc')">Clerc</li>
             </ul>
         </aside>
 
-        <!-- Grille des sorts et détails dynamiques -->
+        <!-- Contenu dynamique des sorts -->
         <main class="main-content">
             <h2 class="section-title" id="class-title">Compétences : Assassin</h2>
-            <p style="color: var(--text-muted); margin-bottom: 15px;">Sélectionnez vos compétences pour composer votre build personnalisé[cite: 1].</p>
+            <p style="color: var(--text-muted); margin-bottom: 15px;">Sélectionnez vos compétences pour composer votre build personnalisé.</p>
             
             <div class="category-subtitle">Compétences Actives</div>
             <div class="skills-grid" id="active-skills">
-                <!-- Injection dynamique ou statique des sorts actifs -->
                 <div class="skill-slot" title="Frappe Rapide"><span>Frappe Rapide</span></div>
                 <div class="skill-slot" title="Lame d'Ombre"><span>Lame d'Ombre</span></div>
                 <div class="skill-slot" title="Pas de Vent"><span>Pas de Vent</span></div>
@@ -211,50 +249,49 @@
 
             <div class="category-subtitle">Compétences Passives & Chaînes</div>
             <div class="skills-grid" id="passive-skills">
-                <!-- Injection dynamique ou statique des passifs -->
                 <div class="skill-slot" title="Maîtrise des Dagues"><span>Maîtrise Dagues</span></div>
                 <div class="skill-slot" title="Réflexes Assortis"><span>Réflexes</span></div>
             </div>
 
             <div class="build-summary">
                 <h4>Configuration du Build</h4>
-                <p id="build-desc" style="color: var(--text-muted); font-size: 0.9rem;">Cliquez sur les sorts pour les intégrer à votre configuration active[cite: 1].</p>
+                <p id="build-desc" style="color: var(--text-muted); font-size: 0.9rem;">Cliquez sur les sorts pour les intégrer à votre configuration active.</p>
             </div>
         </main>
     </div>
 
+    <!-- VOTRE FOOTER (Gardé intact) -->
+    <footer class="site-footer">
+        <p>&copy; 2026 Angryskiz - Tous droits réservés. Plateforme indépendante de streaming et de guides de jeux.</p>
+    </footer>
+
     <script>
-        // Données structurées pour alimenter les 8 classes selon les besoins exacts
+        // Données des 8 classes prêtes à être alimentées ou complétées
         const classData = {
-            assassin: { title: "Assassin", actives: ["Frappe Rapide", "Lame d'Ombre", "Pas de Vent", "Exécution", "Frappe Sournoise", "Sigil Mortel"], passifs: ["Maîtrise des Dagues", "Réflexes Assortis", "Saccage"] },
-            archer: { title: "Archer", actives: ["Flèche Rapide", "Tir Précis", "Piège Ralentissant", "Salve Multi-Tirs", "Tir de Barrage"], passifs: ["Œil de Faucon", "Portée Accrue"] },
-            gladiator: { title: "Gladiateur", actives: ["Frappe Sismique", "Enchaînement", "Cri de Guerre", "Tourbillon de Lames"], passifs: ["Maîtrise des Armes d'Hast", "Cuirassé"] },
-            templar: { title: "Templier", actives: ["Bouclier Sacré", "Provocation", "Frappe du Jugement", "Jugure Divine"], passifs: ["Rempart de Fer", "Dévouement"] },
-            sorcerer: { title: "Sorcier", actives: ["Boule de Feu", "Éclair", "Gelure", "Météore", "Tempête de Vent"], passifs: ["Concentration", "Affinité Élémentaire"] },
-            spiritmaster: { title: "Spiritualiste", actives: ["Invocation Esprit", "Drain de Vie", "Explosion Spirituelle", "Entrave"], passifs: ["Communion", "Pacte Énergétique"] },
-            aede: { title: "Aède", actives: ["Mantras de Vigueur", "Frappe de Justice", "Soutien Celeste", "Sonate Protectrice"], passifs: ["Harmonie", "Zelateur"] },
-            cleric: { title: "Clerc", actives: ["Soin Majeur", "Châtiment Divin", "Bouclier de Lumière", "Résurrection", "Purification"], passifs: ["Bénédiction", "Grâce Divine"] }
+            assassin: { actives: ["Frappe Rapide", "Lame d'Ombre", "Pas de Vent", "Exécution", "Frappe Sournoise", "Sigil Mortel"], passifs: ["Maîtrise des Dagues", "Réflexes Assortis", "Saccage"] },
+            archer: { actives: ["Flèche Rapide", "Tir Précis", "Piège Ralentissant", "Salve Multi-Tirs", "Tir de Barrage"], passifs: ["Œil de Faucon", "Portée Accrue"] },
+            gladiator: { actives: ["Frappe Sismique", "Enchaînement", "Cri de Guerre", "Tourbillon de Lames"], passifs: ["Maîtrise des Armes d'Hast", "Cuirassé"] },
+            templar: { actives: ["Bouclier Sacré", "Provocation", "Frappe du Jugement", "Jugure Divine"], passifs: ["Rempart de Fer", "Dévouement"] },
+            sorcerer: { actives: ["Boule de Feu", "Éclair", "Gelure", "Météore", "Tempête de Vent"], passifs: ["Concentration", "Affinité Élémentaire"] },
+            spiritmaster: { actives: ["Invocation Esprit", "Drain de Vie", "Explosion Spirituelle", "Entrave"], passifs: ["Communion", "Pacte Énergétique"] },
+            aede: { actives: ["Mantras de Vigueur", "Frappe de Justice", "Soutien Celeste", "Sonate Protectrice"], passifs: ["Harmonie", "Zelateur"] },
+            cleric: { actives: ["Soin Majeur", "Châtiment Divin", "Bouclier de Lumière", "Résurrection", "Purification"], passifs: ["Bénédiction", "Grâce Divine"] }
         };
 
         function switchClass(classKey, displayName) {
-            // Gestion visuelle de la classe active dans le menu
             document.querySelectorAll('.class-item').forEach(item => item.classList.remove('active'));
             event.target.classList.add('active');
             
-            // Mise à jour du titre principal
             document.getElementById('class-title').innerText = "Compétences : " + displayName;
             
-            // Récupération des données associées
             const data = classData[classKey];
             
-            // Remplissage dynamique des actifs
             const activeContainer = document.getElementById('active-skills');
             activeContainer.innerHTML = '';
             data.actives.forEach(skill => {
                 activeContainer.innerHTML += `<div class="skill-slot" title="${skill}"><span>${skill}</span></div>`;
             });
 
-            // Remplissage dynamique des passifs
             const passiveContainer = document.getElementById('passive-skills');
             passiveContainer.innerHTML = '';
             data.passifs.forEach(skill => {
