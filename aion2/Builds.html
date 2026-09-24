@@ -1,303 +1,674 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aion 2 - Simulateur de Builds & Compétences | Angryskiz</title>
-    <style>
-        /* Variables et styles propres à votre identité visuelle */
-        :root {
-            --bg-color: #0f1016;
-            --panel-bg: #161923;
-            --accent-color: #7289da;
-            --accent-hover: #5b6eae;
-            --text-main: #ffffff;
-            --text-muted: #99aab5;
-            --border-color: #2c2f38;
-        }
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="images/logo-aion2bis.png" />
+  <link rel="shortcut icon" type="image/png" href="images/logo-aion2bis.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+  <title>Aion 2 | Simulateur de Builds & Compétences</title>
+  <meta name="description" content="Simulateur de builds et gestionnaire de compétences par classe pour Aion 2. Fansite communautaire francophone." />
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        /* --- VOTRE HEADER / EN-TÊTE D'ORIGINE --- */
-        .site-header {
-            background: #111319;
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+  <style>
+    :root {
+      --bg-main: #070b16;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --border-card: rgba(0, 242, 254, 0.25);
+      --accent-cyan: #00f2fe;
+      --accent-blue: #4facfe;
+      --accent-gold: #ffb74d;
+      --accent-purple: #a855f7;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+    }
 
-        .site-header .logo {
-            color: var(--accent-color);
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
+    html { scroll-behavior: smooth; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .site-nav ul {
-            display: flex;
-            list-style: none;
-            gap: 20px;
-        }
+    /* --- VOTRE HEADER D'ORIGINE --- */
+    .aion-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 70px;
+      background: linear-gradient(180deg, rgba(7, 11, 22, 0.95) 0%, rgba(7, 11, 22, 0.7) 100%);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 0 4%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
 
-        .site-nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
+    .aion-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      height: 100%;
+      position: relative;
+      width: 120px;
+    }
 
-        .site-nav a:hover, .site-nav a.active {
-            color: var(--accent-color);
-        }
-        /* ----------------------------------------- */
+    .aion-logo-img {
+      height: 100px;
+      width: auto;
+      object-fit: contain;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.9));
+      z-index: 10;
+    }
 
-        .page-container {
-            max-width: 1300px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 20px;
-        }
+    .aion-logo-img:hover { transform: translateY(-50%) scale(1.05); }
 
-        @media (max-width: 900px) {
-            .page-container {
-                grid-template-columns: 1fr;
-            }
-        }
+    .aion-lagofast {
+      position: absolute;
+      left: 32%;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 15;
+    }
 
-        /* Sidebar Classes */
-        .sidebar {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            height: fit-content;
-        }
+    .aion-lagofast-img {
+      height: 52px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.5));
+      transition: all 0.3s ease;
+    }
 
-        .sidebar h3 {
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            border-bottom: 2px solid var(--accent-color);
-            padding-bottom: 5px;
-        }
+    .aion-lagofast-img:hover {
+      transform: scale(1.1);
+      filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.9));
+    }
 
-        .class-list {
-            list-style: none;
-        }
+    .aion-menu { 
+      display: flex; 
+      gap: 18px; 
+      list-style: none; 
+      margin-left: auto;
+      align-items: center;
+    }
 
-        .class-item {
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            background: #1e222f;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 600;
-        }
+    .aion-menu a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: 0.2s;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    }
 
-        .class-item:hover, .class-item.active {
-            background: var(--accent-color);
-            color: white;
-        }
+    .aion-menu a:hover { color: var(--accent-cyan); }
 
-        /* Main Content Area */
-        .main-content {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-        }
+    .coming-soon-group {
+      position: relative;
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      padding-top: 10px;
+    }
 
-        .section-title {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            color: var(--text-main);
-        }
+    .coming-soon-group::before {
+      content: 'COMING SOON';
+      position: absolute;
+      top: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.62rem;
+      font-weight: 800;
+      color: var(--accent-gold);
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+      text-shadow: 0 0 6px rgba(255, 183, 77, 0.6);
+      pointer-events: none;
+    }
 
-        .category-subtitle {
-            font-size: 1.1rem;
-            color: var(--accent-color);
-            margin: 20px 0 10px 0;
-            border-left: 3px solid var(--accent-color);
-            padding-left: 8px;
-        }
+    .coming-soon-group a { opacity: 0.6; cursor: not-allowed; }
+    .coming-soon-group a:hover { color: var(--text-main); }
 
-        /* Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-        }
+    .aion-fav-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-card);
+      color: var(--accent-gold);
+      padding: 7px 14px;
+      border-radius: 20px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
 
-        .skill-slot {
-            width: 75px;
-            height: 75px;
-            background: #1e222f;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            position: relative;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            padding: 4px;
-            text-align: center;
-        }
+    .aion-fav-btn:hover {
+      background: var(--accent-gold);
+      color: #070b16;
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 12px rgba(255, 183, 77, 0.5);
+    }
 
-        .skill-slot:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-        }
+    .aion-discord-btn {
+      background: #5865F2;
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: bold !important;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(88, 101, 242, 0.4);
+      transition: all 0.2s ease !important;
+    }
 
-        .skill-slot span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
+    .aion-discord-btn:hover {
+      background: #4752C4;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(88, 101, 242, 0.6);
+    }
+    /* ------------------------------------- */
 
-        /* Build Panel */
-        .build-summary {
-            background: #111319;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 25px;
-        }
+    /* Layout Principal de la Page Builds */
+    .builds-container {
+      max-width: 1400px;
+      margin: 110px auto 50px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 30px;
+      width: 100%;
+      flex-grow: 1;
+    }
 
-        .build-summary h4 {
-            margin-bottom: 10px;
-            color: var(--accent-color);
-        }
+    /* Sidebar des Classes */
+    .classes-sidebar {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 20px;
+      height: fit-content;
+      backdrop-filter: blur(10px);
+    }
 
-        /* --- VOTRE FOOTER / PIED DE PAGE D'ORIGINE --- */
-        .site-footer {
-            background: #111319;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            padding: 20px;
-            margin-top: 50px;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-        /* --------------------------------------------- */
-    </style>
+    .sidebar-heading {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-card);
+      letter-spacing: 1px;
+    }
+
+    .class-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .class-nav-item {
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .class-nav-item:hover {
+      background: rgba(0, 242, 254, 0.08);
+      color: var(--text-main);
+      border-color: rgba(0, 242, 254, 0.2);
+    }
+
+    .class-nav-item.active {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.15), rgba(79, 172, 254, 0.15));
+      color: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+    }
+
+    /* Zone de Contenu & Compétences */
+    .builds-content {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 14px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    .builds-main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .builds-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+      border-bottom: 1px solid var(--border-card);
+      padding-bottom: 15px;
+    }
+
+    .category-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: var(--accent-cyan);
+      margin: 25px 0 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Grille de Sorts */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+      gap: 14px;
+    }
+
+    .skill-slot {
+      height: 85px;
+      background: rgba(7, 11, 22, 0.7);
+      border: 2px solid var(--border-card);
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .skill-slot:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 242, 254, 0.25);
+    }
+
+    .skill-slot i {
+      font-size: 1.4rem;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+    }
+
+    .skill-slot span {
+      font-size: 0.72rem;
+      color: var(--text-main);
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.2;
+    }
+
+    /* Panneau de configuration du Build Actif */
+    .active-build-panel {
+      margin-top: 35px;
+      background: rgba(7, 11, 22, 0.9);
+      border: 1px solid var(--border-card);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .active-build-panel h4 {
+      font-family: 'Cinzel', serif;
+      color: var(--accent-gold);
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .active-build-panel p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* --- VOTRE FOOTER D'ORIGINE --- */
+    footer {
+      margin-top: auto;
+      background: rgba(7, 11, 22, 0.98);
+      border-top: 1px solid var(--border-card);
+      padding: 35px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1100px) {
+      .aion-lagofast { left: 22%; }
+    }
+
+    @media (max-width: 900px) {
+      .builds-container {
+        grid-template-columns: 1fr;
+        margin-top: 90px;
+      }
+      .aion-menu { display: none; }
+      .aion-lagofast { display: none; }
+      .aion-logo-img { height: 60px; }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- VOTRE HEADER (Gardé intact avec votre identité) -->
-    <header class="site-header">
-        <a href="/" class="logo">Angryskiz.fr</a>
-        <nav class="site-nav">
-            <ul>
-                <li><a href="/">Accueil</a></li>
-                <li><a href="/aion2.html" class="active">Aion 2</a></li>
-                <li><a href="/streams.html">Streams</a></li>
-                <li><a href="/contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<!-- VOTRE EN-TÊTE D'ORIGINE -->
+<nav class="aion-nav">
+  <a href="/aion2/aion2.html" class="aion-logo">
+    <img src="images/logo-aion2bis.png" alt="Aion 2" class="aion-logo-img">
+  </a>
 
-    <!-- CORPS DE LA PAGE AVEC LES 8 CLASSES -->
-    <div class="page-container">
-        <!-- Sidebar des 8 classes -->
-        <aside class="sidebar">
-            <h3>Classes</h3>
-            <ul class="class-list">
-                <li class="class-item active" onclick="switchClass('assassin', 'Assassin')">Assassin</li>
-                <li class="class-item" onclick="switchClass('archer', 'Archer')">Archer</li>
-                <li class="class-item" onclick="switchClass('gladiator', 'Gladiateur')">Gladiateur</li>
-                <li class="class-item" onclick="switchClass('templar', 'Templier')">Templier</li>
-                <li class="class-item" onclick="switchClass('sorcerer', 'Sorcier')">Sorcier</li>
-                <li class="class-item" onclick="switchClass('spiritmaster', 'Spiritualiste')">Spiritualiste</li>
-                <li class="class-item" onclick="switchClass('aede', 'Aède')">Aède</li>
-                <li class="class-item" onclick="switchClass('cleric', 'Clerc')">Clerc</li>
-            </ul>
-        </aside>
+  <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="aion-lagofast">
+    <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
+  </a>
 
-        <!-- Contenu dynamique des sorts -->
-        <main class="main-content">
-            <h2 class="section-title" id="class-title">Compétences : Assassin</h2>
-            <p style="color: var(--text-muted); margin-bottom: 15px;">Sélectionnez vos compétences pour composer votre build personnalisé.</p>
-            
-            <div class="category-subtitle">Compétences Actives</div>
-            <div class="skills-grid" id="active-skills">
-                <div class="skill-slot" title="Frappe Rapide"><span>Frappe Rapide</span></div>
-                <div class="skill-slot" title="Lame d'Ombre"><span>Lame d'Ombre</span></div>
-                <div class="skill-slot" title="Pas de Vent"><span>Pas de Vent</span></div>
-                <div class="skill-slot" title="Exécution"><span>Exécution</span></div>
-            </div>
+  <ul class="aion-menu">
+    <li><a href="/aion2/aion2.html#actualites">Actualités</a></li>
+    <li><a href="/aion2/Classes.html">Classes</a></li>
+    <li class="coming-soon-group">
+      <a href="/aion2/Build.html" style="opacity: 1; cursor: pointer; color: var(--accent-cyan);">Builds</a>
+      <a href="#">Guides</a>
+      <a href="#">Patchs</a>
+    </li>
+    <li><a href="/aion2/Unleashed.html">UNLEASHED</a></li>
+    <li>
+      <button onclick="ajouterFavoris()" class="aion-fav-btn">
+        <i class="fas fa-star"></i> Favoris
+      </button>
+    </li>
+    <li>
+      <a href="https://discord.gg/eJvZcncpRN" target="_blank" class="aion-discord-btn">
+        <i class="fab fa-discord"></i> Discord
+      </a>
+    </li>
+  </ul>
+</nav>
 
-            <div class="category-subtitle">Compétences Passives & Chaînes</div>
-            <div class="skills-grid" id="passive-skills">
-                <div class="skill-slot" title="Maîtrise des Dagues"><span>Maîtrise Dagues</span></div>
-                <div class="skill-slot" title="Réflexes Assortis"><span>Réflexes</span></div>
-            </div>
+<!-- CONTENEUR DES 8 CLASSES ET COMPÉTENCES -->
+<div class="builds-container">
+  <!-- Sidebar des 8 classes -->
+  <aside class="classes-sidebar">
+    <div class="sidebar-heading"><i class="fas fa-users"></i> Classes</div>
+    <ul class="class-nav-list">
+      <li class="class-nav-item active" onclick="switchClass('assassin', this)"><i class="fas fa-dagger"></i> Assassin</li>
+      <li class="class-nav-item" onclick="switchClass('archer', this)"><i class="fas fa-bow-arrow"></i> Archer</li>
+      <li class="class-nav-item" onclick="switchClass('gladiator', this)"><i class="fas fa-shield-alt"></i> Gladiateur</li>
+      <li class="class-nav-item" onclick="switchClass('templar', this)"><i class="fas fa-shield-virus"></i> Templier</li>
+      <li class="class-nav-item" onclick="switchClass('sorcerer', this)"><i class="fas fa-fire-alt"></i> Sorcier</li>
+      <li class="class-nav-item" onclick="switchClass('spiritmaster', this)"><i class="fas fa-ghost"></i> Spiritualiste</li>
+      <li class="class-nav-item" onclick="switchClass('aede', this)"><i class="fas fa-drum"></i> Aède</li>
+      <li class="class-nav-item" onclick="switchClass('cleric', this)"><i class="fas fa-cross"></i> Clerc</li>
+    </ul>
+  </aside>
 
-            <div class="build-summary">
-                <h4>Configuration du Build</h4>
-                <p id="build-desc" style="color: var(--text-muted); font-size: 0.9rem;">Cliquez sur les sorts pour les intégrer à votre configuration active.</p>
-            </div>
-        </main>
+  <!-- Zone de contenu principale -->
+  <main class="builds-content">
+    <h1 class="builds-main-title" id="class-title"><i class="fas fa-bolt"></i> Compétences : Assassin</h1>
+    <p class="builds-subtitle">Consultez l'exhaustivité des sorts actifs, passifs et enchaînements pour optimiser votre build de combat.</p>
+    
+    <div class="category-title"><i class="fas fa-fire"></i> Compétences Actives & Enchaînements</div>
+    <div class="skills-grid" id="active-skills-grid">
+      <!-- Injecté dynamiquement par JS -->
     </div>
 
-    <!-- VOTRE FOOTER (Gardé intact) -->
-    <footer class="site-footer">
-        <p>&copy; 2026 Angryskiz - Tous droits réservés. Plateforme indépendante de streaming et de guides de jeux.</p>
-    </footer>
+    <div class="category-title"><i class="fas fa-shield-alt"></i> Compétences Passives & Traits</div>
+    <div class="skills-grid" id="passive-skills-grid">
+      <!-- Injecté dynamiquement par JS -->
+    </div>
 
-    <script>
-        // Données des 8 classes prêtes à être alimentées ou complétées
-        const classData = {
-            assassin: { actives: ["Frappe Rapide", "Lame d'Ombre", "Pas de Vent", "Exécution", "Frappe Sournoise", "Sigil Mortel"], passifs: ["Maîtrise des Dagues", "Réflexes Assortis", "Saccage"] },
-            archer: { actives: ["Flèche Rapide", "Tir Précis", "Piège Ralentissant", "Salve Multi-Tirs", "Tir de Barrage"], passifs: ["Œil de Faucon", "Portée Accrue"] },
-            gladiator: { actives: ["Frappe Sismique", "Enchaînement", "Cri de Guerre", "Tourbillon de Lames"], passifs: ["Maîtrise des Armes d'Hast", "Cuirassé"] },
-            templar: { actives: ["Bouclier Sacré", "Provocation", "Frappe du Jugement", "Jugure Divine"], passifs: ["Rempart de Fer", "Dévouement"] },
-            sorcerer: { actives: ["Boule de Feu", "Éclair", "Gelure", "Météore", "Tempête de Vent"], passifs: ["Concentration", "Affinité Élémentaire"] },
-            spiritmaster: { actives: ["Invocation Esprit", "Drain de Vie", "Explosion Spirituelle", "Entrave"], passifs: ["Communion", "Pacte Énergétique"] },
-            aede: { actives: ["Mantras de Vigueur", "Frappe de Justice", "Soutien Celeste", "Sonate Protectrice"], passifs: ["Harmonie", "Zelateur"] },
-            cleric: { actives: ["Soin Majeur", "Châtiment Divin", "Bouclier de Lumière", "Résurrection", "Purification"], passifs: ["Bénédiction", "Grâce Divine"] }
-        };
+    <div class="active-build-panel">
+      <h4><i class="fas fa-sliders-h"></i> Configuration de Build Actif</h4>
+      <p id="build-description-text">Cliquez sur les compétences pour composer votre set personnalisé et préparer vos rotations.</p>
+    </div>
+  </main>
+</div>
 
-        function switchClass(classKey, displayName) {
-            document.querySelectorAll('.class-item').forEach(item => item.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            document.getElementById('class-title').innerText = "Compétences : " + displayName;
-            
-            const data = classData[classKey];
-            
-            const activeContainer = document.getElementById('active-skills');
-            activeContainer.innerHTML = '';
-            data.actives.forEach(skill => {
-                activeContainer.innerHTML += `<div class="skill-slot" title="${skill}"><span>${skill}</span></div>`;
-            });
+<!-- VOTRE PIED DE PAGE D'ORIGINE[cite: 10] -->
+<footer>
+  <p style="margin-bottom: 12px;">
+    <a href="https://discord.gg/eJvZcncpRN" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: bold;">
+      <i class="fab fa-discord"></i> Rejoindre la communauté sur Discord
+    </a>
+  </p>
+  <p>&copy; 2026 Portail Aion 2 — Fansite communautaire AngrySkiz. Site non officiel, affilié à NCSoft.</p>
+</footer>
 
-            const passiveContainer = document.getElementById('passive-skills');
-            passiveContainer.innerHTML = '';
-            data.passifs.forEach(skill => {
-                passiveContainer.innerHTML += `<div class="skill-slot" title="${skill}"><span>${skill}</span></div>`;
-            });
-        }
-    </script>
+<script>
+  // Données techniques complètes pour les 8 classes d'Aion 2
+  const classDatabase = {
+    assassin: {
+      name: "Assassin",
+      actives: [
+        { name: "Frappe Rapide", icon: "fa-bolt" },
+        { name: "Lame d'Ombre", icon: "fa-moon" },
+        { name: "Pas de Vent", icon: "fa-wind" },
+        { name: "Exécution", icon: "fa-skull" },
+        { name: "Frappe Sournoise", icon: "fa-user-secret" },
+        { name: "Sigil Mortel", icon: "fa-crosshairs" },
+        { name: "Lacération", icon: "fa-cut" },
+        { name: "Manteau d'Ombre", icon: "fa-eye-slash" }
+      ],
+      passives: [
+        { name: "Maîtrise des Dagues", icon: "fa-award" },
+        { name: "Réflexes Assortis", icon: "fa-running" },
+        { name: "Saccage", icon: "fa-fire" },
+        { name: "Frappe Critique+", icon: "fa-chart-line" }
+      ]
+    },
+    archer: {
+      name: "Archer",
+      actives: [
+        { name: "Flèche Rapide", icon: "fa-feather" },
+        { name: "Tir Précis", icon: "fa-bullseye" },
+        { name: "Piège Ralentissant", icon: "fa-icicles" },
+        { name: "Salve Multi-Tirs", icon: "fa-arrow-alt-circle-up" },
+        { name: "Tir de Barrage", icon: "fa-stream" },
+        { name: "Flèche Explosive", icon: "fa-bomb" },
+        { name: "Bond Arrière", icon: "fa-undo" }
+      ],
+      passives: [
+        { name: "Œil de Faucon", icon: "fa-eye" },
+        { name: "Portée Accrue", icon: "fa-expand-arrows-alt" },
+        { name: "Agilité Sylvestre", icon: "fa-leaf" }
+      ]
+    },
+    gladiator: {
+      name: "Gladiateur",
+      actives: [
+        { name: "Frappe Sismique", icon: "fa-hammer" },
+        { name: "Enchaînement", icon: "fa-link" },
+        { name: "Cri de Guerre", icon: "fa-bullhorn" },
+        { name: "Tourbillon de Lames", icon: "fa-spinner" },
+        { name: "charge brutale", icon: "fa-running" },
+        { name: "Vague d'Énergie", icon: "fa-water" }
+      ],
+      passives: [
+        { name: "Maîtrise Armes d'Hast", icon: "fa-shield-alt" },
+        { name: "Cuirassé", icon: "fa-user-shield" },
+        { name: "Détermination", icon: "fa-fist-raised" }
+      ]
+    },
+    templar: {
+      name: "Templier",
+      actives: [
+        { name: "Bouclier Sacré", icon: "fa-shield-alt" },
+        { name: "Provocation", icon: "fa-volume-up" },
+        { name: "Frappe du Jugement", icon: "fa-gavel" },
+        { name: "Jugure Divine", icon: "fa-sun" },
+        { name: "Rempart Protecteur", icon: "fa-chess-rook" },
+        { name: "Chaîne Captivante", icon: "fa-link" }
+      ],
+      passives: [
+        { name: "Rempart de Fer", icon: "fa-lock" },
+        { name: "Dévouement", icon: "fa-hands-helping" },
+        { name: "Vigueur Vitale", icon: "fa-heartbeat" }
+      ]
+    },
+    sorcerer: {
+      name: "Sorcier",
+      actives: [
+        { name: "Boule de Feu", icon: "fa-fire" },
+        { name: "Éclair", icon: "fa-bolt" },
+        { name: "Gelure", icon: "fa-snowflake" },
+        { name: "Météore", icon: "fa-meteor" },
+        { name: "Tempête de Vent", icon: "fa-wind" },
+        { name: "Bouclier Arcanique", icon: "fa-circle" }
+      ],
+      passives: [
+        { name: "Concentration", icon: "fa-brain" },
+        { name: "Affinité Élémentaire", icon: "fa-atom" },
+        { name: "Sagesse Magique", icon: "fa-book" }
+      ]
+    },
+    spiritmaster: {
+      name: "Spiritualiste",
+      actives: [
+        { name: "Invocation Esprit", icon: "fa-ghost" },
+        { name: "Drain de Vie", icon: "fa-tint" },
+        { name: "Explosion Spirituelle", icon: "fa-star-of-life" },
+        { name: "Entrave", icon: "fa-hand-paper" },
+        { name: "Malédiction", icon: "fa-skull-crossbones" }
+      ],
+      passives: [
+        { name: "Communion", icon: "fa-users" },
+        { name: "Pacte Énergétique", icon: "fa-battery-full" },
+        { name: "Symbiose", icon: "fa-infinity" }
+      ]
+    },
+    aede: {
+      name: "Aède",
+      actives: [
+        { name: "Mantras de Vigueur", icon: "fa-music" },
+        { name: "Frappe de Justice", icon: "fa-hammer" },
+        { name: "Soutien Celeste", icon: "fa-hands" },
+        { name: "Sonate Protectrice", icon: "fa-shield-alt" },
+        { name: "Chant de Rapidité", icon: "fa-running" }
+      ],
+      passives: [
+        { name: "Harmonie", icon: "fa-yin-yang" },
+        { name: "Zelateur", icon: "fa-sun" },
+        { name: "Aura Bienveillante", icon: "fa-smile" }
+      ]
+    },
+    cleric: {
+      name: "Clerc",
+      actives: [
+        { name: "Soin Majeur", icon: "fa-plus-circle" },
+        { name: "Châtiment Divin", icon: "fa-sun" },
+        { name: "Bouclier de Lumière", icon: "fa-shield-alt" },
+        { name: "Résurrection", icon: "fa-ankh" },
+        { name: "Purification", icon: "fa-broom" },
+        { name: "Vague de Guérison", icon: "fa-water" }
+      ],
+      passives: [
+        { name: "Bénédiction", icon: "fa-pray" },
+        { name: "Grâce Divine", icon: "fa-feather-alt" },
+        { name: "Résilience Sacrée", icon: "fa-shield-virus" }
+      ]
+    }
+  };
+
+  function switchClass(classKey, element) {
+    // Gestion visuelle des onglets de la sidebar
+    document.querySelectorAll('.class-nav-item').forEach(item => item.classList.remove('active'));
+    element.classList.add('active');
+
+    const data = classDatabase[classKey];
+    if (!data) return;
+
+    // Mise à jour du titre
+    document.getElementById('class-title').innerHTML = `<i class="fas fa-bolt"></i> Compétences : ${data.name}`;
+
+    // Remplissage des compétences actives
+    const activeGrid = document.getElementById('active-skills-grid');
+    activeGrid.innerHTML = '';
+    data.actives.forEach(skill => {
+      activeGrid.innerHTML += `
+        <div class="skill-slot" title="${skill.name}">
+          <i class="fas ${skill.icon}"></i>
+          <span>${skill.name}</span>
+        </div>
+      `;
+    });
+
+    // Remplissage des compétences passives
+    const passiveGrid = document.getElementById('passive-skills-grid');
+    passiveGrid.innerHTML = '';
+    data.passifs.forEach(skill => {
+      passiveGrid.innerHTML += `
+        <div class="skill-slot" title="${skill.name}">
+          <i class="fas ${skill.icon}"></i>
+          <span>${skill.name}</span>
+        </div>
+      `;
+    });
+  }
+
+  // Initialisation par défaut au chargement (Assassin)
+  window.addEventListener('DOMContentLoaded', () => {
+    const firstItem = document.querySelector('.class-nav-item');
+    if (firstItem) {
+      switchClass('assassin', firstItem);
+    }
+  });
+
+  // Fonction favoris d'origine
+  function ajouterFavoris() {
+    if (window.sidebar && window.sidebar.addPanel) {
+      window.sidebar.addPanel(document.title, window.location.href, '');
+    } else if (window.external && ('AddFavorite' in window.external)) {
+      window.external.AddFavorite(location.href, document.title);
+    } else {
+      alert('Appuie sur ' + (navigator.userAgent.toLowerCase().indexOf('mac') != -1 ? 'Cmd' : 'Ctrl') + ' + D pour ajouter cette page à tes favoris.');
+    }
+  }
+</script>
+
 </body>
 </html>
