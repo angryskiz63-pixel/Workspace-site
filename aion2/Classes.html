@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="images/logo-aion2bis.png" />
-  <link rel="shortcut icon" type="image/png" href="images/logo-aion2bis.png" />
+  <link rel="icon" type="image/png" href="../images/logo-aion2bis.png" />
+  <link rel="shortcut icon" type="image/png" href="../images/logo-aion2bis.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Aion 2 | Classes</title>
@@ -39,7 +39,7 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      background-image: linear-gradient(to right, rgba(7, 11, 22, 0.85), rgba(7, 11, 22, 0.4)), url('images/fondclasses.jpg');
+      background-image: linear-gradient(to right, rgba(7, 11, 22, 0.85), rgba(7, 11, 22, 0.4)), url('../images/fondclasses.jpg');
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -576,17 +576,18 @@
 </head>
 <body>
 
+  <!-- HEADER AVEC VRAIS CHEMINS RELATIFS (../images/) -->
   <nav class="aion-nav">
-    <a href="aion2.html" class="aion-logo">
-      <img src="images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img" onerror="this.onerror=null; this.src='../images/logo-aion2.png';">
+    <a href="../aion2.html" class="aion-logo">
+      <img src="../images/logo-aion2.png" alt="Aion 2 Logo" class="aion-logo-img">
     </a>
 
     <!-- LagoFast + Drapeau belge -->
     <div class="aion-partner-container">
       <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="aion-lagofast">
-        <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
+        <img src="../images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
       </a>
-      <img src="images/belgique.png" alt="Drapeau Belgique" class="flag-icon" onerror="this.style.display='none'">
+      <img src="../images/belgique.png" alt="Drapeau Belgique" class="flag-icon">
     </div>
 
     <ul class="aion-menu">
@@ -616,12 +617,12 @@
 
     <div class="class-display">
       <div class="character-portrait">
-        <img id="class-img" class="fade-right" src="images/gladiateur.webp" alt="Gladiateur" />
+        <img id="class-img" class="fade-right" src="../images/gladiateur.webp" alt="Gladiateur" />
       </div>
 
       <div class="class-content-right fade-left" id="class-content-right">
         <div class="class-header">
-          <img id="class-icon" class="class-icon" src="images/gladiateurlogo.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
+          <img id="class-icon" class="class-icon" src="../images/gladiateurlogo.png" alt="Logo Gladiateur" onerror="this.style.display='none'" />
           <h2 class="class-name" id="class-title">Gladiateur</h2>
         </div>
 
@@ -674,64 +675,64 @@
       gladiateur: {
         title: "Gladiateur",
         desc: "Un guerrier d'avant-garde qui manie une gigantesque lame et balaye ses ennemis à la manière d'une tempête.",
-        img: "images/gladiateur.webp",
-        icon: "images/gladiateurlogo.png",
+        img: "../images/gladiateur.webp",
+        icon: "../images/gladiateurlogo.png",
         youtubeId: "ndri5XpnRK4",
         customScale: 1.0
       },
       templier: {
         title: "Templier",
         desc: "Un protecteur inébranlable utilisant bouclier et épée pour encaisser les assauts et protéger ses alliés.",
-        img: "images/Templier.webp",
-        icon: "images/Templarlogo.png",
+        img: "../images/Templier.webp",
+        icon: "../images/Templarlogo.png",
         youtubeId: "Zs6HnL2N5Hk",
         customScale: 1.0
       },
       assassin: {
         title: "Assassin",
         desc: "Maître de la discrétion et des attaques rapides dans le dos, éliminant ses cibles avant même d'être repéré.",
-        img: "images/Assassin.webp",
-        icon: "images/assassinlogo.png",
+        img: "../images/Assassin.webp",
+        icon: "../images/assassinlogo.png",
         youtubeId: "jUW24SLKK3I",
         customScale: 1.0
       },
       rodeur: {
         title: "Rôdeur",
         desc: "Un archer d'élite capable de frapper à distance tout en posant des pièges mortels sur le terrain.",
-        img: "images/Rodeur.webp",
-        icon: "images/archerlogo.png",
+        img: "../images/Rodeur.webp",
+        icon: "../images/archerlogo.png",
         youtubeId: "C6INRqEqv3Y",
         customScale: 1.0
       },
       aede: {
         title: "Aède",
         desc: "Un combattant au bâton renforçant le groupe grâce à des mantras puissants et des soins de soutien.",
-        img: "images/Chanter.webp",
-        icon: "images/aedelogo.png",
+        img: "../images/Chanter.webp",
+        icon: "../images/aedelogo.png",
         youtubeId: "rtOt3KvmYCI",
         customScale: 1.0
       },
       clerc: {
         title: "Clerc",
         desc: "Le pilier de soutien par excellence, capable de soigner les blessures graves et d'invoquer la fureur divine.",
-        img: "images/Cleric.webp",
-        icon: "images/clerclogo.png",
+        img: "../images/Cleric.webp",
+        icon: "../images/clerclogo.png",
         youtubeId: "RU-4yiNNnY0",
         customScale: 1.0
       },
       sorcier: {
         title: "Sorcier",
         desc: "Un maître des éléments déchaînant le feu et la glace pour infliger des dégâts magiques dévastateurs.",
-        img: "images/Sorcerer.webp",
-        icon: "images/sorcierlogo.png",
+        img: "../images/Sorcerer.webp",
+        icon: "../images/sorcierlogo.png",
         youtubeId: "jh1ydFq6FI0",
         customScale: 1.0
       },
       spiritualiste: {
         title: "Spiritualiste",
         desc: "Un invocateur commandant aux esprits élémentaires pour affaiblir et contrôler ses adversaires.",
-        img: "images/Spiritualist.webp",
-        icon: "images/spiritlogo.png",
+        img: "../images/Spiritualist.webp",
+        icon: "../images/spiritlogo.png",
         youtubeId: "LJq1QGRJSLI",
         customScale: 1.0
       }
