@@ -80,19 +80,26 @@
 
     .aion-logo-img:hover { transform: translateY(-50%) scale(1.05); }
 
-    .aion-lagofast {
+    .aion-partner-container {
       position: absolute;
-      left: 32%;
+      left: 28%;
       top: 50%;
       transform: translateY(-50%);
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 12px;
       z-index: 15;
+      max-height: 50px;
+    }
+
+    .aion-lagofast {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .aion-lagofast-img {
-      height: 52px;
+      height: 42px;
       width: auto;
       object-fit: contain;
       filter: drop-shadow(0 0 12px rgba(0, 242, 254, 0.5));
@@ -100,8 +107,23 @@
     }
 
     .aion-lagofast-img:hover {
-      transform: scale(1.1);
+      transform: scale(1.08);
       filter: drop-shadow(0 0 18px rgba(0, 242, 254, 0.9));
+    }
+
+    .aion-flag-belgique {
+      height: 26px;
+      width: auto;
+      max-height: 28px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.7));
+      border-radius: 3px;
+      transition: transform 0.3s ease;
+      display: block;
+    }
+
+    .aion-flag-belgique:hover {
+      transform: scale(1.1);
     }
 
     .aion-menu { 
@@ -577,7 +599,7 @@
     }
 
     @media (max-width: 1100px) {
-      .aion-lagofast { left: 22%; }
+      .aion-partner-container { left: 20%; }
       .countdowns-wrapper { grid-template-columns: 1fr; max-width: 400px; }
     }
 
@@ -592,7 +614,7 @@
       .ln-img { height: 240px; }
       .aion-menu { display: none; }
       .quick-links { margin-top: -40px; grid-template-columns: repeat(2, 1fr); }
-      .aion-lagofast { display: none; }
+      .aion-partner-container { display: none; }
       .time-val { font-size: 1.3rem; }
       .time-block { min-width: 32px; }
       .countdown-timer { gap: 6px; }
@@ -606,9 +628,13 @@
     <img src="images/logo-aion2bis.png" alt="Aion 2" class="aion-logo-img">
   </a>
 
-  <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="aion-lagofast">
-    <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
-  </a>
+  <!-- Conteneur Partenaire + Drapeau Belge -->
+  <div class="aion-partner-container">
+    <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="aion-lagofast">
+      <img src="images/logo-lagofast.png" alt="LagoFast" class="aion-lagofast-img">
+    </a>
+    <img src="images/belgique.png" alt="Drapeau Belgique" class="aion-flag-belgique">
+  </div>
 
   <ul class="aion-menu">
     <li><a href="#actualites">Actualités</a></li>
@@ -836,7 +862,7 @@
     }
   }
 
-  // Modification : L'Accès Anticipé se termine le 30/09/2026 à 15h00
+  // Fin de l'Accès Anticipé : 30/09/2026 à 15h00
   const earlyDate = new Date('2026-09-30T15:00:00').getTime();
   const globalDate = new Date('2026-10-05T00:00:00').getTime();
 
