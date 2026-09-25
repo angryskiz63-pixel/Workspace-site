@@ -836,7 +836,8 @@
     }
   }
 
-  const earlyDate = new Date('2026-09-30T00:00:00').getTime();
+  // Modification : L'Accès Anticipé se termine le 30/09/2026 à 15h00
+  const earlyDate = new Date('2026-09-30T15:00:00').getTime();
   const globalDate = new Date('2026-10-05T00:00:00').getTime();
 
   function updateCountdown(targetDate, prefix, finishText) {
