@@ -56,7 +56,17 @@
     /* HEADER EN-TÊTE */
     header {
       width: 100%;
-@ -59,6 +68,7 @@
+      padding: 30px 20px 10px 20px;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .brand-title {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 5px;
@@ -64,26 +74,64 @@
     }
 
     .brand-subtitle {
-@ -79,7 +89,8 @@
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    /* RESEAUX SOCIAUX EN HAUT */
+    .social-bar {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .social-bar a {
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
       background: rgba(15, 23, 42, 0.6);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--text-main);
       display: flex;
-@ -133,7 +144,7 @@
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .social-bar a:hover {
+      transform: translateY(-3px);
+      background: var(--text-main);
+      color: var(--bg-dark);
+      box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+    }
+
+    /* GRILLE DES UNIVERS */
+    .hub-container {
+      width: 100%;
+      max-width: 1300px;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      margin: auto 0;
+      z-index: 10;
+    }
+
+    .hub-card {
       height: 480px;
       border-radius: 16px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
       border: 1px solid rgba(255, 255, 255, 0.12);
       background-size: cover;
       background-position: center;
       display: flex;
-@ -141,6 +152,7 @@
+      flex-direction: column;
       justify-content: flex-end;
       padding: 30px;
       text-decoration: none;
@@ -91,7 +139,15 @@
       transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
 
-@ -254,6 +266,9 @@
+    footer {
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      z-index: 10;
+    }
+  </style>
 </head>
 <body>
 
@@ -101,17 +157,14 @@
   <header>
     <h1 class="brand-title">Angryskiz</h1>
     <p class="brand-subtitle">Créateur de contenu & Expertise High-Tech</p>
-@ -272,7 +287,8 @@
+  </header>
 
   <main class="hub-container">
-    
-    <a href="/aion2.html" class="hub-card card-aion">
     <!-- PORTE 1 : AION 2 -->
     <a href="/aion2/aion2.html" class="hub-card card-aion">
       <div class="card-content">
         <span class="badge badge-aion">Communauté</span>
         <h2 class="card-title">Portail Aion 2</h2>
-@ -281,6 +297,7 @@
       </div>
     </a>
 
@@ -119,17 +172,20 @@
     <a href="https://twitch.tv/angryskiz" target="_blank" class="hub-card card-stream">
       <div class="card-content">
         <span class="badge badge-stream"><i class="fas fa-circle" style="font-size:0.6rem; vertical-align:middle;"></i> Live Stream</span>
-@ -290,7 +307,8 @@
+        <h2 class="card-title">Twitch</h2>
       </div>
     </a>
 
-    <a href="https://www.angryskiz.fr/skiztech/index.html" class="hub-card card-tech">
     <!-- PORTE 3 : SKIZTECH -->
     <a href="#skiztech" class="hub-card card-tech">
       <div class="card-content">
         <span class="badge badge-tech">Service Pro</span>
         <h2 class="card-title">SkizTech</h2>
-@ -305,9 +323,84 @@
+      </div>
+    </a>
+  </main>
+
+  <footer>
     <p>Angryskiz | Skiztech by Skizcorp © 2026 — Tous droits réservés</p>
   </footer>
 
@@ -152,7 +208,7 @@
     resize();
 
     const particles = [];
-    const particleCount = 70; // Ajustable selon l'intensité désirée
+    const particleCount = 70;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
@@ -161,21 +217,19 @@
         radius: Math.random() * 2 + 0.5,
         vx: (Math.random() - 0.5) * 0.4,
         vy: (Math.random() - 0.5) * 0.4,
-        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe' // Violet Twitch / Cyan Aion
+        color: Math.random() > 0.5 ? '#9146FF' : '#00f2fe'
       });
     }
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Fond dégradé très sombre
       let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
       grad.addColorStop(0, '#090d16');
       grad.addColorStop(1, '#04060a');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Dessin des particules et des liens
       for (let i = 0; i < particleCount; i++) {
         let p = particles[i];
         p.x += p.vx;
@@ -191,7 +245,6 @@
         ctx.shadowColor = p.color;
         ctx.fill();
 
-        // Connexions entre particules proches
         for (let j = i + 1; j < particleCount; j++) {
           let p2 = particles[j];
           let dist = Math.hypot(p.x - p2.x, p.y - p2.y);
