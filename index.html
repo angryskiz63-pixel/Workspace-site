@@ -2,7 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/png" href="images/logo-angryskiz.png" />
+  <link rel="shortcut icon" href="images/logo-angryskiz.png" type="image/png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Angryskiz — Hub Officiel</title>
@@ -36,8 +37,6 @@
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      background-image: radial-gradient(circle at 50% 20%, rgba(145, 70, 255, 0.12), transparent 40%),
-                        radial-gradient(circle at 80% 80%, rgba(0, 242, 254, 0.08), transparent 40%);
       overflow-x: hidden;
       position: relative;
     }
@@ -111,7 +110,25 @@
       box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
     }
 
-    /* GRILLE DES UNIVERS */
+    /* STYLE SPECIFIQUE LINKTREE IMAGE */
+    .social-bar a.linktree-btn img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      transition: filter 0.3s ease;
+    }
+
+    .social-bar a.linktree-btn:hover {
+      background: var(--accent-linktree);
+      box-shadow: 0 5px 15px rgba(67, 230, 96, 0.4);
+    }
+
+    .social-bar a.linktree-btn:hover img {
+      filter: brightness(0);
+    }
+
+    /* GRILLE DES 3 UNIVERS */
     .hub-container {
       width: 100%;
       max-width: 1300px;
@@ -123,29 +140,34 @@
       z-index: 10;
     }
 
-    .hub-card {
-      height: 480px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background-size: cover;
-      background-position: center;
+    /* COLONNE DÉDIÉE POUR ALIGNER LE LOGO ET LA CARTE AION */
+    .card-wrapper {
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 30px;
-      text-decoration: none;
-      backdrop-filter: blur(4px);
-      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      align-items: center;
+      width: 100%;
     }
 
-    footer {
-      width: 100%;
-      padding: 20px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      z-index: 10;
+    /* LOGO LAGOFAST CENTRÉ ET PLUS GRAND AU-DESSUS DE LA CARTE AION */
+    .card-lagofast-top {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+      text-decoration: none;
+    }
+
+    .card-lagofast-top img {
+      height: 75px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 14px rgba(0, 242, 254, 0.65));
+      transition: all 0.3s ease;
+    }
+
+    .card-lagofast-top:hover img {
+      transform: scale(1.08);
+      filter: drop-shadow(0 0 22px rgba(0, 242, 254, 0.95));
     }
   </style>
 </head>
@@ -156,33 +178,34 @@
 
   <header>
     <h1 class="brand-title">Angryskiz</h1>
-    <p class="brand-subtitle">Créateur de contenu & Expertise High-Tech</p>
+    <p class="brand-subtitle">Hub Officiel</p>
   </header>
 
   <main class="hub-container">
-    <!-- PORTE 1 : AION 2 -->
-    <a href="/aion2/aion2.html" class="hub-card card-aion">
-      <div class="card-content">
-        <span class="badge badge-aion">Communauté</span>
-        <h2 class="card-title">Portail Aion 2</h2>
-      </div>
-    </a>
+    
+    <!-- PORTE 1 : AION 2 + LOGO LAGOFAST AU-DESSUS -->
+    <div class="card-wrapper">
+      <a href="https://www.angryskiz.fr/aion2/Lagofast.html" class="card-lagofast-top">
+        <img src="images/logo-lagofast.png" alt="LagoFast">
+      </a>
+    </div>
 
     <!-- PORTE 2 : STREAMING & TWITCH -->
-    <a href="https://twitch.tv/angryskiz" target="_blank" class="hub-card card-stream">
-      <div class="card-content">
-        <span class="badge badge-stream"><i class="fas fa-circle" style="font-size:0.6rem; vertical-align:middle;"></i> Live Stream</span>
-        <h2 class="card-title">Twitch</h2>
-      </div>
-    </a>
+    <div class="card-wrapper" style="justify-content: flex-end;">
+      <a href="https://twitch.tv/angryskiz" target="_blank" class="hub-card card-stream">
+        <div class="card-content">
+        </div>
+      </a>
+    </div>
 
     <!-- PORTE 3 : SKIZTECH -->
-    <a href="#skiztech" class="hub-card card-tech">
-      <div class="card-content">
-        <span class="badge badge-tech">Service Pro</span>
-        <h2 class="card-title">SkizTech</h2>
-      </div>
-    </a>
+    <div class="card-wrapper" style="justify-content: flex-end;">
+      <a href="https://angryskiz.fr/skiztech/index.html" class="hub-card card-tech">
+        <div class="card-content">
+        </div>
+      </a>
+    </div>
+
   </main>
 
   <footer>
